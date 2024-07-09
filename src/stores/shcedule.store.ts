@@ -32,7 +32,7 @@ export const defaultInitState: ScheduleState = {
 export const createScheduleStore = (initState: ScheduleState = defaultInitState) => {
   return createStore<ScheduleStore>()((set) => ({
     ...initState,
-    addSchedule: () => set((state) => ({})),
-    deleteSchedule: () => set((state) => ({}))
+    addSchedule: (newSchedule: string) => set((state) => ({})),
+    deleteSchedule: (id: number) => set((state) => ({}))
   }));
 };

@@ -1,18 +1,15 @@
 'use client';
 import Modal from '@/components/templates/Modal';
-import useModalStore from '@/stores/modal.store';
 
 export default function Home() {
-  const toggleModal = useModalStore((state) => {
-    return state.change;
-  });
-
   return (
-    <main>
-      <button className="bg-slate-400" onClick={toggleModal}>
-        새 모입 생성하기!
-      </button>
-      <Modal />
-    </main>
+    <div className="flex items-center justify-center h-screen">
+      <div className="text-center space-y-6">
+        <h2 className="text-2xl font-bold">OURWHERE</h2>
+        <p className="mt-4"> 소개 글</p>
+        <button className="mt-4 px-4 py-2 bg-button-color text-white rounded-lg"> 새 모임 생성하기! </button>
+        <Modal />
+      </div>
+    </div>
   );
 }
