@@ -1,6 +1,6 @@
 'use client';
 import api from '@/api/api';
-import Input from '@/components/atoms/Input';
+import Input from '@/components/atoms/js-Input';
 import Link from 'next/link';
 import { useState } from 'react';
 

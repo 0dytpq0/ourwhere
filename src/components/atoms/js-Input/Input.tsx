@@ -1,9 +1,9 @@
-import { ComponentProps, useId } from "react";
+import { ComponentProps, useId } from 'react';
 
 type InputProps = {
   label?: string;
   required?: boolean;
-} & ComponentProps<"input">;
+} & ComponentProps<'input'>;
 
 function Input({ label, required, id, ...props }: InputProps) {
   const inputUid = useId();
@@ -20,7 +20,7 @@ function Input({ label, required, id, ...props }: InputProps) {
       <input
         id={inputId}
         {...props}
-        className="border border-gray-400 rounded px-4 py-2.5 focus:outline-none focus:border-gray-950 transition"
+        className=" border border-white rounded px-4 py-2.5 focus:outline-none focus:border-gray-950 transition"
       />
     </div>
   );
