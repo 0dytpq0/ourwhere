@@ -1,6 +1,6 @@
 'use client';
 import LogInTemplate from '@/components/template/LogInTemplate';
-import { IMGURLS } from '@/constants/auth.contant';
+import { IMGURLS } from '@/constants/images.constant';
 
 function SignUpPage() {
   const imgURL = IMGURLS.signUpImgUrl;
