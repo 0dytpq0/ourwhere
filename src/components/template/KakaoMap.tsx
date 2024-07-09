@@ -1,10 +1,12 @@
 'use client';
 
+import { IMGURLS } from '@/constants/auth.contant';
 import useGeoLocation from '@/lib/hooks/Geolocation';
 import Script from 'next/script';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
+const imgUrl = IMGURLS.myLocationIconImgUrl;
 
 const KakaoMap = () => {
   const myLocation = useGeoLocation();
@@ -21,7 +23,7 @@ const KakaoMap = () => {
           {myLocation && (
             <MapMarker
               position={{ lat: myLocation.latitude, lng: myLocation.longitude }}
-              image={{ src: '/my-location-icon.png', size: { width: 70, height: 70 } }}
+              image={{ src: imgUrl, size: { width: 70, height: 70 } }}
               title="현재 위치"
             />
           )}
