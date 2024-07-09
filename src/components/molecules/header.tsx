@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function Header() {
   const buttons = [
-    { text: '로그인', href: '/login' },
-    { text: '회원가입', href: '/signup' }
+    { text: '로그인', href: '/log-in' },
+    { text: '회원가입', href: '/sign-up' }
   ];
   return (
     <>
