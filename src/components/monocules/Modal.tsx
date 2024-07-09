@@ -2,6 +2,7 @@ import React from 'react';
 import { InputField } from '../atoms/InputField';
 import { PlaceSearch } from '../atoms/PlaceSearch';
 
+
 interface ModalProps {
   handleClose: () => void;
 }
