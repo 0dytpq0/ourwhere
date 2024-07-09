@@ -1,5 +1,5 @@
 'use client';
-import LogInTemplate from '@/components/templates/LogInTemplate';
+import LogInTemplate from '@/components/template/LogInTemplate';
 import { IMGURLS } from '@/constants/auth.contant';
 
 function SignUpPage() {
