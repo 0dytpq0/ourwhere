@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   const nickname = data.nickname as string;
 
   const supabase = createClient();
-  console.log('data', data);
+
   const {
     data: { user }
   } = await supabase.auth.signUp({ email, password, options: { data: { nickname } } });
