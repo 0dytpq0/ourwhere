@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import LogInForm from '../molecules/LogInForm';
+import LogInForm from '../molecules/LoginForm';
 import SignUpForm from '../molecules/SignUpForm';
 
 interface LogInTemplateProps {
