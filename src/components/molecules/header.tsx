@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-10  bg-header-color">
-        <ul className="text-white h-16 flex items-center  m-auto px-4">
+        <ul className="text-white h-16 flex items-center m-auto px-4">
           <Link href="/" className="font-lg font-bold">
             {' '}
             OURWHERE{' '}
@@ -16,7 +16,7 @@ export default function Header() {
           <div className="ml-auto flex space-x-4 mx-4">
             {buttons.map((button, index) => (
               <Link key={index} href={button.href}>
-                <button className="border-solid bg-loginpage-color text-font-color px-3.5 py-1 rounded-lg">
+                <button className="border-solid bg-loginpage-color text-font-color px-3.5 py-1 rounded-lg font-bold">
                   {button.text}
                 </button>
               </Link>
