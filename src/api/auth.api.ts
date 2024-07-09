@@ -21,6 +21,13 @@ class AuthAPI {
     console.log(response);
     return response.data;
   }
+
+  async signUp(email: string, password: string) {
+    const path = 'api/auth/sign-up';
+
+    const response = await this.axios.post(path, { email, password });
+    console.log('response.data', response.data);
+  }
 }
 
 export default AuthAPI;
