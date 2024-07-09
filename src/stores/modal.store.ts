@@ -2,7 +2,7 @@ import create from 'zustand';
 
 interface ModalStore {
   modal: boolean;
-  toggleModal: (state: boolean) => void;
+  toggleModal: () => void;
 }
 
 const useModalStore = create<ModalStore>((set) => ({
