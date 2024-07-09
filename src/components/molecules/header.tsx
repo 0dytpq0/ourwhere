@@ -1,13 +1,13 @@
 import Link from 'next/link';
 
-export default function Navigation() {
+export default function Header() {
   const buttons = [
     { text: '로그인', href: '/login' },
     { text: '회원가입', href: '/signup' }
   ];
   return (
     <>
-      <nav className="sticky top-0 left-0 w-full z-10 h-16 bg-header-color">
+      <nav className="fixed top-0 left-0 w-full z-10  bg-header-color">
         <ul className="text-white h-16 flex items-center  m-auto px-4">
           <Link href="/" className="font-lg font-bold">
             {' '}
