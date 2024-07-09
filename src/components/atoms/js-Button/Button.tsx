@@ -9,7 +9,7 @@ type ButtonProps = { title: string } & (
 );
 
 const buttonStyle =
-  'flex justify-center items-center bg-header-color text-white p-2 border rounded-3xl w-full max-w-[150px]';
+  'flex justify-center items-center bg-header-color text-3xl text-white p-2 border rounded-3xl w-full max-w-[150px] shadow-xl';
 
 function Button({ title, ...props }: ButtonProps) {
   if (props.href) {

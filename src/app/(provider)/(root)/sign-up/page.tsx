@@ -1,18 +1,11 @@
 'use client';
 import LogInTemplate from '@/components/templates/LogInTemplate';
-import { createClient } from '@/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { imgURLs } from '@/constants/auth.contant';
 
 function SignUpPage() {
-  const supabase = createClient();
+  const imgURL = imgURLs.signUpImgUrl;
 
-  // <LogInTemplate type="login" img="/" title="LOG IN" />;
-  const { data: imgURL } = useQuery({
-    queryKey: ['loginImg'],
-    queryFn: () => supabase.storage.from('auth').getPublicUrl('/signup.png')
-  });
-
-  return <LogInTemplate type="signup" imgURL={imgURL?.data.publicUrl} title="LOG IN" />;
+  return <LogInTemplate type="signup" imgURL={imgURL} title="LOG IN" />;
 }
 
 export default SignUpPage;
