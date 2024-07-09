@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import Modal from '../monocules/Modal';
+import Modal from '../molecules/Modal';
 
-export default function Post() {
+export default function Meeting() {
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal(!modal);
   console.log(modal);
