@@ -1,9 +1,9 @@
-import Post from '@/components/templates/Post';
+import Meeting from '@/components/template/Meeting';
 
 export default function MeetingPage() {
   return (
     <>
-      <Post />
+      <Meeting />
     </>
   );
 }
