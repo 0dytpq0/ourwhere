@@ -21,7 +21,6 @@ class AuthAPI {
     const path = '/api/auth/log-out';
 
     const response = await this.axios.post<UserType>(path);
-    console.log(response);
     return response.data;
   }
 
