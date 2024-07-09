@@ -2,12 +2,11 @@ import React from 'react';
 import { InputField } from '../atoms/InputField';
 import { PlaceSearch } from '../atoms/PlaceSearch';
 
-
 interface ModalProps {
   handleClose: () => void;
 }
 
-const Modal = ({ handleClose }: ModalProps) => {
+const MeetingModal = ({ handleClose }: ModalProps) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-10 rounded-lg shadow-lg ">
@@ -30,4 +29,4 @@ const Modal = ({ handleClose }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default MeetingModal;
