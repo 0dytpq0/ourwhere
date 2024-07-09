@@ -1,6 +1,6 @@
 'use client';
 
-import { IMGURLS } from '@/constants/auth.contant';
+import { IMGURLS } from '@/constants/images.constant';
 import useGeoLocation from '@/lib/hooks/Geolocation';
 import Script from 'next/script';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
