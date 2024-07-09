@@ -22,10 +22,10 @@ class AuthAPI {
     return response.data;
   }
 
-  async signUp(email: string, password: string) {
+  async signUp(email: string, password: string, nickname: string) {
     const path = 'api/auth/sign-up';
 
-    const response = await this.axios.post(path, { email, password });
+    const response = await this.axios.post(path, { email, password, nickname });
     console.log('response.data', response.data);
   }
 }

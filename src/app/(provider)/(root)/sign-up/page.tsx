@@ -9,7 +9,7 @@ function SignUpPage() {
   const [password, setPassword] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
 
-  const handleClickSignUp = async () => await api.auth.signUp(email, password);
+  const handleClickSignUp = async () => await api.auth.signUp(email, password, nickname);
 
   return (
     <div>

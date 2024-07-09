@@ -5,12 +5,13 @@ export async function POST(request: NextRequest) {
   const data = await request.json();
   const email = data.email as string;
   const password = data.password as string;
+  const nickname = data.nickname as string;
 
   const supabase = createClient();
-
+  console.log('data', data);
   const {
     data: { user }
-  } = await supabase.auth.signUp({ email, password });
+  } = await supabase.auth.signUp({ email, password, options: { data: { nickname } } });
 
   return NextResponse.json(user);
 }
