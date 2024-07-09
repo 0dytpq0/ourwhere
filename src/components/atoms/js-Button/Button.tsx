@@ -1,29 +1,26 @@
 import Link from 'next/link';
 import { ComponentProps } from 'react';
 
-type ButtonProps =
+type ButtonProps = { title: string } & (
   | ({
-      title: string;
       href?: undefined;
     } & ComponentProps<'button'>)
-  | ({ href: string } & ComponentProps<typeof Link>);
+  | ({ href: string } & ComponentProps<typeof Link>)
+);
+
+const buttonStyle =
+  'flex justify-center items-center bg-header-color text-white p-2 border rounded-3xl w-full max-w-[150px]';
 
 function Button({ title, ...props }: ButtonProps) {
   if (props.href) {
     return (
-      <Link
-        className="flex justify-center items-center bg-header-color text-white p-2 border rounded-3xl w-[429px] [&+&]:mx-8"
-        {...props}
-      >
+      <Link className={buttonStyle} {...props}>
         {title}
       </Link>
     );
   } else if (typeof props.href === 'undefined') {
     return (
-      <button
-        className="flex justify-center items-center bg-header-color text-white p-2 border rounded-3xl w-[429px] [&+&]:mx-8"
-        {...props}
-      >
+      <button className={buttonStyle} {...props}>
         {title}
       </button>
     );

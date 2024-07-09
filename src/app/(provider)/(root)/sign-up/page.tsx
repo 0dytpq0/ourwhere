@@ -1,25 +1,18 @@
 'use client';
-import api from '@/api/api';
-import Input from '@/components/atoms/js-Input';
-import Link from 'next/link';
-import { useState } from 'react';
+import LogInTemplate from '@/components/templates/LogInTemplate';
+import { createClient } from '@/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 function SignUpPage() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [nickname, setNickname] = useState<string>('');
+  const supabase = createClient();
 
-  const handleClickSignUp = async () => await api.auth.signUp(email, password, nickname);
+  // <LogInTemplate type="login" img="/" title="LOG IN" />;
+  const { data: imgURL } = useQuery({
+    queryKey: ['loginImg'],
+    queryFn: () => supabase.storage.from('auth').getPublicUrl('/signup.png')
+  });
 
-  return (
-    <div>
-      <Input label="이메일" required={false} onChange={(e) => setEmail(e.target.value)} />
-      <Input label="비밀번호" required={false} onChange={(e) => setPassword(e.target.value)} />
-      <Input label="닉네임" required={false} onChange={(e) => setNickname(e.target.value)} />
-      <button onClick={handleClickSignUp}>회원가입</button>
-      <Link href={'/log-in'}>로그인</Link>
-    </div>
-  );
+  return <LogInTemplate type="signup" imgURL={imgURL?.data.publicUrl} title="LOG IN" />;
 }
 
 export default SignUpPage;

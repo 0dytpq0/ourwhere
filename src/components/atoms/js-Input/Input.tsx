@@ -10,7 +10,7 @@ function Input({ label, required, id, ...props }: InputProps) {
   const inputId = id || inputUid;
 
   return (
-    <div className="flex flex-col gap-y-1.5 [&+&]:mt-4">
+    <div className="flex flex-col gap-y-1.5 [&+&]:mt-8 w-full">
       {label && (
         <label htmlFor={inputId} className="text-sm font-semibold">
           <span>{label}</span>
@@ -20,7 +20,7 @@ function Input({ label, required, id, ...props }: InputProps) {
       <input
         id={inputId}
         {...props}
-        className=" border border-white rounded px-4 py-2.5 focus:outline-none focus:border-gray-950 transition"
+        className=" border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-gray-950 transition"
       />
     </div>
   );
