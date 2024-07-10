@@ -7,9 +7,10 @@ export default function Home() {
   const data = {
     date: '2024-07-10',
     password: 'qkrtkfkd2!',
-    title: '행복 모임'
+    title: '또다시 수정 모임'
   };
-  const { mutate: insert } = useMutation({ mutationFn: () => api.meeting.insertMeeting(data) });
+
+  const { mutate: insert } = useMutation({ mutationFn: () => api.meeting.updateMeeting(19, data) });
 
   return (
     <div className="flex items-center justify-center h-screen">
