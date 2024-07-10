@@ -1,3 +1,6 @@
+import api from '@/api/api';
+import { useAuthStore } from '@/providers/js-auth.store.provider';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 
 export default function Header() {
@@ -5,6 +8,16 @@ export default function Header() {
     { text: '로그인', href: '/log-in' },
     { text: '회원가입', href: '/sign-up' }
   ];
+  const { user, setUser } = useAuthStore((state) => state);
+  const { mutate: getUserSession } = useMutation({
+    mutationFn: () => api.auth.getUserSession(),
+    onSuccess: (data) => {
+      setUser(data);
+    }
+  });
+
+  getUserSession();
+  console.log('user', user);
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-10  bg-header-color">
