@@ -21,8 +21,8 @@ export default function Meeting() {
         const data = await meetingAPI.selectMeeting();
         if (!data) return;
         setMeeting(data);
-      } catch {
-        setError(error);
+      } catch (error) {
+        console.log(error);
       }
     };
 
