@@ -12,11 +12,11 @@ const KakaoMap = () => {
   const myLocation = useGeoLocation();
   return (
     <>
-      <section className="h-lvh mr-1 -z-10">
+      <section className="h-lvh mr-1">
         <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
         <Map
           center={
-            myLocation ? { lat: myLocation.latitude, lng: myLocation.longitude } : { lat: 33.450701, lng: 126.570667 }
+            myLocation ? { lat: myLocation.latitude, lng: myLocation.longitude } : { lat: 37.715133, lng: 37.413294 }
           }
           style={{ width: '800px', height: '100%' }}
         >
