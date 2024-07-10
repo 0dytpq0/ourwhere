@@ -17,6 +17,7 @@ class AuthAPI {
 
     return response.data;
   }
+
   async logOut() {
     const path = '/api/auth/log-out';
 
