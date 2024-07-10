@@ -1,27 +1,63 @@
-import React from 'react';
+'use client';
+import { createClient } from '@/supabase/client';
+import { useEffect, useState } from 'react';
+
+interface ScheduleItem {
+  id: number;
+  time: string;
+  place: string;
+  address: string;
+  content: string;
+  uuid: number;
+  meetingId: number;
+}
+
+const supabase = createClient();
 
 function Schedule() {
+  const [scheduleData, setScheduleData] = useState<ScheduleItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('schedule').select();
+      if (error) {
+        setError(error.message);
+      } else {
+        setScheduleData(data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(scheduleData);
+
   return (
     <div className="p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-purple-300 flex items-center justify-center text-white">1</div>
-          <div className="ml-2 text-purple-500">11:30</div>
-        </div>
-        <div>
-          <div className="text-xl font-bold text-gray-800">케이크 밀쿠</div>
-          <div className="mt-1 text-sm text-gray-500">서울 마포구 연희로1길 7 1층</div>
-        </div>
-      </div>
-      <div className="mt-4 p-4 bg-purple-100 rounded-lg">
-        <div className="text-sm">
-          <span role="img" aria-label="pencil">
-            ✍️
-          </span>{' '}
-          레터링 케이크 픽업
-        </div>
-        <div className="text-sm">~~~ 이름으로 주문함</div>
-      </div>
+      {scheduleData.map((items) => (
+        <>
+          <div className="flex items-center justify-between space-y-8">
+            <div className="flex items-center">
+              <div className="w-8 h-8 rounded-full bg-purple-300 flex items-center justify-center text-white">
+                {items.id}
+              </div>
+              <div className="ml-2 text-purple-500">{items.time}</div>
+            </div>
+            <div>
+              <div className="text-xl font-bold text-gray-800">{items.place}</div>
+              <div className="mt-1 text-sm text-gray-500">{items.address}</div>
+            </div>
+          </div>
+          <div className="p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg">
+            <div className="text-sm">
+              <span role="img" aria-label="pencil">
+                ✍️
+              </span>{' '}
+            </div>
+            <div className="text-sm">{items.content}</div>
+          </div>
+        </>
+      ))}
     </div>
   );
 }
