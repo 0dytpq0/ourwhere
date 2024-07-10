@@ -19,6 +19,7 @@
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "react-kakao-maps-sdk": "^1.1.27",
+    "shadcn": "^1.0.0",
     "sweetalert2": "^11.12.2",
     "zustand": "^4.5.4"
   },
