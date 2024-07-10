@@ -1,15 +1,16 @@
 'use client';
 
 import useModalStore from '@/stores/modal.store';
-import ScheduleModal from '../molecules/ScheduleModal';
+import ScheduleModal from './ScheduleModal';
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
 
+  console.log(modal);
+
   const handleToggleModal = () => {
     toggleModal();
-    console.log('확인');
   };
 
   return (
