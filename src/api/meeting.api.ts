@@ -25,7 +25,7 @@ class MeetingAPI {
 
   /**
    *
-   * @param intertData  {MeetingType}
+   * @param insertData  {MeetingType}
    * @returns data {MeetingType}
    */
   async insertMeeting(insertData: MeetingType) {
