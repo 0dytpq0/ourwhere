@@ -7,9 +7,10 @@ export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
 
+  console.log(modal);
+
   const handleToggleModal = () => {
     toggleModal();
-    console.log('확인');
   };
 
   return (
