@@ -1,6 +1,6 @@
 'use client';
 
-import MeetingModal from '@/components/molecules/MeetingModal';
+import MeetingModal from '@/components/template/MeetingModal';
 import useModalStore from '@/stores/modal.store';
 
 export default function Home() {
@@ -12,7 +12,6 @@ export default function Home() {
   };
   console.log('main', modal);
 
-
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center space-y-6">
@@ -21,7 +20,6 @@ export default function Home() {
         <button className="mt-4 px-4 py-2 bg-button-color text-white rounded-lg" onClick={handleOpenModal}>
           새 모임 생성하기!
         </button>
-
       </div>
       {modal && <MeetingModal />}
     </div>
