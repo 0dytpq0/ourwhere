@@ -10,5 +10,6 @@ export async function POST(request: NextRequest) {
   const {
     data: { user }
   } = await supabase.auth.signInWithPassword({ email, password });
+
   return NextResponse.json(user);
 }
