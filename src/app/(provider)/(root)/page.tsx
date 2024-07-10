@@ -5,12 +5,14 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function Home() {
   const data = {
-    date: '2024-07-10',
-    password: 'qkrtkfkd2!',
-    title: '또다시 수정 모임'
+    meetingId: 19,
+    content: '컨텐츠',
+    place: '장소입니다!',
+    address: '주소입니다.',
+    time: '시간입니다.'
   };
 
-  const { mutate: insert } = useMutation({ mutationFn: () => api.meeting.updateMeeting(19, data) });
+  const { mutate: insert } = useMutation({ mutationFn: () => api.schedule.insertSchedule(data) });
 
   return (
     <div className="flex items-center justify-center h-screen">

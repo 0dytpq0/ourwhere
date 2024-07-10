@@ -1,0 +1,64 @@
+import { createClient } from '@/supabase/client';
+import { Tables } from '@/types/supabase';
+import { AxiosInstance } from 'axios';
+
+type ScheduleType = Tables<'schedule'>;
+
+class ScheduleAPI {
+  private axios: AxiosInstance;
+  private supabase;
+
+  constructor(axios: AxiosInstance) {
+    this.axios = axios;
+    this.supabase = createClient();
+  }
+
+  /**
+   *
+   * @returns schedule 테이블 데이터 전부
+   */
+  async selectSchedule() {
+    const { data } = await this.supabase.from('schedule').select().returns<Tables<'schedule'>>();
+    console.log('data', data);
+    return data;
+  }
+
+  /**
+   *
+   * @param intertData  { content : string, place : string, address : string, time : string, meetingId : number}
+   * @returns data 추가된 data
+   */
+  async insertSchedule(insertData: ScheduleType) {
+    const { content, place, address, time, meetingId } = insertData;
+    const { data } = await this.supabase.from('schedule').insert({ content, place, address, time, meetingId });
+
+    return data;
+  }
+
+  // /**
+  //  *
+  //  * @param id {number} 미팅 게시물 아이디
+  //  * @returns 삭제된 data
+  //  */
+  // async deleteSchedule(id: number) {
+  //   console.log('id', id);
+  //   const { data } = await this.supabase.from('schedule').delete().eq('id', id).select();
+  //   console.log('data', data);
+  //   return data;
+  // }
+
+  // /**
+  //  *
+  //  * @param id  {number} 미팅 게시물 아이디
+  //  * @param updateData {string[]}
+  //  * @returns
+  //  */
+  // async updateSchedule(id: number, updateData: ScheduleType) {
+  //   console.log('id, updateData', id, updateData);
+  //   const { data, error } = await this.supabase.from('schedule').update().eq('id', id).select('*');
+
+  //   return data;
+  // }
+}
+
+export default ScheduleAPI;

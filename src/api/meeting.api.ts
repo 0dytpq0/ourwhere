@@ -2,7 +2,7 @@ import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 import { AxiosInstance } from 'axios';
 
-type meetingType = Tables<'meeting'>;
+type MeetingType = Tables<'meeting'>;
 
 class MeetingAPI {
   private axios: AxiosInstance;
@@ -25,13 +25,13 @@ class MeetingAPI {
 
   /**
    *
-   * @param intertData  {date, password,title}
-   * @returns data 추가된 data
+   * @param intertData  {MeetingType}
+   * @returns data {MeetingType}
    */
-  async insertMeeting(intertData: meetingType) {
-    const { date, password, title } = intertData;
+  async insertMeeting(insertData: MeetingType) {
+    const { date, password, title } = insertData;
 
-    const { data } = await this.supabase.from('meeting').insert({ date, password, title });
+    const { data } = await this.supabase.from('meeting').insert({ date, password, title }).select();
 
     return data;
   }
@@ -54,7 +54,7 @@ class MeetingAPI {
    * @param updateData {string[]}
    * @returns
    */
-  async updateMeeting(id: number, updateData: meetingType) {
+  async updateMeeting(id: number, updateData: MeetingType) {
     const { date, password, title } = updateData;
     console.log('id, updateData', id, updateData);
     const { data, error } = await this.supabase
