@@ -1,29 +1,27 @@
 'use client';
 
-import MeetingModal from '@/components/molecules/MeetingModal';
+import MeetingModal from '@/components/template/MeetingModal';
 import useModalStore from '@/stores/modal.store';
 
 export default function Home() {
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
 
-  const handleToggleModal = () => {
+  const handleOpenModal = () => {
     toggleModal();
-    console.log('확인');
   };
-
+  console.log('main', modal);
 
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center space-y-6">
         <h2 className="text-2xl font-bold">OURWHERE</h2>
         <p className="mt-4"> 소개 글</p>
-        <button className="mt-4 px-4 py-2 bg-button-color text-white rounded-lg" onClick={handleToggleModal}>
+        <button className="mt-4 px-4 py-2 bg-button-color text-white rounded-lg" onClick={handleOpenModal}>
           새 모임 생성하기!
         </button>
-
       </div>
-      {modal && <MeetingModal handleClose={handleToggleModal} />}
+      {modal && <MeetingModal />}
     </div>
   );
 }
