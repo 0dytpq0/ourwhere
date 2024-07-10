@@ -24,22 +24,20 @@ function Schedule() {
       if (error) {
         setError(error.message);
       } else {
-        setScheduleData(data);
+        setScheduleData(data as unknown as ScheduleItem[]);
       }
     };
     fetchData();
   }, []);
 
-  console.log(scheduleData);
-
   return (
-    <div className="p-4">
-      {scheduleData.map((items) => (
+    <div className="p-4 ">
+      {scheduleData.map((items, index) => (
         <>
           <div className="flex items-center justify-between space-y-8">
             <div className="flex items-center">
               <div className="w-8 h-8 rounded-full bg-purple-300 flex items-center justify-center text-white">
-                {items.id}
+                {index + 1}
               </div>
               <div className="ml-2 text-purple-500">{items.time}</div>
             </div>

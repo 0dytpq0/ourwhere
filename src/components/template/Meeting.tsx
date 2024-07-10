@@ -3,10 +3,33 @@
 import useModalStore from '@/stores/modal.store';
 import ScheduleModal from '../molecules/ScheduleModal';
 import Schedule from '../molecules/Schedule';
+import MeetingAPI from '@/api/meeting.api';
+import { useEffect, useState } from 'react';
+import { Tables } from '@/types/supabase';
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
+  const [meeting, setMeeting] = useState<Tables<'meeting'>[]>([]);
+  const [error, setError] = useState(null);
+
+  const meetingAPI = new MeetingAPI();
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      try {
+        const data = await meetingAPI.selectMeeting();
+        if (!data) return;
+        setMeeting(data);
+      } catch {
+        setError('error');
+      }
+    };
+
+    fetchMeetings();
+  }, []);
+
+  console.log(meeting);
 
   const handleToggleModal = () => {
     toggleModal();
@@ -15,8 +38,8 @@ export default function Meeting() {
 
   return (
     <>
-      <section className="bg-loginpage-color pt-16 h-dvh">
-        <div className="flex flex-col items-center pt-10">
+      <section className="bg-loginpage-color pt-16 h-dvh overflow-auto">
+        <div className="flex flex-col items-center pt-10 ">
           <h1 className="text-4xl mb-3 text-font-color">예은이 생파 홍대</h1>
           <input type="date" placeholder="날짜" className="p-1 w-64 rounded-xl" />
           <Schedule />
