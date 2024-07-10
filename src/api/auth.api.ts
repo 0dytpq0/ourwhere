@@ -17,11 +17,11 @@ class AuthAPI {
 
     return response.data;
   }
+
   async logOut() {
     const path = '/api/auth/log-out';
 
     const response = await this.axios.post<UserType>(path);
-    console.log(response);
     return response.data;
   }
 
