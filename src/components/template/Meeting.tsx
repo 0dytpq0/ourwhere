@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Modal from '../molecules/Modal';
-import Schedule from '../molecules/schedule';
+import Schedule from '../molecules/Schedule';
 
 export default function Meeting() {
   const [modal, setModal] = useState(false);
