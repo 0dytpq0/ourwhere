@@ -1,12 +1,11 @@
 'use client';
 
 import useModalStore from '@/stores/modal.store';
-import ScheduleModal from '../molecules/ScheduleModal';
+import ScheduleModal from './ScheduleModal';
 import Schedule from '../molecules/Schedule';
 import MeetingAPI from '@/api/meeting.api';
 import { useEffect, useState } from 'react';
 import { Tables } from '@/types/supabase';
-
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
