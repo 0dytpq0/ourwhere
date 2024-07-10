@@ -7,6 +7,7 @@ import MeetingAPI from '@/api/meeting.api';
 import { useEffect, useState } from 'react';
 import { Tables } from '@/types/supabase';
 
+
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
@@ -31,9 +32,10 @@ export default function Meeting() {
 
   console.log(meeting);
 
+  console.log(modal);
+
   const handleToggleModal = () => {
     toggleModal();
-    console.log('확인');
   };
 
   return (
