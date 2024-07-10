@@ -5,12 +5,9 @@ import { AxiosInstance } from 'axios';
 type MeetingType = Tables<'meeting'>;
 
 class MeetingAPI {
-  // private axios: AxiosInstance;
   private supabase;
 
-  // axios: AxiosInstance
   constructor() {
-    // this.axios = axios;
     this.supabase = createClient();
   }
 

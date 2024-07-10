@@ -38,18 +38,22 @@ export default function Meeting() {
 
   return (
     <>
-      <section className="bg-loginpage-color pt-16 h-dvh overflow-auto">
-        <div className="flex flex-col items-center pt-10 ">
-          <h1 className="text-4xl mb-3 text-font-color">예은이 생파 홍대</h1>
-          <input type="date" placeholder="날짜" className="p-1 w-64 rounded-xl" />
-          <Schedule />
-          <button
-            onClick={handleToggleModal}
-            className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5 "
-          >
-            +
-          </button>
-        </div>
+      <section className="bg-loginpage-color pt-16 pb-16 h-dvh overflow-auto">
+        {meeting.map((data) => (
+          <div className="flex flex-col items-center pt-10 ">
+            <h1 className="text-4xl mb-3 text-font-color ">🎈{data.title}🎈</h1>
+            <div className="p-1 w-64 rounded-xl bg-white flex justify-center items-center drop-shadow-md">
+              {data.date}
+            </div>
+            <Schedule />
+            <button
+              onClick={handleToggleModal}
+              className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5 "
+            >
+              +
+            </button>
+          </div>
+        ))}
       </section>
 
       {modal && <ScheduleModal handleClose={handleToggleModal} />}
