@@ -1,6 +1,5 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
-import { AxiosInstance } from 'axios';
 
 type MeetingType = Tables<'meeting'>;
 
@@ -16,8 +15,14 @@ class MeetingAPI {
    * @returns meeting 테이블 데이터 전부
    */
   // 타입 지정 잘못됨 - [] 추가
-  async selectMeeting() {
+  async selectMeetings() {
     const { data } = await this.supabase.from('meeting').select().returns<Tables<'meeting'>[]>();
+
+    return data;
+  }
+
+  async selectMeeting(id: number) {
+    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>>();
 
     return data;
   }
