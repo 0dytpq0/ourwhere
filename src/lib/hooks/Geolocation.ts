@@ -11,7 +11,7 @@ function useGeoLocation(): Location | null {
   const [myLocation, setMyLocation] = useState<Location | null>(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, { enableHighAccuracy: true, maximumAge: 0 });
   }, []);
 
   const handleSuccess = (response: GeolocationPosition) => {
