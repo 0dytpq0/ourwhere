@@ -1,27 +1,19 @@
 'use client';
 
-import MeetingModal from '@/components/template/MeetingModal';
-import useModalStore from '@/stores/modal.store';
+import api from '@/api/api';
+import { useMutation } from '@tanstack/react-query';
 
 export default function Home() {
-  const modal = useModalStore((state) => state.modal);
-  const toggleModal = useModalStore((state) => state.toggleModal);
-
-  const handleOpenModal = () => {
-    toggleModal();
-  };
-  console.log('main', modal);
+  const { mutate: getUserSession } = useMutation({ mutationFn: () => api.auth.getUserSession() });
 
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center space-y-6">
         <h2 className="text-2xl font-bold">OURWHERE</h2>
-        <p className="mt-4"> 소개 글</p>
-        <button className="mt-4 px-4 py-2 bg-button-color text-white rounded-lg" onClick={handleOpenModal}>
-          새 모임 생성하기!
-        </button>
+        <p className="mt-4">소개 글</p>
+        <button className="mt-4 px-4 py-2 bg-button-color text-white rounded-lg"> 새 모임 생성하기! </button>
+        <button onClick={() => getUserSession()}>testtest</button>
       </div>
-      {modal && <MeetingModal />}
     </div>
   );
 }
