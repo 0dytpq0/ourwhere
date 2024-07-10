@@ -1,12 +1,11 @@
 'use client';
 
-import useModalStore from '@/stores/modal.store';
-import ScheduleModal from '../molecules/ScheduleModal';
-import Schedule from '../molecules/Schedule';
 import MeetingAPI from '@/api/meeting.api';
-import { useEffect, useState } from 'react';
+import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
-
+import { useEffect, useState } from 'react';
+import Schedule from '../molecules/Schedule';
+import ScheduleModal from './ScheduleModal';
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
@@ -19,7 +18,7 @@ export default function Meeting() {
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        const data = await meetingAPI.selectMeeting();
+        const data = await meetingAPI.selectMeetings();
         if (!data) return;
         setMeeting(data);
       } catch {
