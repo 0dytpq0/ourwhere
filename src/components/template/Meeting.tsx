@@ -22,7 +22,7 @@ export default function Meeting() {
         if (!data) return;
         setMeeting(data);
       } catch {
-        setError('error');
+        setError(error);
       }
     };
 
