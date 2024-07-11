@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-
-import Header from '@/components/molecules/header';
-import Footer from '@/components/molecules/footer';
+import Header from '@/components/molecules/Header';
+import Footer from '@/components/molecules/Footer';
+import { AuthStoreProvider } from '@/providers/js-auth.store.provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
+        <AuthStoreProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthStoreProvider>
       </body>
     </html>
   );
