@@ -4,6 +4,7 @@ import api from '@/api/api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 import Button from '../atoms/js-Button/Button';
 import Input from '../atoms/js-Input/Input';
 
@@ -14,10 +15,28 @@ function LogInForm() {
   const router = useRouter();
 
   const handleClickLogIn = async () => {
-    const user = await api.auth.logIn(email, password);
-    const response = await api.auth.getUser(user.id);
-    setUser(response[0]);
-    if (user.email) router.push('/');
+    // if (!validateEmail(email)) {
+    //   Swal.fire({
+    //     title: '이메일 형식이 잘못 되었습니다.',
+    //     icon: 'error',
+    //     confirmButtonText: 'Cool'
+    //   });
+
+    //   return;
+    // }
+    try {
+      const user = await api.auth.logIn(email, password);
+      console.log(user);
+      const response = await api.auth.getUser(user.id);
+      setUser(response[0]);
+      if (user.email) router.push('/');
+    } catch (error) {
+      Swal.fire({
+        title: '존재하지 않는 회원입니다.',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      });
+    }
   };
 
   return (
