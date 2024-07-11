@@ -101,7 +101,7 @@ export default function Meeting() {
         </div>
       </section>
 
-      {modal && <ScheduleModal handleClose={handleToggleModal} />}
+      {modal && <ScheduleModal />}
     </>
   );
 }

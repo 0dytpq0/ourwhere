@@ -24,6 +24,9 @@ const ScheduleForm = () => {
   const { mutate: createSchedule } = useCreateSchedule();
   const toggleModal = useModalStore((state) => state.toggleModal);
 
+  const params = useParams();
+  console.log(params.id);
+
   const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newSchedule = {
@@ -31,7 +34,7 @@ const ScheduleForm = () => {
       place: place,
       address: address,
       time: `${time}`,
-      meetingId: 100
+      meetingId: Number(params.id)
     };
 
     createSchedule(newSchedule, {
@@ -40,9 +43,6 @@ const ScheduleForm = () => {
       }
     });
   };
-
-  const params = useParams();
-  console.log(params);
 
   return (
     <div>
