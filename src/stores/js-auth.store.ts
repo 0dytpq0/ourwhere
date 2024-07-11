@@ -1,5 +1,6 @@
 import { Tables } from '@/types/supabase';
 import { createStore } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type UserType = Tables<'users'>;
 
@@ -22,12 +23,17 @@ export const initAuthStore = (): AuthState => {
 export const defaultInitState: AuthState = {
   user: null
 };
-
-// state는 initState에서 추가, action은 initScheduleStore 밑 아래에 같이 추가해야될듯?
-// next.js 문서 따라 쳤는데 흠... 한번 하면서 알아봐야할듯함.
 export const createAuthStore = (initState: AuthState = defaultInitState) => {
-  return createStore<AuthStore>()((set) => ({
-    ...initState,
-    setUser: (user: UserType) => set((state) => ({ user }))
-  }));
+  return createStore<AuthStore>()(
+    persist(
+      (set) => ({
+        ...initState,
+        setUser: (user: UserType) => set((state) => ({ user }))
+      }),
+      {
+        name: 'auth-storage',
+        getStorage: () => localStorage
+      }
+    )
+  );
 };
