@@ -37,7 +37,7 @@ export const useCreateMeeting = () => {
 };
 
 // Meeting 삭제하기
-export function useDeleteMeeting() {
+export const useDeleteMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => meetingApi.deleteMeeting(id),
@@ -47,10 +47,10 @@ export function useDeleteMeeting() {
       });
     }
   });
-}
+};
 
 // Meeting 수정하기
-export function useUpdateMeeting() {
+export const useUpdateMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, updateData }: { id: number; updateData: MeetingType }) =>
@@ -65,4 +65,4 @@ export function useUpdateMeeting() {
       });
     }
   });
-}
+};

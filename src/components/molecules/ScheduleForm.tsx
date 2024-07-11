@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { PlaceSearch } from '../atoms/PlaceSearch';
-import { InputField } from '../atoms/InputField';
 import Input from '../atoms/js-Input/Input';
 import useModalStore from '@/stores/modal.store';
 
