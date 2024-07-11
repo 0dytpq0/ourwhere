@@ -1,23 +1,20 @@
 'use client';
 
-import api from '@/api/api';
-import { useAuthStore } from '@/providers/js-auth.store.provider';
-import { useMutation } from '@tanstack/react-query';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 
 function GlobalLayout({ children }: PropsWithChildren) {
-  const { setUser } = useAuthStore((state) => state);
+  // const { setUser } = useAuthStore((state) => state);
 
-  const { mutate: getUserSession } = useMutation({
-    mutationFn: () => api.auth.getUserSession(),
-    onSuccess: (data) => {
-      setUser(data);
-    }
-  });
+  // const { mutate: getUserSession } = useMutation({
+  //   mutationFn: () => api.auth.getUserSession(),
+  //   onSuccess: (data) => {
+  //     setUser(data);
+  //   }
+  // });
 
-  useEffect(() => {
-    getUserSession();
-  }, []);
+  // useEffect(() => {
+  //   getUserSession();
+  // }, []);
   return <>{children}</>;
 }
 

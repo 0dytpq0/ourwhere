@@ -36,7 +36,6 @@ class MeetingAPI {
     const { date, password, title } = insertData;
 
     const { data } = await this.supabase.from('meeting').insert({ date, password, title }).select();
-
     return data;
   }
 

@@ -1,62 +1,26 @@
-import { User } from '@supabase/supabase-js';
+import { Tables } from '@/types/supabase';
 import { createStore } from 'zustand';
 
+type UserType = Tables<'users'>;
+
 export type AuthState = {
-  user: User | null;
+  user: UserType | null;
 };
 
 export type AuthActions = {
-  setUser: (user: any) => void;
+  setUser: (user: UserType) => void;
 };
 
 export type AuthStore = AuthState & AuthActions;
 
 export const initAuthStore = (): AuthState => {
   return {
-    user: {
-      id: '',
-      aud: '',
-      role: '',
-      email: '',
-      email_confirmed_at: '',
-      phone: '',
-      phone_confirmed_at: '',
-      confirmed_at: '',
-      last_sign_in_at: '',
-      app_metadata: {
-        provider: '',
-        providers: []
-      },
-      user_metadata: {},
-      identities: [],
-      created_at: '',
-      updated_at: '',
-      is_anonymous: false
-    }
+    user: null
   };
 };
 
 export const defaultInitState: AuthState = {
-  user: {
-    id: '',
-    aud: '',
-    role: '',
-    email: '',
-    email_confirmed_at: '',
-    phone: '',
-    phone_confirmed_at: '',
-    confirmed_at: '',
-    last_sign_in_at: '',
-    app_metadata: {
-      provider: '',
-      providers: []
-    },
-    user_metadata: {},
-    identities: [],
-    created_at: '',
-    updated_at: '',
-    is_anonymous: false
-  }
+  user: null
 };
 
 // state는 initState에서 추가, action은 initScheduleStore 밑 아래에 같이 추가해야될듯?
@@ -64,6 +28,6 @@ export const defaultInitState: AuthState = {
 export const createAuthStore = (initState: AuthState = defaultInitState) => {
   return createStore<AuthStore>()((set) => ({
     ...initState,
-    setUser: (user: any) => set((state) => ({ user }))
+    setUser: (user: UserType) => set((state) => ({ user }))
   }));
 };
