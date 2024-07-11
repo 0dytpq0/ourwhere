@@ -21,7 +21,6 @@ export default function Footer({ position, ...props }: PropsWithChildren<FooterP
   const Position = isMeetingPath && position === undefined ? null : 'fixed';
   return (
     <footer className={footerVariants({ position: Position })} {...props}>
-      {' '}
       &copy; 2024 독수리오남매. All rights reserved.
     </footer>
   );
