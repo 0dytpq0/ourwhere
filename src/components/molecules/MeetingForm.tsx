@@ -25,11 +25,8 @@ const MeetingForm = () => {
   };
 
   const { mutate: createMeeting } = useCreateMeeting();
-  const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
   const router = useRouter();
-
-  console.log(createMeeting);
 
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,8 +46,6 @@ const MeetingForm = () => {
       }
     });
   };
-
-  console.log('modal', modal);
 
   return (
     <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">

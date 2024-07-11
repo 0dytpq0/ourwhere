@@ -13,7 +13,6 @@ export default function Home() {
   const handleOpenModal = () => {
     toggleModal();
   };
-  console.log('main', modal);
 
   return (
     <div className="flex items-center justify-center h-screen">

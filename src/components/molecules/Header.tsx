@@ -3,7 +3,7 @@ import api from '@/api/api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Header() {
   const { user, setUser } = useAuthStore((state) => state);
@@ -16,13 +16,13 @@ export default function Header() {
     router.push('/log-in');
   };
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
 
   return (
     <>
-      {mounted && (
+      {mounted || (
         <nav className="fixed top-0 left-0 w-full z-10 bg-header-color">
           <ul className="text-white h-16 flex items-center m-auto px-4">
             <Link href="/" className="font-lg font-bold">
