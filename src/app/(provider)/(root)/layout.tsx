@@ -6,7 +6,9 @@ import { useMutation } from '@tanstack/react-query';
 import { PropsWithChildren, useEffect } from 'react';
 
 function GlobalLayout({ children }: PropsWithChildren) {
-  const { setUser } = useAuthStore((state) => state);
+  const { setUser, user } = useAuthStore((state) => state);
+
+  console.log('user 정보', user);
 
   const { mutate: getUserSession } = useMutation({
     mutationFn: () => api.auth.getUserSession(),
