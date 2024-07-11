@@ -11,7 +11,7 @@ export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
   const [meeting, setMeeting] = useState<Tables<'meeting'>[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   const meetingAPI = new MeetingAPI();
 
