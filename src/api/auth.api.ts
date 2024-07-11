@@ -32,6 +32,14 @@ class AuthAPI {
 
     return response.data;
   }
+
+  async getUserSession() {
+    const path = 'api/auth/user';
+
+    const response = await this.axios.get<UserType>(path);
+
+    return response.data;
+  }
 }
 
 export default AuthAPI;
