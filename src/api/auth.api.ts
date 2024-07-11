@@ -33,10 +33,10 @@ class AuthAPI {
     return response.data;
   }
 
-  async getUserSession() {
+  async getUser(id: string) {
     const path = 'api/auth/user';
 
-    const response = await this.axios.get<UserType>(path);
+    const response = await this.axios.post<UserType[]>(path, { id });
 
     return response.data;
   }
