@@ -14,8 +14,8 @@ class API {
     this.axios = axios.create({ baseURL: 'http://localhost:3000' });
 
     this.auth = new AuthAPI(this.axios);
-    this.meeting = new MeetingAPI(this.axios);
-    this.schedule = new ScheduleAPI(this.axios);
+    this.meeting = new MeetingAPI();
+    this.schedule = new ScheduleAPI();
   }
 }
 
