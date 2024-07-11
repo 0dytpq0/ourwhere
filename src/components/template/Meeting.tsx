@@ -41,7 +41,12 @@ export default function Meeting() {
     <>
       <section className="bg-loginpage-color pt-16 pb-16 h-dvh overflow-auto">
         {meeting.map((data) => (
-          <div className="flex flex-col items-center pt-10 ">
+          <div key={data.id} className="flex flex-col items-center pt-10 relative">
+            <div className="absolute right-4 top-4 flex flex-col items-center cursor-pointer">
+              <span className="block w-2 h-2 bg-gray-500 rounded-full mb-1"></span>
+              <span className="block w-2 h-2 bg-gray-500 rounded-full mb-1"></span>
+              <span className="block w-2 h-2 bg-gray-500 rounded-full"></span>
+            </div>
             <h1 className="text-4xl mb-3 text-font-color ">🎈{data.title}🎈</h1>
             <div className="p-1 w-64 rounded-xl bg-white flex justify-center items-center drop-shadow-md">
               {data.date}
@@ -56,7 +61,6 @@ export default function Meeting() {
           </div>
         ))}
       </section>
-
       {modal && <ScheduleModal handleClose={handleToggleModal} />}
     </>
   );
