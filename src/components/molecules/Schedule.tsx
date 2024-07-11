@@ -33,7 +33,7 @@ function Schedule() {
   return (
     <div className="p-4 ">
       {scheduleData.map((items, index) => (
-        <>
+        <div key={items.id}>
           <div className="flex items-center justify-between space-y-8">
             <div className="flex items-center">
               <div className="w-8 h-8 rounded-full bg-purple-300 flex items-center justify-center text-white">
@@ -54,7 +54,7 @@ function Schedule() {
             </div>
             <div className="text-sm">{items.content}</div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );
