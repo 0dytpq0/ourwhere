@@ -8,7 +8,7 @@ interface ModalProps {
 
 const Modal = ({ handleClose }: ModalProps) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div className="bg-white p-10 rounded-lg shadow-lg ">
         <div className="flex flex-col space-y-4 ">
           <PlaceSearch label="검색" type="text" placeholder="장소 검색" />

@@ -15,9 +15,9 @@ export default function Header() {
     router.push('/log-in');
   };
 
-  useEffect(() => {
-    console.log('User state updated:', user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('우아아아아앙', user);
+  // }, [user]);
 
   return (
     <>
