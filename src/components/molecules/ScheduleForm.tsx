@@ -1,6 +1,10 @@
+'use client';
+
 import React, { useState } from 'react';
 import Input from '../atoms/js-Input/Input';
 import useModalStore from '@/stores/modal.store';
+import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
+import { useParams } from 'next/navigation';
 
 const ScheduleForm = () => {
   const [placeSearch, setPlaceSearch] = useState('');
@@ -17,6 +21,7 @@ const ScheduleForm = () => {
     setTime(e.target.value);
   };
 
+  const { mutate: createSchedule } = useCreateSchedule();
   const toggleModal = useModalStore((state) => state.toggleModal);
 
   const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,16 +30,24 @@ const ScheduleForm = () => {
       content: content,
       place: place,
       address: address,
-      time: time
+      time: `${time}`,
+      meetingId: 100
     };
 
-    toggleModal();
+    createSchedule(newSchedule, {
+      onSuccess: () => {
+        toggleModal();
+      }
+    });
   };
+
+  const params = useParams();
+  console.log(params);
 
   return (
     <div>
       <form className="flex flex-col space-y-4 " onClick={onCreateSchedule}>
-        <Input placeholder="장소 검색" value={placeSearch} label="검색" required />
+        <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
         <p>
           <h4>장소</h4>
           <div className="border w-full h-10 ">{place}</div>
@@ -43,7 +56,7 @@ const ScheduleForm = () => {
           <h4>주소</h4>
           <div className="border w-full h-10 ">{address}</div>
         </p>
-        <Input type="time" value={time} label="시간" required />
+        <Input type="time" value={time} label="시간" required onChange={handleTime} />
         <input
           type="text"
           placeholder="✍🏻 작성"

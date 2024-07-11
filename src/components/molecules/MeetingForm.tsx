@@ -37,7 +37,7 @@ const MeetingForm = () => {
     };
 
     createMeeting(newMeeting, {
-      onSuccess: (data) => {
+      onSuccess: (data) => {  
         if (!data) {
           return;
         }
