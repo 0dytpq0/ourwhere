@@ -8,7 +8,7 @@ export type AuthState = {
 };
 
 export type AuthActions = {
-  setUser: (user: UserType) => void;
+  setUser: (user: UserType | null) => void;
 };
 
 export type AuthStore = AuthState & AuthActions;
@@ -26,6 +26,6 @@ export const defaultInitState: AuthState = {
 export const createAuthStore = (initState: AuthState = defaultInitState) => {
   return createStore<AuthStore>()((set) => ({
     ...initState,
-    setUser: (user: UserType) => set((state) => ({ user }))
+    setUser: (user: UserType | null) => set((state) => ({ user }))
   }));
 };

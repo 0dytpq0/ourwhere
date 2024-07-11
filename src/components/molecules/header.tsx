@@ -29,7 +29,7 @@ export default function Header() {
           <div className="ml-auto flex items-center space-x-4 mx-4">
             {user ? (
               <>
-                <span className="text-lg font-bold"> {user.user_metadata.nickname} 님 안녕하세요! </span>
+                <span className="text-lg font-bold"> {user.nickname} 님 안녕하세요! </span>
                 <button
                   onClick={handleClickLogOut}
                   className="border-solid bg-loginpage-color text-font-color px-3.5 py-1 rounded-lg font-bold"
