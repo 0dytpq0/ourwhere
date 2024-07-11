@@ -37,7 +37,26 @@ export const initAuthStore = (): AuthState => {
 };
 
 export const defaultInitState: AuthState = {
-  user: { id: '' }
+  user: {
+    id: '',
+    aud: '',
+    role: '',
+    email: '',
+    email_confirmed_at: '',
+    phone: '',
+    phone_confirmed_at: '',
+    confirmed_at: '',
+    last_sign_in_at: '',
+    app_metadata: {
+      provider: '',
+      providers: []
+    },
+    user_metadata: {},
+    identities: [],
+    created_at: '',
+    updated_at: '',
+    is_anonymous: false
+  }
 };
 
 // state는 initState에서 추가, action은 initScheduleStore 밑 아래에 같이 추가해야될듯?

@@ -1,23 +1,6 @@
 'use client';
 
-import api from '@/api/api';
-import { useAuthStore } from '@/providers/js-auth.store.provider';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
 export default function Home() {
-  const { setUser, user } = useAuthStore((state) => state);
-  const { mutate: getUserSession } = useMutation({
-    mutationFn: () => api.auth.getUserSession(),
-    onSuccess: (data) => {
-      setUser(data);
-    }
-  });
-
-  useEffect(() => {
-    getUserSession();
-  }, []);
-
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center space-y-6">
