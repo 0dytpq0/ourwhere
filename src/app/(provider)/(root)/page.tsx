@@ -1,9 +1,12 @@
 'use client';
 
 import MeetingModal from '@/components/template/MeetingModal';
+import { useAuthStore } from '@/providers/js-auth.store.provider';
 import useModalStore from '@/stores/modal.store';
 
 export default function Home() {
+  const { user } = useAuthStore((state) => state);
+  console.log('user', user);
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
 

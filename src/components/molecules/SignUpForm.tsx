@@ -13,9 +13,24 @@ function SignUpForm() {
   return (
     <div className="flex flex-col justify-center items-center w-full   ">
       <div className="flex flex-col justify-center items-center w-full max-w-[500px]">
-        <Input placeholder="이메일을 입력해주세요" required onChange={(e) => setEmail(e.target.value)} />
-        <Input placeholder="비밀번호를 입력해주세요" required onChange={(e) => setPassword(e.target.value)} />
-        <Input placeholder="닉네임을 입력해주세요" required={false} onChange={(e) => setNickname(e.target.value)} />
+        <Input
+          identity="login"
+          placeholder="이메일을 입력해주세요"
+          required
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          identity="login"
+          placeholder="비밀번호를 입력해주세요"
+          required
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          identity="login"
+          placeholder="닉네임을 입력해주세요"
+          required={false}
+          onChange={(e) => setNickname(e.target.value)}
+        />
       </div>
       <div className="flex justify-around mt-12 w-full max-w-[500px] ">
         <Button title="회원 가입" onClick={handleClickSignUp} />
