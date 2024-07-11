@@ -22,7 +22,7 @@ class MeetingAPI {
   }
 
   async selectMeeting(id: number) {
-    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>[]>();
+    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>>().single();
 
     return data;
   }
@@ -36,7 +36,6 @@ class MeetingAPI {
     const { date, password, title } = insertData;
 
     const { data } = await this.supabase.from('meeting').insert({ date, password, title }).select();
-
     return data;
   }
 
