@@ -27,7 +27,7 @@ export const useMeeting = (id: number) => {
 export const useCreateMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newMeeting: MeetingType) => meetingApi.insertMeeting(newMeeting),
+    mutationFn: async (newMeeting: MeetingType) => await meetingApi.insertMeeting(newMeeting),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['meetings']

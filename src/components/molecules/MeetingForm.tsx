@@ -29,6 +29,8 @@ const MeetingForm = () => {
   const toggleModal = useModalStore((state) => state.toggleModal);
   const router = useRouter();
 
+  console.log(createMeeting);
+
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newMeeting = {
@@ -38,8 +40,11 @@ const MeetingForm = () => {
     };
 
     createMeeting(newMeeting, {
-      onSuccess: () => {
-        router.push('/meeting');
+      onSuccess: (data) => {
+        if (!data) {
+          return;
+        }
+        router.push(`/meeting/${data[0].id}`);
         toggleModal();
       }
     });
