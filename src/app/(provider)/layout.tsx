@@ -7,7 +7,8 @@ import { PropsWithChildren } from 'react';
 function ProviderLayout({ children }: PropsWithChildren) {
   return (
     <QueryProvider>
-      <AuthStoreProvider>{children}</AuthStoreProvider>
+      {children}
+      {/* <AuthStoreProvider>{children}</AuthStoreProvider> */}
     </QueryProvider>
   );
 }
