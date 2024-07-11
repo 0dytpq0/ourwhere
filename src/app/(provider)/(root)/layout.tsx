@@ -18,7 +18,6 @@ function GlobalLayout({ children }: PropsWithChildren) {
   useEffect(() => {
     getUserSession();
   }, []);
-
   return <>{children}</>;
 }
 
