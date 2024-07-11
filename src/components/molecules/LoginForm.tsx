@@ -20,7 +20,7 @@ function LogInForm() {
   return (
     <div className="flex flex-col justify-center items-center w-full   ">
       <div className="flex flex-col justify-center items-center w-full max-w-[500px]">
-        <Input placeholder="이메일을 입력해주세요" required onChange={(e) => setEmail(e.target.value)} />
+        <Input type="email" placeholder="이메일을 입력해주세요" required onChange={(e) => setEmail(e.target.value)} />
         <Input
           type="password"
           placeholder="비밀번호를 입력해주세요"
