@@ -1,5 +1,6 @@
 import { Tables } from '@/types/supabase';
 import { createStore } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type UserType = Tables<'users'>;
 
@@ -22,10 +23,18 @@ export const initAuthStore = (): AuthState => {
 export const defaultInitState: AuthState = {
   user: null
 };
-
 export const createAuthStore = (initState: AuthState = defaultInitState) => {
-  return createStore<AuthStore>()((set) => ({
-    ...initState,
-    setUser: (user: UserType | null) => set((state) => ({ user }))
-  }));
+  return createStore<AuthStore>()(
+    persist(
+      (set) => ({
+        ...initState,
+        setUser: (user: UserType  | null) => set((state) => ({ user }))
+      }),
+      {
+        name: 'auth-storage',
+        getStorage: () => localStorage
+      }
+    )
+  );
+
 };
