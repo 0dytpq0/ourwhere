@@ -1,6 +1,9 @@
+'use Client';
+
 import React, { useState } from 'react';
 import useModalStore from '@/stores/modal.store';
 import { useRouter } from 'next/navigation';
+import { useCreateMeeting } from '@/lib/hooks/useMeetingAPI';
 
 const MeetingForm = () => {
   const [meetingName, setMeetingName] = useState('');
@@ -21,16 +24,28 @@ const MeetingForm = () => {
     setMeetingPassword(e.target.value);
   };
 
+  const { mutate: createMeeting } = useCreateMeeting();
   const modal = useModalStore((state) => state.modal);
   const toggleModal = useModalStore((state) => state.toggleModal);
   const router = useRouter();
 
-  console.log('modal', modal);
+  const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newMeeting = {
+      title: meetingName,
+      date: `${meetingStartDate}~${meetingEndDate}`,
+      password: meetingPassword
+    };
 
-  const onCreateMeeting = () => {
-    toggleModal();
-    router.push('/meeting');
+    createMeeting(newMeeting, {
+      onSuccess: () => {
+        router.push('/meeting');
+        toggleModal();
+      }
+    });
   };
+
+  console.log('modal', modal);
 
   return (
     <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
@@ -78,7 +93,6 @@ const MeetingForm = () => {
           <label htmlFor="meetingPassword" className="text-sm">
             비밀번호
           </label>
-
           <input
             type="password"
             placeholder="****"
