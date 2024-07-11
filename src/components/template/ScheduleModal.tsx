@@ -2,11 +2,11 @@ import React from 'react';
 import { InputField } from '../atoms/InputField';
 import { PlaceSearch } from '../atoms/PlaceSearch';
 
-interface ScheduleModalProps {
-  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+interface ModalProps {
+  handleClose: () => void;
 }
 
-const ScheduleModal: React.FC<ScheduleModalProps> = ({ handleClose }) => {
+const Modal = ({ handleClose }: ModalProps) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div className="bg-white p-10 rounded-lg shadow-lg ">
@@ -29,4 +29,4 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ handleClose }) => {
   );
 };
 
-export default ScheduleModal;
+export default Modal;

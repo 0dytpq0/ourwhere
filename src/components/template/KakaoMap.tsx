@@ -89,6 +89,8 @@ const KakaoMap = () => {
   return (
     <section className="h-lvh mr-1">
       {isLoaded && (
+    <section className="h-lvh mr-1">
+      {isLoaded && (
         <Map
           center={
             myLocation ? { lat: myLocation.latitude, lng: myLocation.longitude } : { lat: 37.715133, lng: 126.734086 }
@@ -110,7 +112,8 @@ const KakaoMap = () => {
         </Map>
       )}
     </section>
+      )}
+    </section>
   );
 };
-
 export default KakaoMap;

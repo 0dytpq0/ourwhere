@@ -1,15 +1,12 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
-import { AxiosInstance } from 'axios';
 
 type MeetingType = Tables<'meeting'>;
 
 class MeetingAPI {
-  private axios: AxiosInstance;
   private supabase;
 
-  constructor(axios: AxiosInstance) {
-    this.axios = axios;
+  constructor() {
     this.supabase = createClient();
   }
 
@@ -17,8 +14,15 @@ class MeetingAPI {
    *
    * @returns meeting 테이블 데이터 전부
    */
-  async selectMeeting() {
-    const { data } = await this.supabase.from('meeting').select().returns<Tables<'meeting'>>();
+  // 타입 지정 잘못됨 - [] 추가
+  async selectMeetings() {
+    const { data } = await this.supabase.from('meeting').select().returns<Tables<'meeting'>[]>();
+
+    return data;
+  }
+
+  async selectMeeting(id: number) {
+    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>>().single();
 
     return data;
   }
@@ -32,7 +36,6 @@ class MeetingAPI {
     const { date, password, title } = insertData;
 
     const { data } = await this.supabase.from('meeting').insert({ date, password, title }).select();
-
     return data;
   }
 

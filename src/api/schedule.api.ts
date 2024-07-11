@@ -1,15 +1,12 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
-import { AxiosInstance } from 'axios';
 
 type ScheduleType = Tables<'schedule'>;
 
 class ScheduleAPI {
-  private axios: AxiosInstance;
   private supabase;
 
-  constructor(axios: AxiosInstance) {
-    this.axios = axios;
+  constructor() {
     this.supabase = createClient();
   }
 
