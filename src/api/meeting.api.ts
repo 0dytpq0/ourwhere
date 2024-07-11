@@ -22,7 +22,7 @@ class MeetingAPI {
   }
 
   async selectMeeting(id: number) {
-    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>>();
+    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>[]>();
 
     return data;
   }

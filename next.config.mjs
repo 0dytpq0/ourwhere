@@ -4,4 +4,5 @@ const nextConfig = {
     remotePatterns: [{ hostname: 'effymfcileeiltsbkxoc.supabase.co' }]
   }
 };
+
 export default nextConfig;
