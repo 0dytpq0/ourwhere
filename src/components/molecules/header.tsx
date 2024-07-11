@@ -5,6 +5,7 @@ export default function Header() {
     { text: '로그인', href: '/log-in' },
     { text: '회원가입', href: '/sign-up' }
   ];
+
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-10  bg-header-color">
