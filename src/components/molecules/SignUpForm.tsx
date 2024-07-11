@@ -18,9 +18,8 @@ function SignUpForm() {
         <Input placeholder="닉네임을 입력해주세요" required={false} onChange={(e) => setNickname(e.target.value)} />
       </div>
       <div className="flex justify-around mt-12 w-full max-w-[500px] ">
-        <Button title="SIGN UP" onClick={handleClickSignUp} />
-        <Button href="/log-in" title="LOG IN" />
-        {/* <Button title="로그아웃" onClick={handleClickLogOut} /> */}
+        <Button title="회원 가입" onClick={handleClickSignUp} />
+        <Button href="/log-in" title="로그인" />
       </div>
     </div>
   );
