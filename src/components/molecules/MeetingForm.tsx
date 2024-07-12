@@ -5,6 +5,7 @@ import useModalStore from '@/stores/modal.store';
 import { useParams, useRouter } from 'next/navigation';
 import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
 import { Tables } from '@/types/supabase';
+import Input from '../atoms/js-Input/Input';
 
 type MeetingType = Tables<'meeting'>;
 
@@ -88,10 +89,8 @@ const MeetingForm = () => {
     <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
       <div className="flex flex-col gap-[2rem]">
         <div className="flex flex-col">
-          <label htmlFor="meetingName" className="text-sm">
-            모임 이름
-          </label>
-          <input
+          <Input
+            label="모임 이름"
             type="text"
             id="meetingName"
             onChange={handleMeetingName}

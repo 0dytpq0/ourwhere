@@ -8,9 +8,8 @@ type InputProps = {
 } & ComponentProps<'input'>;
 
 const loginStyle = 'border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-gray-950 transition';
-const modalStyle = '';
+const modalStyle = 'border-2 rounded-md h-8 text-xs px-2';
 const scheduleStyle = '';
-const editStyle = '';
 
 function Input({ label, required, id, identity, warnning, ...props }: InputProps) {
   const inputUid = useId();
@@ -21,6 +20,8 @@ function Input({ label, required, id, identity, warnning, ...props }: InputProps
     inputStyle = loginStyle;
   } else if (identity === 'modal') {
     inputStyle = modalStyle;
+  } else if (identity === 'schedule') {
+    inputStyle = scheduleStyle;
   }
 
   return (
