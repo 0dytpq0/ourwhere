@@ -9,7 +9,8 @@ type InputProps = {
 
 const loginStyle = 'border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-gray-950 transition';
 const modalStyle = '';
-const editStyke = '';
+const scheduleStyle = '';
+const editStyle = '';
 
 function Input({ label, required, id, identity, warnning, ...props }: InputProps) {
   const inputUid = useId();

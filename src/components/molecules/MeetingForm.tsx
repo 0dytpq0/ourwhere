@@ -1,9 +1,12 @@
 'use Client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useModalStore from '@/stores/modal.store';
-import { useRouter } from 'next/navigation';
-import { useCreateMeeting } from '@/lib/hooks/useMeetingAPI';
+import { useParams, useRouter } from 'next/navigation';
+import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
+import { Tables } from '@/types/supabase';
+
+type MeetingType = Tables<'meeting'>;
 
 const MeetingForm = () => {
   const [meetingName, setMeetingName] = useState('');
@@ -24,12 +27,23 @@ const MeetingForm = () => {
     setMeetingPassword(e.target.value);
   };
 
+  const { id } = useParams();
+  const meetingId = Number(id);
+
+  const { data: meeting, isLoading } = useMeeting(meetingId);
   const { mutate: createMeeting } = useCreateMeeting();
-  const modal = useModalStore((state) => state.modal);
-  const toggleModal = useModalStore((state) => state.toggleModal);
+  const { mutate: updateMeeting } = useUpdateMeeting();
+  const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
 
-  console.log(createMeeting);
+  useEffect(() => {
+    if (meetingId && meeting) {
+      setMeetingName(meeting.title);
+      setMeetingStartDate(meeting.date.split('~')[0]);
+      setMeetingEndDate(meeting.date.split('~')[1]);
+      setMeetingPassword(meeting.password);
+    }
+  }, [meeting, meetingId]);
 
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,18 +53,36 @@ const MeetingForm = () => {
       password: meetingPassword
     };
 
-    createMeeting(newMeeting, {
-      onSuccess: (data) => {
-        if (!data) {
-          return;
-        }
-        router.push(`/meeting/${data[0].id}`);
-        toggleModal();
+    if (meetingId) {
+      if (confirm('이대로 수정하시겠습니까?')) {
+        updateMeeting(
+          { id: meetingId, updateData: newMeeting },
+          {
+            onSuccess: () => {
+              router.push(`${meetingId}`);
+              toggleMeetingModal();
+            }
+          }
+        );
       }
-    });
+    } else {
+      createMeeting(newMeeting, {
+        onSuccess: (data) => {
+          if (!data) {
+            return;
+          }
+          toggleMeetingModal();
+          router.push(`/meeting/${data[0].id}`);
+
+          // alert('새로운 모임을 만드셨네요 축하드립니다~');
+        }
+      });
+    }
   };
 
-  console.log('modal', modal);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
@@ -108,7 +140,7 @@ const MeetingForm = () => {
         </div>
       </div>
       <button type="submit" className="bg-button-color text-loginpage-color p-1 rounded-xl">
-        생성하기
+        {meetingId ? '수정하기' : '생성하기'}
       </button>
     </form>
   );

@@ -3,6 +3,14 @@ import { Tables } from '@/types/supabase';
 
 type ScheduleType = Tables<'schedule'>;
 
+export type UpdateScheduleType = {
+  content: string;
+  place: string;
+  address: string;
+  time: string;
+  meetingId: number;
+};
+
 class ScheduleAPI {
   private supabase;
 
@@ -14,12 +22,25 @@ class ScheduleAPI {
    *
    * @returns schedule 테이블 데이터 전부
    */
-  async selectSchedule() {
-    const { data } = await this.supabase.from('schedule').select().returns<Tables<'schedule'>>();
+  async selectSchedules() {
+    const { data } = await this.supabase.from('schedule').select().returns<Tables<'schedule'>[]>();
     console.log('data', data);
     return data;
   }
 
+  async selectUserSchedule(meetingId: number) {
+    const { data, error } = await this.supabase
+      .from('schedule')
+      .select()
+      .eq('meetingId', meetingId)
+      .returns<Tables<'schedule'>[]>();
+    if (error) {
+      console.error('Error fetching schedule:', error);
+      return null;
+    }
+    console.log('data', data);
+    return data;
+  }
   /**
    *
    * @param insertData  {
@@ -30,7 +51,7 @@ class ScheduleAPI {
    * meetingId : number}
    * @returns data 추가된 data
    */
-  async insertSchedule(insertData: ScheduleType) {
+  async insertSchedule(insertData: UpdateScheduleType) {
     const { content, place, address, time, meetingId } = insertData;
     const { data } = await this.supabase.from('schedule').insert({ content, place, address, time, meetingId });
 
@@ -61,7 +82,7 @@ class ScheduleAPI {
   };
    * @returns
    */
-  async updateSchedule(id: number, updateData: ScheduleType) {
+  async updateSchedule(id: number, updateData: UpdateScheduleType) {
     const { meetingId, content, place, address, time } = updateData;
     console.log('id, updateData', id, updateData);
     const { data, error } = await this.supabase
@@ -70,6 +91,15 @@ class ScheduleAPI {
       .eq('id', id)
       .select('*');
 
+    return data;
+  }
+
+  async selectScheduleOfMeeting(id: number) {
+    const { data } = await this.supabase
+      .from('schedule')
+      .select('*')
+      .eq('meetingId', id)
+      .returns<Tables<'schedule'>[]>();
     return data;
   }
 }

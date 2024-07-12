@@ -1,32 +1,35 @@
 'use client';
 
-import MeetingAPI from '@/api/meeting.api';
+import { useEffect, useState } from 'react';
+import Schedule from '../molecules/Schedule';
+import ScheduleModal from './ScheduleModal';
+import KebabIcon from '../atoms/Kebab';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import KebabIcon from '../atoms/Kebab';
-import { PlaceSearch } from '../molecules/PlaceSearch';
-import Schedule from '../molecules/Schedule';
-import ScheduleModal from './ScheduleModal';
+import { useParams, useRouter } from 'next/navigation';
+import MeetingModal from './MeetingModal';
+import MeetingAPI from '@/api/meeting.api';
+import api from '@/api/api';
+
 
 export default function Meeting() {
-  const modal = useModalStore((state) => state.modal);
-  const toggleModal = useModalStore((state) => state.toggleModal);
+  const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
   const meetingAPI = new MeetingAPI();
-
   const params = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
         const data = await meetingAPI.selectMeeting(Number(params.id));
-        console.log(data);
+        // console.log(data);
         if (!data) return;
         setMeeting(data);
       } catch (error) {
@@ -37,9 +40,9 @@ export default function Meeting() {
     fetchMeetings();
   }, []);
 
-  const handleToggleModal = () => {
-    toggleModal();
-  };
+  // const handleToggleModal = () => {
+  //   toggleModal();
+  // };
 
   const handleToggleMenu = (id: number) => {
     setShowMenu(showMenu === id ? null : id);
@@ -47,19 +50,22 @@ export default function Meeting() {
 
   const handleEditMeeting = (meeting: Tables<'meeting'>) => {
     setCurrentMeeting(meeting);
-    handleToggleModal();
+    toggleMeetingModal();
   };
 
   const handleDeleteMeeting = async (id: number) => {
     try {
-      await meetingAPI.deleteMeeting(id);
-      setMeeting((prev) => prev.filter((m) => m.id !== id));
+      await api.meeting.deleteMeeting(id);
+      // null! 수정
+      setMeeting(null!);
+      alert('삭제가 완료 되었습니다.');
+      router.push('/');
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (!meeting) return;
+  if (!meeting) return null; // meeting이 없는 경우 아무것도 랜더링 하지 않게
 
   return (
     <>
@@ -83,7 +89,9 @@ export default function Meeting() {
               </button>
               <button
                 className="block w-full text-left py-2 px-4 hover:bg-gray-100"
-                onClick={() => handleDeleteMeeting(meeting.id!)}
+                onClick={() => {
+                  handleDeleteMeeting(meeting.id!);
+                }}
               >
                 <Image src={'/trash.png'} alt="삭제" width={17} height={20} />
               </button>
@@ -94,7 +102,7 @@ export default function Meeting() {
           </div>
           <Schedule />
           <button
-            onClick={handleToggleModal}
+            onClick={toggleScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
           >
             +
@@ -103,7 +111,8 @@ export default function Meeting() {
         <PlaceSearch />
       </section>
 
-      {modal && <ScheduleModal handleClose={handleToggleModal} />}
+      {isScheduleModalOpen && <ScheduleModal />}
+      {isMeetingModalOpen && <MeetingModal />}
     </>
   );
 }
