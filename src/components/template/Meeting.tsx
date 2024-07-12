@@ -12,6 +12,7 @@ import MeetingModal from './MeetingModal';
 import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
 
+
 export default function Meeting() {
   const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
@@ -103,6 +104,7 @@ export default function Meeting() {
             +
           </button>
         </div>
+        <PlaceSearch />
       </section>
 
       {isScheduleModalOpen && <ScheduleModal />}
