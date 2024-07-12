@@ -1,14 +1,13 @@
 'use client';
 
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import ScheduleForm from './ScheduleForm';
 
 function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
-  const router = useRouter();
   const [editingSchedule, setEditingSchedule] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -16,14 +15,10 @@ function Schedule() {
 
   if (error) {
     console.log('error', error);
-    return;
+    return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
   }
   if (isPending) {
-    return (
-      <>
-        <div>Loading...</div>
-      </>
-    );
+    return <div>Loading...</div>;
   }
   if (!scheduleData) return <div>데이터를 받아올 수 없습니다.</div>;
 
@@ -40,13 +35,15 @@ function Schedule() {
   return (
     <div className="p-4">
       {showForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-10">
+          <div className="bg-white p-4 rounded-lg shadow-lg relative z-20">
             <ScheduleForm schedule={editingSchedule} onClose={handleFormClose} />
+            <button onClick={handleFormClose} className="absolute top-2 right-2 text-gray-700">
+              X
+            </button>
           </div>
         </div>
       )}
-      {error && <div className="text-red-500">{error}</div>}
       {scheduleData.map((items, index) => (
         <div key={items.id} className="mb-4 p-4 bg-white flex rounded-lg shadow-lg relative">
           {/* 시간이랑 인텍스 */}
