@@ -9,16 +9,15 @@ import MeetingAPI from '@/api/meeting.api';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
+import MeetingModal from './MeetingModal';
 
 export default function Meeting() {
-  const modal = useModalStore((state) => state.modal);
-  const toggleModal = useModalStore((state) => state.toggleModal);
+  const { isScheduleModalOpen, isMeetingModalOpen, toggleScheduleModal, toggleMeetingModal } = useModalStore();
   const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
   const meetingAPI = new MeetingAPI();
-
   const params = useParams();
 
   useEffect(() => {
@@ -34,11 +33,11 @@ export default function Meeting() {
     };
 
     fetchMeetings();
-  }, []);
+  }, [params.id, meetingAPI]);
 
-  const handleToggleModal = () => {
-    toggleModal();
-  };
+  // const handleToggleModal = () => {
+  //   toggleModal();
+  // };
 
   const handleToggleMenu = (id: number) => {
     setShowMenu(showMenu === id ? null : id);
@@ -46,7 +45,7 @@ export default function Meeting() {
 
   const handleEditMeeting = (meeting: Tables<'meeting'>) => {
     setCurrentMeeting(meeting);
-    handleToggleModal();
+    toggleMeetingModal();
   };
 
   const handleDeleteMeeting = async (id: number) => {
@@ -58,7 +57,7 @@ export default function Meeting() {
     }
   };
 
-  if (!meeting) return;
+  if (!meeting) return null; // meeting이 없는 경우 아무것도 랜더링 하지 않게
 
   return (
     <>
@@ -93,7 +92,7 @@ export default function Meeting() {
           </div>
           <Schedule />
           <button
-            onClick={handleToggleModal}
+            onClick={toggleScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
           >
             +
@@ -101,7 +100,8 @@ export default function Meeting() {
         </div>
       </section>
 
-      {modal && <ScheduleModal />}
+      {isScheduleModalOpen && <ScheduleModal />}
+      {isMeetingModalOpen && <MeetingModal />}
     </>
   );
 }

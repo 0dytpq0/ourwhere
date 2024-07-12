@@ -1,9 +1,10 @@
 'use Client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useModalStore from '@/stores/modal.store';
-import { useRouter } from 'next/navigation';
-import { useCreateMeeting } from '@/lib/hooks/useMeetingAPI';
+import { useParams, useRouter } from 'next/navigation';
+import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
+import Meeting from '../template/Meeting';
 
 const MeetingForm = () => {
   const [meetingName, setMeetingName] = useState('');
@@ -24,28 +25,58 @@ const MeetingForm = () => {
     setMeetingPassword(e.target.value);
   };
 
+  const { id } = useParams();
+  const { data: meeting, isLoading } = useMeeting(id);
   const { mutate: createMeeting } = useCreateMeeting();
+  const { mutate: updateMeeting } = useUpdateMeeting();
   const toggleModal = useModalStore((state) => state.toggleModal);
   const router = useRouter();
+
+  useEffect(() => {
+    if (id && meeting) {
+      setMeetingName(meeting.title);
+      setMeetingStartDate(meeting.startDate);
+      setMeetingEndDate(Meeting.endDate);
+      setMeetingPassword(meeting.password);
+    }
+  }, [id, meeting]);
 
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newMeeting = {
       title: meetingName,
-      date: `${meetingStartDate}~${meetingEndDate}`,
+      startDate: meetingStartDate,
+      endDate: meetingEndDate,
+      // date: `${meetingStartDate}~${meetingEndDate}`,
       password: meetingPassword
     };
 
-    createMeeting(newMeeting, {
-      onSuccess: (data) => {  
-        if (!data) {
-          return;
+    if (id) {
+      updateMeeting(
+        { id, updateData: newMeeting },
+        {
+          onSuccess: () => {
+            router.push(`meeting/${id}`);
+            toggleModal();
+          }
         }
-        router.push(`/meeting/${data[0].id}`);
-        toggleModal();
-      }
-    });
+      );
+    } else {
+      createMeeting(newMeeting, {
+        onSuccess: (data) => {
+          if (!data) {
+            return;
+          }
+          router.push(`/meeting/${data[0].id}`);
+          toggleModal();
+        }
+      });
+    }
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
