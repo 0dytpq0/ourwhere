@@ -2,6 +2,7 @@
 import api from '@/api/api';
 import { MeetingType } from '@/api/meeting.api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
+import useMeetingStore from '@/stores/meeting.store';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
@@ -10,6 +11,7 @@ export default function MyPageTemplate() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { user, setUser } = useAuthStore((state) => state);
   const [userMeetings, setUserMeetings] = useState<MeetingType[]>([]);
+  const { meetingId, setMeetingId } = useMeetingStore((state) => state);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function MyPageTemplate() {
 
   const handleMeetingClick = (id: number | undefined) => {
     console.log('id', id);
+    setMeetingId(id!);
     router.push(`/meeting/${id}`);
   };
 

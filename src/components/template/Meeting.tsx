@@ -5,11 +5,12 @@ import Schedule from '../molecules/Schedule';
 import ScheduleModal from './ScheduleModal';
 import KebabIcon from '../atoms/Kebab';
 import useModalStore from '@/stores/modal.store';
-import MeetingAPI from '@/api/meeting.api';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
+import MeetingAPI from '@/api/meeting.api';
+import api from '@/api/api';
 
 export default function Meeting() {
   const { isScheduleModalOpen, isMeetingModalOpen, toggleScheduleModal, toggleMeetingModal } = useModalStore();
@@ -19,6 +20,7 @@ export default function Meeting() {
 
   const meetingAPI = new MeetingAPI();
   const params = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -48,14 +50,17 @@ export default function Meeting() {
     toggleMeetingModal();
   };
 
-  // const handleDeleteMeeting = async (id: number) => {
-  //   try {
-  //     await meetingAPI.deleteMeeting(id);
-  //     setMeeting((prev) => prev.filter((m) => m.id !== id));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleDeleteMeeting = async (id: number) => {
+    try {
+      await api.meeting.deleteMeeting(id);
+      // null! 수정
+      setMeeting(null!);
+      alert('삭제가 완료 되었습니다.');
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!meeting) return null; // meeting이 없는 경우 아무것도 랜더링 하지 않게
 
