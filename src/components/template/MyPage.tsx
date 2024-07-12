@@ -2,6 +2,7 @@
 import api from '@/api/api';
 import { MeetingType } from '@/api/meeting.api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
@@ -48,13 +49,15 @@ export default function MyPageTemplate() {
     <div className="flex flex-row items-center mt-24 m-20">
       <div className="flex flex-col mb-4 m-8 border-solid border-loginpage-color-2 h-72 w-80 items-center bg-loginpage-color text-font-color relative">
         <div className="w-44 h-44 mt-4 flex flex-row items-center justify-center border-solid border-2 rounded-full shadow-md">
-          {user?.images ? (
-            <img src={user.images} alt="Profile" className="w-full h-full rounded-full object-cover" />
-          ) : (
-            <div>사진 없음</div>
-          )}
+          <Image
+            src={user?.images || '사진없음'}
+            alt="Profile"
+            width={176}
+            height={176}
+            className="w-full h-full rounded-full object-cover"
+          />
         </div>
-        <div className="mt-4"> {isMounted ? user?.nickname : null} </div>
+        <div className="mt-4"> {isMounted ? user?.nickname : '닉네임을 입력하세요'} </div>
 
         <CiEdit
           className="text-4xl absolute bottom-2 right-2 bg-white rounded-full p-1 cursor-pointer"
