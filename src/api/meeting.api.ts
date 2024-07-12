@@ -3,6 +3,14 @@ import { Tables } from '@/types/supabase';
 
 export type MeetingType = Tables<'meeting'>;
 
+export type UpdateMeetingType = {
+  title: string;
+  date: string;
+  password: string;
+};
+
+// utility 타입 -> meetingtype에서 뽑아서 쓴다 파셜??오밋?
+
 class MeetingAPI {
   private supabase;
 
@@ -38,7 +46,7 @@ class MeetingAPI {
    * @param insertData  {MeetingType}
    * @returns data {MeetingType}
    */
-  async insertMeeting(insertData: MeetingType) {
+  async insertMeeting(insertData: UpdateMeetingType) {
     const { date, password, title } = insertData;
 
     const { data } = await this.supabase.from('meeting').insert({ date, password, title }).select();
@@ -63,7 +71,7 @@ class MeetingAPI {
    * @param updateData {string[]}
    * @returns
    */
-  async updateMeeting(id: number, updateData: MeetingType) {
+  async updateMeeting(id: number, updateData: UpdateMeetingType) {
     const { date, password, title } = updateData;
     console.log('id, updateData', id, updateData);
     const { data, error } = await this.supabase

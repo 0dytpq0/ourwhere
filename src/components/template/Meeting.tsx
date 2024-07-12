@@ -48,14 +48,14 @@ export default function Meeting() {
     toggleMeetingModal();
   };
 
-  const handleDeleteMeeting = async (id: number) => {
-    try {
-      await meetingAPI.deleteMeeting(id);
-      setMeeting((prev) => prev.filter((m) => m.id !== id));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleDeleteMeeting = async (id: number) => {
+  //   try {
+  //     await meetingAPI.deleteMeeting(id);
+  //     setMeeting((prev) => prev.filter((m) => m.id !== id));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   if (!meeting) return null; // meeting이 없는 경우 아무것도 랜더링 하지 않게
 
@@ -81,7 +81,8 @@ export default function Meeting() {
               </button>
               <button
                 className="block w-full text-left py-2 px-4 hover:bg-gray-100"
-                onClick={() => handleDeleteMeeting(meeting.id!)}
+                onClick={() => {}}
+                // handleDeleteMeeting(meeting.id!)
               >
                 <Image src={'/trash.png'} alt="삭제" width={17} height={20} />
               </button>

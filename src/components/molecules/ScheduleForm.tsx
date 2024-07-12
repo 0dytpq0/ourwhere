@@ -22,7 +22,7 @@ const ScheduleForm = () => {
   };
 
   const { mutate: createSchedule } = useCreateSchedule();
-  const { toggleScheduleModal } = useModalStore();
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   const params = useParams();
   console.log(params.id);
@@ -37,11 +37,11 @@ const ScheduleForm = () => {
       meetingId: Number(params.id)
     };
 
-    createSchedule(newSchedule, {
-      onSuccess: () => {
-        toggleScheduleModal();
-      }
-    });
+    // createSchedule(newSchedule, {
+    //   onSuccess: () => {
+    //     toggleScheduleModal();
+    //   }
+    // });
   };
 
   return (

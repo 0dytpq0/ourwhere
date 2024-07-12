@@ -5,6 +5,12 @@ import { Tables } from '@/types/supabase';
 
 type MeetingType = Tables<'meeting'>;
 
+export type UpdateMeetingType = {
+  title: string;
+  date: string;
+  password: string;
+};
+
 const meetingApi = new MeetingAPI();
 
 // Meeting 여러개 불러오기
@@ -27,7 +33,7 @@ export const useMeeting = (id: number) => {
 export const useCreateMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (newMeeting: MeetingType) => await meetingApi.insertMeeting(newMeeting),
+    mutationFn: async (newMeeting: UpdateMeetingType) => await meetingApi.insertMeeting(newMeeting),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['meetings']
@@ -53,7 +59,7 @@ export const useDeleteMeeting = () => {
 export const useUpdateMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updateData }: { id: number; updateData: MeetingType }) =>
+    mutationFn: ({ id, updateData }: { id: number; updateData: UpdateMeetingType }) =>
       meetingApi.updateMeeting(id, updateData),
     onSuccess: (data, variables) => {
       // 'variables'를 통해 mutationFn에 전달된 'id'에 접근

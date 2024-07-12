@@ -29,6 +29,7 @@ const MeetingForm = () => {
 
   const { id } = useParams();
   const meetingId = Number(id);
+
   const { data: meeting, isLoading } = useMeeting(meetingId);
   const { mutate: createMeeting } = useCreateMeeting();
   const { mutate: updateMeeting } = useUpdateMeeting();
@@ -48,10 +49,8 @@ const MeetingForm = () => {
 
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newMeeting: Omit<MeetingType, 'id'> = {
+    const newMeeting = {
       title: meetingName,
-      // startDate: meetingStartDate,
-      // endDate: meetingEndDate,
       date: `${meetingStartDate}~${meetingEndDate}`,
       password: meetingPassword
     };
@@ -61,7 +60,7 @@ const MeetingForm = () => {
         { id: meetingId, updateData: newMeeting },
         {
           onSuccess: () => {
-            router.push(`meeting/${meetingId}`);
+            router.push(`${meetingId}`);
             toggleMeetingModal();
           }
         }
