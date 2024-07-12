@@ -1,8 +1,14 @@
-import React from 'react';
-import ScheduleForm from '../molecules/ScheduleForm';
 import useModalStore from '@/stores/modal.store';
+import { Tables } from '@/types/supabase';
+import ScheduleForm from '../molecules/ScheduleForm';
 
-const Modal = ({ schedule, onClose }) => {
+type ScheduleType = Tables<'schedule'>;
+interface scheduleModalProps {
+  schedule?: ScheduleType | null;
+  onClose?: () => void;
+}
+
+const Modal = ({ schedule, onClose }: scheduleModalProps) => {
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
   const closeModal = () => {
     onClose;
