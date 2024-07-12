@@ -1,7 +1,7 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 
-type MeetingType = Tables<'meeting'>;
+export type MeetingType = Tables<'meeting'>;
 
 class MeetingAPI {
   private supabase;
@@ -73,6 +73,29 @@ class MeetingAPI {
       .select('*');
 
     return data;
+  }
+
+  async selectUserMeetings(userId: string): Promise<MeetingType[] | null> {
+    try {
+      const { data, error } = await this.supabase
+        .from('meeting')
+        .select()
+        .eq('userId', userId)
+        .order('date', { ascending: false }); //내림차순
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data) {
+        return null;
+      }
+
+      return data as MeetingType[];
+    } catch (error) {
+      console.error('Error fetching user meetings:', error);
+      return null;
+    }
   }
 }
 
