@@ -1,6 +1,8 @@
+
 import React from 'react';
 import ScheduleForm from '../molecules/ScheduleForm';
 import useModalStore from '@/stores/modal.store';
+
 
 const Modal = () => {
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);

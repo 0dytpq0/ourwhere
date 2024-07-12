@@ -3,16 +3,22 @@
 import MeetingModal from '@/components/template/MeetingModal';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
 import useModalStore from '@/stores/modal.store';
+import Swal from 'sweetalert2';
 
 export default function Home() {
   const { user } = useAuthStore((state) => state);
-  console.log('user', user);
   const isMeetingModalOpen = useModalStore((state) => state.isMeetingModalOpen);
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
-
   const handleOpenModal = () => {
+    if (!user) {
+      Swal.fire({
+        title: '로그인 해주세요',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      });
+      return;
+    }
     toggleMeetingModal();
-  };
 
   return (
     <div className="flex items-center justify-center h-screen">
