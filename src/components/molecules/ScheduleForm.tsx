@@ -5,6 +5,7 @@ import Input from '../atoms/js-Input/Input';
 import useModalStore from '@/stores/modal.store';
 import { useCreateSchedule, useSchedule, useSchedulesToMeetingId, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 import { useParams } from 'next/navigation';
+import { PlaceSearch } from './PlaceSearch';
 
 const ScheduleForm = () => {
   const [placeSearch, setPlaceSearch] = useState('');
@@ -87,6 +88,7 @@ const ScheduleForm = () => {
   return (
     <div>
       <form className="flex flex-col space-y-4 " onSubmit={onCreateSchedule}>
+        <PlaceSearch />
         <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
         <div>
           <h4>장소</h4>
