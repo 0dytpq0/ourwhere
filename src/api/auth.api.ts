@@ -40,6 +40,17 @@ class AuthAPI {
 
     return response.data;
   }
+
+  async updateUser(id: string, updates: { images?: string; nickname?: string }) {
+    const path = 'api/auth/user-update';
+
+    if (!id) {
+      return;
+    }
+    const response = await this.axios.patch<UserType[]>(path, { id, ...updates });
+
+    return response.data[0];
+  }
 }
 
 export default AuthAPI;

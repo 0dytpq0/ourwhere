@@ -5,11 +5,11 @@ import { persist } from 'zustand/middleware';
 type UserType = Tables<'users'>;
 
 export type AuthState = {
-  user: UserType | null;
+  user: UserType | null | undefined;
 };
 
 export type AuthActions = {
-  setUser: (user: UserType | null) => void;
+  setUser: (user: UserType | null | undefined) => void;
 };
 
 export type AuthStore = AuthState & AuthActions;
@@ -28,7 +28,7 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
     persist(
       (set) => ({
         ...initState,
-        setUser: (user: UserType  | null) => set((state) => ({ user }))
+        setUser: (user: UserType | null | undefined) => set((state) => ({ user }))
       }),
       {
         name: 'auth-storage',
@@ -36,5 +36,4 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
       }
     )
   );
-
 };

@@ -7,6 +7,7 @@ import useMeetingStore from '@/stores/meeting.store';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
+import { nextTick } from 'process';
 
 export default function MyPageTemplate() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -15,6 +16,8 @@ export default function MyPageTemplate() {
   const { meetingId, setMeetingId } = useMeetingStore((state) => state);
   const router = useRouter();
   const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [editnickname, setEditNickname] = useState<string>(user?.nickname || '');
+  const [editimage, setEditImage] = useState<File | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -43,6 +46,20 @@ export default function MyPageTemplate() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const handleSaveClick = async () => {
+    try {
+      const updates = { nickname: editnickname || user?.nickname };
+      if (!user?.id) return;
+      console.log('업데이트 요청 하고싶어', updates);
+      const updatedUser = await api.auth.updateUser(user?.id, updates);
+      console.log('업데이트 완료', updatedUser);
+      setUser(updatedUser);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('닉네임 업데이트 에러:', error);
+    }
+  };
 
   console.log('업데이트', userMeetings);
   console.log('마이페이지 유저', user);
@@ -80,12 +97,19 @@ export default function MyPageTemplate() {
               <div className="mb-4">
                 <input
                   type="text"
-                  placeholder="닉네임"
+                  placeholder="변경할 닉네임을 입력해주세요"
+                  value={editnickname}
+                  onChange={(e) => setEditNickname(e.target.value)}
                   className="bg-gray-200 px-2 py-1 rounded-md focus:outline-none"
                 />
               </div>
 
-              <button className="bg-button-color text-white px-4 py-2 rounded-md hover:bg-button-color">저장</button>
+              <button
+                className="bg-button-color text-white px-4 py-2 rounded-md hover:bg-button-color"
+                onClick={handleSaveClick}
+              >
+                저장
+              </button>
               <button onClick={() => setIsEditing(false)} className="ml-2 text-gray-500 hover:text-gray-700">
                 취소
               </button>
