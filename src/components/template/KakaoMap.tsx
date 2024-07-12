@@ -5,10 +5,8 @@ import { useParams } from 'next/navigation';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import useGeoLocation from '@/lib/hooks/useGeolocation';
 import { IMGURLS } from '@/constants/images.constant';
-import { Tables } from '@/types/supabase';
 import useScheduleStore from '@/stores/schedule.store';
-
-type ScheduleType = Tables<'schedule'>;
+import MarkerWithOrder from '../atoms/MarkerWithOrder';
 
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 
@@ -17,12 +15,11 @@ const KakaoMap = () => {
   const meetingId = parseInt(id, 10);
   const myLocation = useGeoLocation();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [markerPositions, setMarkerPositions] = useState<{ lat: number; lng: number; title: string; number: number }[]>(
+  const [markerPositions, setMarkerPositions] = useState<{ lat: number; lng: number; title: string; order: number }[]>(
     []
   );
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
   const { scheduleData } = useScheduleStore();
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = KAKAO_SDK_URL;
@@ -39,14 +36,14 @@ const KakaoMap = () => {
         }
 
         const promises = scheduleData.map((scheduleItem, index) => {
-          return new Promise<{ lat: number; lng: number; title: string; number: number }>((resolve, reject) => {
+          return new Promise<{ lat: number; lng: number; title: string; order: number }>((resolve, reject) => {
             geocoder.addressSearch(scheduleItem.address!, (result, status) => {
               if (status === kakao.maps.services.Status.OK) {
                 const coords = {
                   lat: parseFloat(result[0].y),
                   lng: parseFloat(result[0].x),
                   title: scheduleItem.place,
-                  number: index + 1
+                  order: index + 1
                 };
                 resolve(coords);
               } else {
@@ -58,14 +55,21 @@ const KakaoMap = () => {
 
         Promise.all(promises)
           .then((results) => {
-            setMarkerPositions(results);
-
-            if (results.length > 0) {
+            if (results.length === 1) {
+              const singleResult = results[0];
+              setMarkerPositions(results);
+              setMapCenter({ lat: singleResult.lat, lng: singleResult.lng });
+            } else if (results.length > 1) {
+              setMarkerPositions(results);
               const avgLat = results.reduce((acc, pos) => acc + pos.lat, 0) / results.length;
               const avgLng = results.reduce((acc, pos) => acc + pos.lng, 0) / results.length;
               setMapCenter({ lat: avgLat, lng: avgLng });
-            } else if (myLocation) {
-              setMapCenter({ lat: myLocation.latitude, lng: myLocation.longitude });
+            } else {
+              if (myLocation) {
+                setMapCenter({ lat: myLocation.latitude, lng: myLocation.longitude });
+              } else {
+                console.log('정보 없음');
+              }
             }
           })
           .catch((error) => {
@@ -85,18 +89,10 @@ const KakaoMap = () => {
     }
   }, [myLocation]);
 
-  const MarkerWithNumber = ({ number }: { number: number }) => {
-    return (
-      <div className="flex items-center justify-center w-16 h-16 text-black bg-white border-[10px] border-[#8085F2] rounded-full text-3xl font-bold drop-shadow-xl">
-        {number}
-      </div>
-    );
-  };
-
   return (
     <section className="h-lvh mr-1">
       {isLoaded && mapCenter && (
-        <Map center={mapCenter} style={{ width: '800px', height: '100%' }}>
+        <Map center={mapCenter} style={{ width: '800px', height: '100%' }} level={5}>
           {myLocation && (
             <MapMarker
               position={{ lat: myLocation.latitude, lng: myLocation.longitude }}
@@ -106,7 +102,7 @@ const KakaoMap = () => {
           )}
           {markerPositions.map((position, index) => (
             <CustomOverlayMap key={`${position.title}-${index}`} position={{ lat: position.lat, lng: position.lng }}>
-              <MarkerWithNumber number={position.number} />
+              <MarkerWithOrder order={position.order} />
             </CustomOverlayMap>
           ))}
         </Map>
