@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import useGeoLocation from '@/lib/hooks/useGeolocation';
 import { IMGURLS } from '@/constants/images.constant';
-import useScheduleStore from '@/stores/schedule.store';
 import MarkerWithOrder from '../atoms/MarkerWithOrder';
+import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
 
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 
@@ -19,7 +19,7 @@ const KakaoMap = () => {
     []
   );
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
-  const { scheduleData } = useScheduleStore();
+  const { data: scheduleData, error, isPending } = useSchedulesToMeetingId(meetingId);
   useEffect(() => {
     const script = document.createElement('script');
     script.src = KAKAO_SDK_URL;
@@ -35,7 +35,7 @@ const KakaoMap = () => {
           return;
         }
 
-        const promises = scheduleData.map((scheduleItem, index) => {
+        const promises = scheduleData?.map((scheduleItem, index) => {
           return new Promise<{ lat: number; lng: number; title: string; order: number }>((resolve, reject) => {
             geocoder.addressSearch(scheduleItem.address!, (result, status) => {
               if (status === kakao.maps.services.Status.OK) {

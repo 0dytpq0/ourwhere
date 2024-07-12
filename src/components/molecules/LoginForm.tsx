@@ -15,15 +15,6 @@ function LogInForm() {
   const router = useRouter();
 
   const handleClickLogIn = async () => {
-    // if (!validateEmail(email)) {
-    //   Swal.fire({
-    //     title: '이메일 형식이 잘못 되었습니다.',
-    //     icon: 'error',
-    //     confirmButtonText: 'Cool'
-    //   });
-
-    //   return;
-    // }
     try {
       const user = await api.auth.logIn(email, password);
       console.log(user);
