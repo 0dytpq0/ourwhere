@@ -20,11 +20,11 @@ class ScheduleAPI {
     return data;
   }
 
-  async selectUserSchedule(userId: string) {
+  async selectUserSchedule(meetingId: number) {
     const { data, error } = await this.supabase
       .from('schedule')
       .select()
-      .eq('userId', userId)
+      .eq('meetingId', meetingId)
       .returns<Tables<'schedule'>[]>();
     if (error) {
       console.error('Error fetching schedule:', error);
@@ -83,6 +83,15 @@ class ScheduleAPI {
       .eq('id', id)
       .select('*');
 
+    return data;
+  }
+
+  async selectScheduleOfMeeting(id: number) {
+    const { data } = await this.supabase
+      .from('schedule')
+      .select('*')
+      .eq('meetingId', id)
+      .returns<Tables<'schedule'>[]>();
     return data;
   }
 }

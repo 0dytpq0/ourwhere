@@ -5,10 +5,10 @@ import Schedule from '../molecules/Schedule';
 import ScheduleModal from './ScheduleModal';
 import KebabIcon from '../atoms/Kebab';
 import useModalStore from '@/stores/modal.store';
-import MeetingAPI from '@/api/meeting.api';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import api from '@/api/api';
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
@@ -17,14 +17,13 @@ export default function Meeting() {
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
-  const meetingAPI = new MeetingAPI();
   const params = useParams();
   const router = useRouter();
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        const data = await meetingAPI.selectMeeting(Number(params.id));
+        const data = await api.meeting.selectMeeting(Number(params.id));
         console.log(data);
         if (!data) return;
         setMeeting(data);
@@ -51,7 +50,7 @@ export default function Meeting() {
 
   const handleDeleteMeeting = async (id: number) => {
     try {
-      await meetingAPI.deleteMeeting(id);
+      await api.meeting.deleteMeeting(id);
       // null! 수정
       setMeeting(null!);
       alert('삭제가 완료 되었습니다.');
