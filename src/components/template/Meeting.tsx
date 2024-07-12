@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Schedule from '../molecules/Schedule';
-import ScheduleModal from './ScheduleModal';
-import KebabIcon from '../atoms/Kebab';
-import useModalStore from '@/stores/modal.store';
 import MeetingAPI from '@/api/meeting.api';
+import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import KebabIcon from '../atoms/Kebab';
+import { PlaceSearch } from '../molecules/PlaceSearch';
+import Schedule from '../molecules/Schedule';
+import ScheduleModal from './ScheduleModal';
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
@@ -99,6 +100,7 @@ export default function Meeting() {
             +
           </button>
         </div>
+        <PlaceSearch />
       </section>
 
       {modal && <ScheduleModal handleClose={handleToggleModal} />}
