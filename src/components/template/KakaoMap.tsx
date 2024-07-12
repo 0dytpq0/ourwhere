@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { IMGURLS } from '@/constants/images.constant';
+import { useEffect, useState } from 'react';
 
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import useGeoLocation from '@/lib/hooks/Geolocation';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 const imgUrl = IMGURLS.myLocationIconImgUrl;
 const KakaoMap = () => {
