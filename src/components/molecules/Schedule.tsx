@@ -6,11 +6,15 @@ import { useAuthStore } from '@/providers/js-auth.store.provider';
 import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import useScheduleStore from '@/stores/schedule.store';
 
 type ScheduleType = Tables<'schedule'>;
 
 function Schedule() {
-  const [scheduleData, setScheduleData] = useState<ScheduleType[]>([]);
+  const { scheduleData, setScheduleData } = useScheduleStore((state) => ({
+    scheduleData: state.scheduleData,
+    setScheduleData: state.setScheduleData
+  }));
   const [error, setError] = useState<string | null>(null);
   // const { meetingId, setMeetingId } = useMeetingStore((state) => state);
   const { id } = useParams();
