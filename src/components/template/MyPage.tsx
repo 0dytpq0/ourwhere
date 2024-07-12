@@ -11,6 +11,7 @@ export default function MyPageTemplate() {
   const { user, setUser } = useAuthStore((state) => state);
   const [userMeetings, setUserMeetings] = useState<MeetingType[]>([]);
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
@@ -35,17 +36,25 @@ export default function MyPageTemplate() {
     router.push(`/meeting/${id}`);
   };
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   console.log('업데이트', userMeetings);
   console.log('마이페이지 유저', user);
+  console.log('이미지', user?.images);
 
   return (
     <div className="flex flex-row items-center mt-24 m-20">
       <div className="flex flex-col mb-4 m-8 border-solid border-loginpage-color-2 h-72 w-80 items-center bg-loginpage-color text-font-color relative">
         <div className="w-44 h-44 mt-4 flex flex-row items-center justify-center border-solid border-2 rounded-full shadow-md">
-          <div> 사진 </div>
+          {user?.images ? (
+            <img src={user.images} alt="Profile" className="w-full h-full rounded-full object-cover" />
+          ) : (
+            <div>사진 없음</div>
+          )}
         </div>
-
-        <div className="mt-4"> 닉네임 </div>
+        <div className="mt-4"> {isMounted ? user?.nickname : null} </div>
 
         <CiEdit
           className="text-4xl absolute bottom-2 right-2 bg-white rounded-full p-1 cursor-pointer"
