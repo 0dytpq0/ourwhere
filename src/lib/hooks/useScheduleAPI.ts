@@ -10,7 +10,7 @@ const scheduleApi = new ScheduleAPI();
 export const useSchedule = () => {
   return useQuery({
     queryKey: ['schedule'],
-    queryFn: () => scheduleApi.selectSchedule()
+    queryFn: () => scheduleApi.selectSchedules()
   });
 };
 
