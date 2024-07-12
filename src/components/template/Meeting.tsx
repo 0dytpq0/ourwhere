@@ -86,8 +86,9 @@ export default function Meeting() {
               </button>
               <button
                 className="block w-full text-left py-2 px-4 hover:bg-gray-100"
-                onClick={() => {}}
-                // handleDeleteMeeting(meeting.id!)
+                onClick={() => {
+                  handleDeleteMeeting(meeting.id!);
+                }}
               >
                 <Image src={'/trash.png'} alt="삭제" width={17} height={20} />
               </button>

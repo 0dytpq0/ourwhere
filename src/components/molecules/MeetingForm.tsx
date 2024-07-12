@@ -36,8 +36,6 @@ const MeetingForm = () => {
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
 
-  console.log(meeting);
-
   useEffect(() => {
     if (meetingId && meeting) {
       setMeetingName(meeting.title);
@@ -56,23 +54,27 @@ const MeetingForm = () => {
     };
 
     if (meetingId) {
-      updateMeeting(
-        { id: meetingId, updateData: newMeeting },
-        {
-          onSuccess: () => {
-            router.push(`${meetingId}`);
-            toggleMeetingModal();
+      if (confirm('이대로 수정하시겠습니까?')) {
+        updateMeeting(
+          { id: meetingId, updateData: newMeeting },
+          {
+            onSuccess: () => {
+              router.push(`${meetingId}`);
+              toggleMeetingModal();
+            }
           }
-        }
-      );
+        );
+      }
     } else {
       createMeeting(newMeeting, {
         onSuccess: (data) => {
           if (!data) {
             return;
           }
+
           router.push(`/meeting/${data[0].id}`);
           toggleMeetingModal();
+          // alert('새로운 모임을 만드셨네요 축하드립니다~');
         }
       });
     }
@@ -138,7 +140,7 @@ const MeetingForm = () => {
         </div>
       </div>
       <button type="submit" className="bg-button-color text-loginpage-color p-1 rounded-xl">
-        생성하기
+        {meetingId ? '수정하기' : '생성하기'}
       </button>
     </form>
   );
