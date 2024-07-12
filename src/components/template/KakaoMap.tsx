@@ -96,7 +96,7 @@ const KakaoMap = () => {
 
   const MarkerWithNumber = ({ number }: { number: number }) => {
     return (
-      <div className="flex items-center justify-center w-16 h-16 text-black bg-white border-[10px] border-[#8085F2] rounded-full text-3xl font-bold">
+      <div className="flex items-center justify-center w-16 h-16 text-black bg-white border-[10px] border-[#8085F2] rounded-full text-3xl font-bold drop-shadow-xl">
         {number}
       </div>
     );
