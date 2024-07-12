@@ -14,11 +14,27 @@ export type UpdateScheduleType = {
 
 const scheduleApi = new ScheduleAPI();
 
-// Schedule 불러오기
-export const useSchedule = () => {
+// Schedule 여러개 불러오기
+export const useSchedules = () => {
   return useQuery({
     queryKey: ['schedule'],
     queryFn: () => scheduleApi.selectSchedules()
+  });
+};
+
+// Schedule 같은 meetingId만 불러오기
+export const useSchedulesToMeetingId = (meetingId: number) => {
+  return useQuery({
+    queryKey: ['schedule', meetingId],
+    queryFn: () => scheduleApi.selectUserSchedule(meetingId)
+  });
+};
+
+// Schedule 한개 불러오기
+export const useSchedule = (id: number) => {
+  return useQuery({
+    queryKey: ['schedule', id],
+    queryFn: () => scheduleApi.selectScheduleOfMeeting(id)
   });
 };
 

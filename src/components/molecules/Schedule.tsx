@@ -1,42 +1,27 @@
 'use client';
-import ScheduleAPI from '@/api/schedule.api';
-import { useSchedule } from '@/lib/hooks/useScheduleAPI';
-import { useAuthStore } from '@/providers/js-auth.store.provider';
-// import useMeetingStore from '@/stores/meeting.store';
-import { Tables } from '@/types/supabase';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
-type ScheduleType = Tables<'schedule'>;
+import { useSchedule, useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
+
+import { useParams } from 'next/navigation';
 
 function Schedule() {
-  const [scheduleData, setScheduleData] = useState<ScheduleType[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  // const { meetingId, setMeetingId } = useMeetingStore((state) => state);
   const { id } = useParams();
   const meetingId = Number(id);
 
-  const scheduleAPI = new ScheduleAPI();
-  const user = useAuthStore((state) => state.user);
+  const { data: scheduleData, error, isPending } = useSchedulesToMeetingId(meetingId);
 
-  useEffect(() => {
-    if (!user) {
-      setError('User not logged in');
-      return;
-    }
-    // const { data: schedule, isLoading } = useSchedule(meetingId);
-
-    const fetchData = async () => {
-      const data = await scheduleAPI.selectUserSchedule(meetingId);
-      if (!data) {
-        setError('Error fetching schedule data');
-      } else {
-        setScheduleData(data);
-      }
-    };
-
-    fetchData();
-  }, [user]);
+  if (error) {
+    console.log('error', error);
+    return;
+  }
+  if (isPending) {
+    return (
+      <>
+        <div>Loading...</div>
+      </>
+    );
+  }
+  if (!scheduleData) return <div>데이터를 받아올 수 없습니다.</div>;
 
   return (
     <div className="p-4">
