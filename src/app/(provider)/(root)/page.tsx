@@ -3,18 +3,23 @@
 import MeetingModal from '@/components/template/MeetingModal';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
 import useModalStore from '@/stores/modal.store';
+import Swal from 'sweetalert2';
 
 export default function Home() {
   const { user } = useAuthStore((state) => state);
-  console.log('user', user);
-  const modal = useModalStore((state) => state.modal);
-  const toggleModal = useModalStore((state) => state.toggleModal);
-
+  const isMeetingModalOpen = useModalStore((state) => state.isMeetingModalOpen);
+  const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const handleOpenModal = () => {
-    toggleModal();
+    if (!user) {
+      Swal.fire({
+        title: '로그인 해주세요',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      });
+      return;
+    }
+    toggleMeetingModal();
   };
-  console.log('main', modal);
-
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center space-y-6">
@@ -24,7 +29,7 @@ export default function Home() {
           새 모임 생성하기!
         </button>
       </div>
-      {modal && <MeetingModal />}
+      {isMeetingModalOpen && <MeetingModal />}
     </div>
   );
 }

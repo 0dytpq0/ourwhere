@@ -8,23 +8,29 @@ import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import MeetingModal from './MeetingModal';
+import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
+import { PlaceSearch } from '../molecules/PlaceSearch';
+
 
 export default function Meeting() {
-  const modal = useModalStore((state) => state.modal);
-  const toggleModal = useModalStore((state) => state.toggleModal);
+  const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
+  const meetingAPI = new MeetingAPI();
   const params = useParams();
   const router = useRouter();
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        const data = await api.meeting.selectMeeting(Number(params.id));
-        console.log(data);
+        const data = await meetingAPI.selectMeeting(Number(params.id));
+        // console.log(data);
         if (!data) return;
         setMeeting(data);
       } catch (error) {
@@ -35,9 +41,9 @@ export default function Meeting() {
     fetchMeetings();
   }, []);
 
-  const handleToggleModal = () => {
-    toggleModal();
-  };
+  // const handleToggleModal = () => {
+  //   toggleModal();
+  // };
 
   const handleToggleMenu = (id: number) => {
     setShowMenu(showMenu === id ? null : id);
@@ -45,7 +51,7 @@ export default function Meeting() {
 
   const handleEditMeeting = (meeting: Tables<'meeting'>) => {
     setCurrentMeeting(meeting);
-    handleToggleModal();
+    toggleMeetingModal();
   };
 
   const handleDeleteMeeting = async (id: number) => {
@@ -60,7 +66,7 @@ export default function Meeting() {
     }
   };
 
-  if (!meeting) return;
+  if (!meeting) return null; // meeting이 없는 경우 아무것도 랜더링 하지 않게
 
   return (
     <>
@@ -84,7 +90,9 @@ export default function Meeting() {
               </button>
               <button
                 className="block w-full text-left py-2 px-4 hover:bg-gray-100"
-                onClick={() => handleDeleteMeeting(meeting.id!)}
+                onClick={() => {
+                  handleDeleteMeeting(meeting.id!);
+                }}
               >
                 <Image src={'/trash.png'} alt="삭제" width={17} height={20} />
               </button>
@@ -95,15 +103,17 @@ export default function Meeting() {
           </div>
           <Schedule />
           <button
-            onClick={handleToggleModal}
+            onClick={toggleScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
           >
             +
           </button>
         </div>
+        <PlaceSearch />
       </section>
 
-      {modal && <ScheduleModal handleClose={handleToggleModal} />}
+      {isScheduleModalOpen && <ScheduleModal />}
+      {isMeetingModalOpen && <MeetingModal />}
     </>
   );
 }

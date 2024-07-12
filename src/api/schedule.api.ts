@@ -3,6 +3,14 @@ import { Tables } from '@/types/supabase';
 
 type ScheduleType = Tables<'schedule'>;
 
+export type UpdateScheduleType = {
+  content: string;
+  place: string;
+  address: string;
+  time: string;
+  meetingId: number;
+};
+
 class ScheduleAPI {
   private supabase;
 
@@ -43,7 +51,7 @@ class ScheduleAPI {
    * meetingId : number}
    * @returns data 추가된 data
    */
-  async insertSchedule(insertData: ScheduleType) {
+  async insertSchedule(insertData: UpdateScheduleType) {
     const { content, place, address, time, meetingId } = insertData;
     const { data } = await this.supabase.from('schedule').insert({ content, place, address, time, meetingId });
 
@@ -74,7 +82,7 @@ class ScheduleAPI {
   };
    * @returns
    */
-  async updateSchedule(id: number, updateData: ScheduleType) {
+  async updateSchedule(id: number, updateData: UpdateScheduleType) {
     const { meetingId, content, place, address, time } = updateData;
     console.log('id, updateData', id, updateData);
     const { data, error } = await this.supabase

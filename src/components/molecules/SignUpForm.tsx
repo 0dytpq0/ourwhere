@@ -37,14 +37,14 @@ function SignUpForm() {
         <Input
           identity="login"
           placeholder="이메일을 입력해주세요"
-          label="이메일 형식을 지켜주세요"
+          warnning="이메일 형식을 지켜주세요"
           required={isError}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           identity="login"
           placeholder="비밀번호를 입력해주세요"
-          label="소문자, 숫자, 특수문자 조합으로 만들어주세요"
+          warnning="소문자, 숫자, 특수문자 조합으로 만들어주세요"
           required={isError}
           onChange={(e) => setPassword(e.target.value)}
         />
