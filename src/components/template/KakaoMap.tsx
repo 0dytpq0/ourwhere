@@ -6,12 +6,13 @@ import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
 import useGeoLocation from '@/lib/hooks/useGeolocation';
 import { IMGURLS } from '@/constants/images.constant';
 import { Tables } from '@/types/supabase';
+import useScheduleStore from '@/stores/schedule.store';
 
 type ScheduleType = Tables<'schedule'>;
 
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 
-const KakaoMap = ({ scheduleData }: { scheduleData: ScheduleType[] }) => {
+const KakaoMap = () => {
   const { id } = useParams();
   const meetingId = parseInt(id, 10);
   const myLocation = useGeoLocation();
@@ -20,6 +21,7 @@ const KakaoMap = ({ scheduleData }: { scheduleData: ScheduleType[] }) => {
     []
   );
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
+  const { scheduleData } = useScheduleStore();
 
   useEffect(() => {
     const script = document.createElement('script');
