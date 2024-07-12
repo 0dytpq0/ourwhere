@@ -1,6 +1,7 @@
 'use client';
 import ScheduleAPI from '@/api/schedule.api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
+import useMeetingStore from '@/stores/meeting.store';
 import { Tables } from '@/types/supabase';
 import { useEffect, useState } from 'react';
 
@@ -9,6 +10,7 @@ type ScheduleType = Tables<'schedule'>;
 function Schedule() {
   const [scheduleData, setScheduleData] = useState<ScheduleType[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { meetingId, setMeetingId } = useMeetingStore((state) => state);
 
   const scheduleAPI = new ScheduleAPI();
   const user = useAuthStore((state) => state.user);
@@ -19,8 +21,9 @@ function Schedule() {
       return;
     }
 
+    console.log(meetingId);
     const fetchData = async () => {
-      const data = await scheduleAPI.selectUserSchedule(user.id);
+      const data = await scheduleAPI.selectUserSchedule(meetingId);
       if (!data) {
         setError('Error fetching schedule data');
       } else {
