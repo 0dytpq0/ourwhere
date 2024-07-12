@@ -1,15 +1,13 @@
 'use client';
 
+import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
+import useModalStore from '@/stores/modal.store';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import Input from '../atoms/js-Input/Input';
-import useModalStore from '@/stores/modal.store';
-import { useCreateSchedule, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
-import { useParams } from 'next/navigation';
-
 interface onCloseProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
-
 const ScheduleForm = ({ onClose }: onCloseProps) => {
   const [placeSearch, setPlaceSearch] = useState('');
   const [place, setPlace] = useState('');
