@@ -2,6 +2,7 @@
 import ScheduleAPI from '@/api/schedule.api';
 import { useSchedule } from '@/lib/hooks/useScheduleAPI';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
+import useModalStore from '@/stores/modal.store';
 // import useMeetingStore from '@/stores/meeting.store';
 import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
@@ -12,7 +13,10 @@ type ScheduleType = Tables<'schedule'>;
 function Schedule() {
   const [scheduleData, setScheduleData] = useState<ScheduleType[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [currentSchedule, setCurrentSchedule] = useState<ScheduleType | null>(null);
   // const { meetingId, setMeetingId } = useMeetingStore((state) => state);
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+
   const { id } = useParams();
   const meetingId = Number(id);
 
@@ -37,6 +41,10 @@ function Schedule() {
 
     fetchData();
   }, [user]);
+
+  const openScheduleModal = () => {
+    toggleScheduleModal();
+  };
 
   return (
     <div className="p-4">
@@ -63,8 +71,10 @@ function Schedule() {
               </div>
             </div>
           </div>
+          <button onChange={() => openScheduleModal()}>수정</button>
         </div>
       ))}
+      {isScheduleModalOpen && <ScheduleModal />}
     </div>
   );
 }

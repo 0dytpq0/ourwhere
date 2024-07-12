@@ -38,7 +38,7 @@ class ScheduleAPI {
       console.error('Error fetching schedule:', error);
       return null;
     }
-    console.log('data', data);
+    // console.log('data', data);
     return data;
   }
   /**

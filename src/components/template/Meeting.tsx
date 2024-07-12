@@ -39,10 +39,6 @@ export default function Meeting() {
     fetchMeetings();
   }, []);
 
-  // const handleToggleModal = () => {
-  //   toggleModal();
-  // };
-
   const handleToggleMenu = (id: number) => {
     setShowMenu(showMenu === id ? null : id);
   };
