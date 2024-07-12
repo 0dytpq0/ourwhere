@@ -8,7 +8,7 @@ import useModalStore from '@/stores/modal.store';
 import MeetingAPI from '@/api/meeting.api';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function Meeting() {
   const modal = useModalStore((state) => state.modal);
@@ -18,8 +18,8 @@ export default function Meeting() {
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
   const meetingAPI = new MeetingAPI();
-
   const params = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -52,7 +52,10 @@ export default function Meeting() {
   const handleDeleteMeeting = async (id: number) => {
     try {
       await meetingAPI.deleteMeeting(id);
-      setMeeting((prev) => prev.filter((m) => m.id !== id));
+      // null! 수정
+      setMeeting(null!);
+      alert('삭제가 완료 되었습니다.');
+      router.push('/');
     } catch (error) {
       console.log(error);
     }
