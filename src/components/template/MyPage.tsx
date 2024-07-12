@@ -2,6 +2,7 @@
 import api from '@/api/api';
 import { MeetingType } from '@/api/meeting.api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
+import Image from 'next/image';
 import useMeetingStore from '@/stores/meeting.store';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,9 @@ export default function MyPageTemplate() {
   const [userMeetings, setUserMeetings] = useState<MeetingType[]>([]);
   const { meetingId, setMeetingId } = useMeetingStore((state) => state);
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [editnickname, setEditNickname] = useState<string>(user?.nickname || '');
+  const [editimage, setEditImage] = useState<File | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -38,17 +42,35 @@ export default function MyPageTemplate() {
     router.push(`/meeting/${id}`);
   };
 
-  console.log('업데이트', userMeetings);
-  console.log('마이페이지 유저', user);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const handleSaveClick = async () => {
+    try {
+      const updates = { nickname: editnickname || user?.nickname };
+      if (!user?.id) return;
+      const updatedUser = await api.auth.updateUser(user?.id, updates);
+      setUser(updatedUser);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('닉네임 업데이트 에러:', error);
+    }
+  };
 
   return (
     <div className="flex flex-row items-center mt-24 m-20">
       <div className="flex flex-col mb-4 m-8 border-solid border-loginpage-color-2 h-72 w-80 items-center bg-loginpage-color text-font-color relative">
         <div className="w-44 h-44 mt-4 flex flex-row items-center justify-center border-solid border-2 rounded-full shadow-md">
-          <div> 사진 </div>
+          <Image
+            src={user?.images || '사진없음'}
+            alt="Profile"
+            width={176}
+            height={176}
+            className="w-full h-full rounded-full object-cover"
+          />
         </div>
-
-        <div className="mt-4"> 닉네임 </div>
+        <div className="mt-4"> {isMounted ? user?.nickname : '닉네임을 입력하세요'} </div>
 
         <CiEdit
           className="text-4xl absolute bottom-2 right-2 bg-white rounded-full p-1 cursor-pointer"
@@ -68,12 +90,19 @@ export default function MyPageTemplate() {
               <div className="mb-4">
                 <input
                   type="text"
-                  placeholder="닉네임"
+                  placeholder="변경할 닉네임을 입력해주세요"
+                  value={editnickname}
+                  onChange={(e) => setEditNickname(e.target.value)}
                   className="bg-gray-200 px-2 py-1 rounded-md focus:outline-none"
                 />
               </div>
 
-              <button className="bg-button-color text-white px-4 py-2 rounded-md hover:bg-button-color">저장</button>
+              <button
+                className="bg-button-color text-white px-4 py-2 rounded-md hover:bg-button-color"
+                onClick={handleSaveClick}
+              >
+                저장
+              </button>
               <button onClick={() => setIsEditing(false)} className="ml-2 text-gray-500 hover:text-gray-700">
                 취소
               </button>
