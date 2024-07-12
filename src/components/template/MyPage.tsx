@@ -7,7 +7,6 @@ import useMeetingStore from '@/stores/meeting.store';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
-import { nextTick } from 'process';
 
 export default function MyPageTemplate() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -51,19 +50,13 @@ export default function MyPageTemplate() {
     try {
       const updates = { nickname: editnickname || user?.nickname };
       if (!user?.id) return;
-      console.log('업데이트 요청 하고싶어', updates);
       const updatedUser = await api.auth.updateUser(user?.id, updates);
-      console.log('업데이트 완료', updatedUser);
       setUser(updatedUser);
       setIsEditing(false);
     } catch (error) {
       console.error('닉네임 업데이트 에러:', error);
     }
   };
-
-  console.log('업데이트', userMeetings);
-  console.log('마이페이지 유저', user);
-  console.log('이미지', user?.images);
 
   return (
     <div className="flex flex-row items-center mt-24 m-20">
