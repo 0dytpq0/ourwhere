@@ -27,7 +27,7 @@ function Schedule() {
   }
   if (!scheduleData) return <div>데이터를 받아올 수 없습니다.</div>;
 
-  const handleEditClick = (schedule: React.SetStateAction<null>) => {
+  const handleEditClick = (schedule) => {
     setEditingSchedule(schedule);
     setShowForm(true);
   };
@@ -40,7 +40,7 @@ function Schedule() {
   return (
     <div className="p-4">
       {showForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-10">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <ScheduleForm schedule={editingSchedule} onClose={handleFormClose} />
           </div>
