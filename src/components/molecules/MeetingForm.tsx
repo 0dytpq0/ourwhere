@@ -71,9 +71,9 @@ const MeetingForm = () => {
           if (!data) {
             return;
           }
-
-          router.push(`/meeting/${data[0].id}`);
           toggleMeetingModal();
+          router.push(`/meeting/${data[0].id}`);
+
           // alert('새로운 모임을 만드셨네요 축하드립니다~');
         }
       });

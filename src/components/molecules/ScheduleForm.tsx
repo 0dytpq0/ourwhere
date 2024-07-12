@@ -29,8 +29,9 @@ const ScheduleForm = () => {
 
   // const { data: schedule, isLoading } = useMeeting(meetingId);
   const { mutate: createSchedule } = useCreateSchedule();
-  const { mutate: updateSchedule } = useUpdateSchedule();
-  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  // const { mutate: updateSchedule } = useUpdateSchedule();
+  const { isScheduleModalOpen, toggleScheduleModal } = useModalStore();
+  // const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   // useEffect(() => {
   //   if (meetingId && meeting) {
@@ -40,6 +41,8 @@ const ScheduleForm = () => {
   //     setMeetingPassword(meeting.password);
   //   }
   // }, [meeting, meetingId]);
+
+  console.log(isScheduleModalOpen);
 
   const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,10 +55,11 @@ const ScheduleForm = () => {
     };
 
     createSchedule(newSchedule, {
-      onSuccess: (data) => {
-        if (!data) {
-          return;
-        }
+      onSuccess: () => {
+        // console.log(data);
+        // if (!data) {
+        //   return;
+        // }
         toggleScheduleModal();
       }
     });
@@ -65,14 +69,14 @@ const ScheduleForm = () => {
     <div>
       <form className="flex flex-col space-y-4 " onSubmit={onCreateSchedule}>
         <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
-        <p>
+        <div>
           <h4>장소</h4>
           <div className="border w-full h-10 ">{place}</div>
-        </p>
-        <p>
+        </div>
+        <div>
           <h4>주소</h4>
           <div className="border w-full h-10 ">{address}</div>
-        </p>
+        </div>
         <Input type="time" value={time} label="시간" required onChange={handleTime} />
         <input
           type="text"
@@ -81,7 +85,9 @@ const ScheduleForm = () => {
           onChange={handleContent}
           className=" p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg"
         />
-        <button className="bg-button-color text-loginpage-color p-1 rounded-xl">추가하기</button>
+        <button type="submit" className="bg-button-color text-loginpage-color p-1 rounded-xl">
+          추가하기
+        </button>
       </form>
     </div>
   );

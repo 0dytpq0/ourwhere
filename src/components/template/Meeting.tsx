@@ -13,7 +13,9 @@ import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
 
 export default function Meeting() {
-  const { isScheduleModalOpen, isMeetingModalOpen, toggleScheduleModal, toggleMeetingModal } = useModalStore();
+  const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
@@ -35,7 +37,7 @@ export default function Meeting() {
     };
 
     fetchMeetings();
-  }, [params.id, meetingAPI]);
+  }, []);
 
   // const handleToggleModal = () => {
   //   toggleModal();

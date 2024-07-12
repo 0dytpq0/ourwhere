@@ -14,7 +14,7 @@ const Modal = () => {
       <div className="bg-white p-10 rounded-lg shadow-lg ">
         <h2>1</h2>
         <ScheduleForm />
-        <button type="submit" onClick={closeScheduleModal} className=" text-gray-500 p-1 ">
+        <button onClick={closeScheduleModal} className=" text-gray-500 p-1 ">
           x
         </button>
       </div>
