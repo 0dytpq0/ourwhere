@@ -21,6 +21,10 @@ const ScheduleForm = () => {
     setTime(e.target.value);
   };
 
+  const handleContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+  };
+
   const { id } = useParams();
 
   // const { data: schedule, isLoading } = useMeeting(meetingId);
@@ -48,7 +52,10 @@ const ScheduleForm = () => {
     };
 
     createSchedule(newSchedule, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        if (!data) {
+          return;
+        }
         toggleScheduleModal();
       }
     });
@@ -56,7 +63,7 @@ const ScheduleForm = () => {
 
   return (
     <div>
-      <form className="flex flex-col space-y-4 " onClick={onCreateSchedule}>
+      <form className="flex flex-col space-y-4 " onSubmit={onCreateSchedule}>
         <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
         <p>
           <h4>장소</h4>
@@ -71,6 +78,7 @@ const ScheduleForm = () => {
           type="text"
           placeholder="✍🏻 작성"
           value={content}
+          onChange={handleContent}
           className=" p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg"
         />
         <button className="bg-button-color text-loginpage-color p-1 rounded-xl">추가하기</button>
