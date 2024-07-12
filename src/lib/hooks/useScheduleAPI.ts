@@ -4,6 +4,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 type ScheduleType = Tables<'schedule'>;
 
+export type UpdateScheduleType = {
+  content: string;
+  place: string;
+  address: string;
+  time: string;
+  meetingId: number;
+};
+
 const scheduleApi = new ScheduleAPI();
 
 // Schedule 불러오기
@@ -18,7 +26,7 @@ export const useSchedule = () => {
 export const useCreateSchedule = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (newSchedule: ScheduleType) => await scheduleApi.insertSchedule(newSchedule),
+    mutationFn: async (newSchedule: UpdateScheduleType) => await scheduleApi.insertSchedule(newSchedule),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['schedule']
@@ -44,7 +52,7 @@ export const useDeleteSchedule = () => {
 export const useUpdateSchedule = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updateData }: { id: number; updateData: ScheduleType }) =>
+    mutationFn: ({ id, updateData }: { id: number; updateData: UpdateScheduleType }) =>
       scheduleApi.updateSchedule(id, updateData),
     onSuccess: (data, variables) => {
       // 'variables'를 통해 mutationFn에 전달된 'id'에 접근

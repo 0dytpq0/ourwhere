@@ -1,7 +1,7 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 
-export type MeetingType = Tables<'meeting'>;
+type MeetingType = Tables<'meeting'>;
 
 export type UpdateMeetingType = {
   title: string;
@@ -35,7 +35,7 @@ class MeetingAPI {
   //   return data;
   // }
 
-  async selectMeeting(id: number): Promise<Tables<'meeting'> | null> {
+  async selectMeeting(id: number): Promise<MeetingType | null> {
     const { data } = await this.supabase.from('meeting').select('*').eq('id', id).single();
 
     return data;

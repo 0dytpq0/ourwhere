@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Input from '../atoms/js-Input/Input';
 import useModalStore from '@/stores/modal.store';
-import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
+import { useCreateSchedule, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 import { useParams } from 'next/navigation';
 
 const ScheduleForm = () => {
@@ -21,11 +21,21 @@ const ScheduleForm = () => {
     setTime(e.target.value);
   };
 
+  const { id } = useParams();
+
+  // const { data: schedule, isLoading } = useMeeting(meetingId);
   const { mutate: createSchedule } = useCreateSchedule();
+  const { mutate: updateSchedule } = useUpdateSchedule();
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
-  const params = useParams();
-  console.log(params.id);
+  // useEffect(() => {
+  //   if (meetingId && meeting) {
+  //     setPlace(meeting.title);
+  //     setMeetingStartDate(meeting.date.split('~')[0]);
+  //     setMeetingEndDate(meeting.date.split('~')[1]);
+  //     setMeetingPassword(meeting.password);
+  //   }
+  // }, [meeting, meetingId]);
 
   const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,14 +44,14 @@ const ScheduleForm = () => {
       place: place,
       address: address,
       time: `${time}`,
-      meetingId: Number(params.id)
+      meetingId: Number(id)
     };
 
-    // createSchedule(newSchedule, {
-    //   onSuccess: () => {
-    //     toggleScheduleModal();
-    //   }
-    // });
+    createSchedule(newSchedule, {
+      onSuccess: () => {
+        toggleScheduleModal();
+      }
+    });
   };
 
   return (
