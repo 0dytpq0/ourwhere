@@ -13,7 +13,6 @@ import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
 import { PlaceSearch } from '../molecules/PlaceSearch';
 
-
 export default function Meeting() {
   const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
