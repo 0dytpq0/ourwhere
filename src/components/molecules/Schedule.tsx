@@ -3,13 +3,15 @@
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
-import ScheduleForm from './ScheduleForm';
+import Modal from '../template/ScheduleModal';
+import useModalStore from '@/stores/modal.store';
 
 function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
   const [editingSchedule, setEditingSchedule] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const isScheduleModalOpen = useModalStore((state) => state.isScheduleModalOpen);
 
   const { data: scheduleData, error, isPending } = useSchedulesToMeetingId(meetingId);
 
@@ -24,36 +26,27 @@ function Schedule() {
 
   const handleEditClick = (schedule) => {
     setEditingSchedule(schedule);
-    setShowForm(true);
+    toggleScheduleModal();
   };
 
   const handleFormClose = () => {
     setEditingSchedule(null);
-    setShowForm(false);
+    toggleScheduleModal();
   };
 
   return (
     <div className="p-4">
-      {showForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-10">
-          <div className="bg-white p-4 rounded-lg shadow-lg relative z-20">
-            <ScheduleForm schedule={editingSchedule} onClose={handleFormClose} />
-            <button onClick={handleFormClose} className="absolute top-2 right-2 text-gray-700">
-              X
-            </button>
-          </div>
-        </div>
-      )}
+      {isScheduleModalOpen && <Modal schedule={editingSchedule} onClose={handleFormClose} />}
       {scheduleData.map((items, index) => (
         <div key={items.id} className="mb-4 p-4 bg-white flex rounded-lg shadow-lg relative">
-          {/* 시간이랑 인텍스 */}
+          {/* 시간이랑 인덱스 */}
           <div className="flex items-center mb-2">
             <div className="bg-purple-100 text-purple-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">
               {index + 1}
             </div>
             <div className="ml-4 text-lg font-semibold text-purple-700">{items.time}</div>
           </div>
-          {/* 제목,주소,컨텐트 */}
+          {/* 제목, 주소, 컨텐트 */}
           <div className="ml-12 flex-1">
             <div className="flex justify-between items-center">
               <div>

@@ -6,12 +6,13 @@ import useModalStore from '@/stores/modal.store';
 import { useCreateSchedule, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 import { useParams } from 'next/navigation';
 
-const ScheduleForm = () => {
+const ScheduleForm = ({ onClose }) => {
   const [placeSearch, setPlaceSearch] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
   const [time, setTime] = useState('');
   const [content, setContent] = useState('');
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   const handlePlaceSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaceSearch(e.target.value);
@@ -30,7 +31,7 @@ const ScheduleForm = () => {
   // const { data: schedule, isLoading } = useMeeting(meetingId);
   const { mutate: createSchedule } = useCreateSchedule();
   // const { mutate: updateSchedule } = useUpdateSchedule();
-  const { isScheduleModalOpen, toggleScheduleModal } = useModalStore();
+  const { isScheduleModalOpen } = useModalStore();
   // const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   // useEffect(() => {
@@ -60,6 +61,7 @@ const ScheduleForm = () => {
         // if (!data) {
         //   return;
         // }
+        onClose;
         toggleScheduleModal();
       }
     });
