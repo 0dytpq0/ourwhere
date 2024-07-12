@@ -3,15 +3,15 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Map, CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
-import { createClient } from '@/supabase/client';
 import useGeoLocation from '@/lib/hooks/useGeolocation';
 import { IMGURLS } from '@/constants/images.constant';
+import { Tables } from '@/types/supabase';
 
-const supabase = createClient();
+type ScheduleType = Tables<'schedule'>;
 
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 
-const KakaoMap = () => {
+const KakaoMap = ({ scheduleData }: { scheduleData: ScheduleType[] }) => {
   const { id } = useParams();
   const meetingId = parseInt(id, 10);
   const myLocation = useGeoLocation();
@@ -22,70 +22,59 @@ const KakaoMap = () => {
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
-    const fetchScheduleData = async () => {
-      const { data, error } = await supabase.from('schedule').select('*').eq('meetingId', meetingId);
+    const script = document.createElement('script');
+    script.src = KAKAO_SDK_URL;
+    script.onload = () => {
+      kakao.maps.load(() => {
+        setIsLoaded(true);
+        const geocoder = new kakao.maps.services.Geocoder();
 
-      if (error) {
-        console.error('Error fetching schedule data:', error);
-        return;
-      }
-
-      const script = document.createElement('script');
-      script.src = KAKAO_SDK_URL;
-      script.onload = () => {
-        kakao.maps.load(() => {
-          setIsLoaded(true);
-          const geocoder = new kakao.maps.services.Geocoder();
-
-          if (data.length === 0) {
-            if (myLocation) {
-              setMapCenter({ lat: myLocation.latitude, lng: myLocation.longitude });
-            }
-            return;
+        if (!scheduleData || scheduleData.length === 0) {
+          if (myLocation) {
+            setMapCenter({ lat: myLocation.latitude, lng: myLocation.longitude });
           }
+          return;
+        }
 
-          const promises = data.map((scheduleItem, index) => {
-            return new Promise<{ lat: number; lng: number; title: string; number: number }>((resolve, reject) => {
-              geocoder.addressSearch(scheduleItem.address!, (result, status) => {
-                if (status === kakao.maps.services.Status.OK) {
-                  const coords = {
-                    lat: parseFloat(result[0].y),
-                    lng: parseFloat(result[0].x),
-                    title: scheduleItem.place,
-                    number: index + 1
-                  };
-                  resolve(coords);
-                } else {
-                  reject(status);
-                }
-              });
+        const promises = scheduleData.map((scheduleItem, index) => {
+          return new Promise<{ lat: number; lng: number; title: string; number: number }>((resolve, reject) => {
+            geocoder.addressSearch(scheduleItem.address!, (result, status) => {
+              if (status === kakao.maps.services.Status.OK) {
+                const coords = {
+                  lat: parseFloat(result[0].y),
+                  lng: parseFloat(result[0].x),
+                  title: scheduleItem.place,
+                  number: index + 1
+                };
+                resolve(coords);
+              } else {
+                reject(status);
+              }
             });
           });
-
-          Promise.all(promises)
-            .then((results) => {
-              setMarkerPositions(results);
-
-              if (results.length > 0) {
-                const avgLat = results.reduce((acc, pos) => acc + pos.lat, 0) / results.length;
-                const avgLng = results.reduce((acc, pos) => acc + pos.lng, 0) / results.length;
-                setMapCenter({ lat: avgLat, lng: avgLng });
-              } else if (myLocation) {
-                setMapCenter({ lat: myLocation.latitude, lng: myLocation.longitude });
-              }
-            })
-            .catch((error) => {
-              console.error('Geocoder failed due to:', error);
-            });
         });
-      };
-      document.head.appendChild(script);
-      return () => {
-        document.head.removeChild(script);
-      };
-    };
 
-    fetchScheduleData();
+        Promise.all(promises)
+          .then((results) => {
+            setMarkerPositions(results);
+
+            if (results.length > 0) {
+              const avgLat = results.reduce((acc, pos) => acc + pos.lat, 0) / results.length;
+              const avgLng = results.reduce((acc, pos) => acc + pos.lng, 0) / results.length;
+              setMapCenter({ lat: avgLat, lng: avgLng });
+            } else if (myLocation) {
+              setMapCenter({ lat: myLocation.latitude, lng: myLocation.longitude });
+            }
+          })
+          .catch((error) => {
+            console.error('Geocoder failed due to:', error);
+          });
+      });
+    };
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
   }, [meetingId, myLocation]);
 
   useEffect(() => {
