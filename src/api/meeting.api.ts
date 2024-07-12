@@ -1,7 +1,7 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 
-type MeetingType = Tables<'meeting'>;
+export type MeetingType = Tables<'meeting'>;
 
 export type UpdateMeetingType = {
   title: string;
