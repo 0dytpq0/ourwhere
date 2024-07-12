@@ -2,19 +2,12 @@ import React from 'react';
 import ScheduleForm from '../molecules/ScheduleForm';
 import useModalStore from '@/stores/modal.store';
 
-const ScheduleModal = () => {
+const Modal = ({ schedule, onClose }) => {
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
-
-  const closeScheduleModal = () => {
+  const closeModal = () => {
+    onClose;
     toggleScheduleModal();
   };
-
-  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      closeScheduleModal();
-    }
-  };
-
   return (
     <div
       onClick={handleOutsideClick}
@@ -22,8 +15,8 @@ const ScheduleModal = () => {
     >
       <div className="bg-white p-10 rounded-lg shadow-lg relative">
         <h2>1</h2>
-        <ScheduleForm />
-        <button onClick={closeScheduleModal} className="absolute top-1 right-2 text-gray-500 p-1 text-2xl">
+        <ScheduleForm onClose={onClose} />
+        <button onClick={closeModal} className=" text-gray-500 p-1 ">
           x
         </button>
       </div>

@@ -7,12 +7,13 @@ import { useCreateSchedule, useSchedule, useSchedulesToMeetingId, useUpdateSched
 import { useParams } from 'next/navigation';
 import { PlaceSearch } from './PlaceSearch';
 
-const ScheduleForm = () => {
+const ScheduleForm = ({ onClose }) => {
   const [placeSearch, setPlaceSearch] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
   const [time, setTime] = useState('');
   const [content, setContent] = useState('');
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   const handlePlaceSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaceSearch(e.target.value);
@@ -33,10 +34,9 @@ const ScheduleForm = () => {
 
   const { data: schedule, isLoading } = useSchedule(scheduleId);
   const { mutate: createSchedule } = useCreateSchedule();
-  const { mutate: updateSchedule } = useUpdateSchedule();
-  const { isScheduleModalOpen, toggleScheduleModal } = useModalStore();
-
-  console.log(schedule);
+  // const { mutate: updateSchedule } = useUpdateSchedule();
+  const { isScheduleModalOpen } = useModalStore();
+  // const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   useEffect(() => {
     if (schedule) {
@@ -57,28 +57,16 @@ const ScheduleForm = () => {
       meetingId: meetingId
     };
 
-    if (scheduleId) {
-      if (confirm('이대로 수정하시겠습니까?')) {
-        updateSchedule(
-          { id: meetingId, updateData: newSchedule },
-          {
-            onSuccess: () => {
-              toggleScheduleModal();
-            }
-          }
-        );
+    createSchedule(newSchedule, {
+      onSuccess: () => {
+        // console.log(data);
+        // if (!data) {
+        //   return;
+        // }
+        onClose;
+        toggleScheduleModal();
       }
-    } else {
-      createSchedule(newSchedule, {
-        onSuccess: (data) => {
-          console.log(data);
-          if (!data) {
-            return;
-          }
-          toggleScheduleModal();
-        }
-      });
-    }
+    });
   };
 
   if (isLoading) {

@@ -1,62 +1,52 @@
 'use client';
 
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
-import ScheduleModal from '../template/ScheduleModal';
+import Modal from '../template/ScheduleModal';
+import useModalStore from '@/stores/modal.store';
 
 function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
-  const router = useRouter();
   const [editingSchedule, setEditingSchedule] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const isScheduleModalOpen = useModalStore((state) => state.isScheduleModalOpen);
 
   const { data: scheduleData, error, isPending } = useSchedulesToMeetingId(meetingId);
 
   if (error) {
     console.log('error', error);
-    return;
+    return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
   }
   if (isPending) {
-    return (
-      <>
-        <div>Loading...</div>
-      </>
-    );
+    return <div>Loading...</div>;
   }
   if (!scheduleData) return <div>데이터를 받아올 수 없습니다.</div>;
 
   const handleEditClick = (schedule) => {
     setEditingSchedule(schedule);
-    setShowForm(true);
+    toggleScheduleModal();
   };
 
   const handleFormClose = () => {
     setEditingSchedule(null);
-    setShowForm(false);
+    toggleScheduleModal();
   };
 
   return (
     <div className="p-4">
-      {showForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-10">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
-            <ScheduleModal schedule={editingSchedule} onClose={handleFormClose} />
-          </div>
-        </div>
-      )}
-      {error && <div className="text-red-500">{error}</div>}
+      {isScheduleModalOpen && <Modal schedule={editingSchedule} onClose={handleFormClose} />}
       {scheduleData.map((items, index) => (
         <div key={items.id} className="mb-4 p-4 bg-white flex rounded-lg shadow-lg relative">
-          {/* 시간이랑 인텍스 */}
+          {/* 시간이랑 인덱스 */}
           <div className="flex items-center mb-2">
             <div className="bg-purple-100 text-purple-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">
               {index + 1}
             </div>
             <div className="ml-4 text-lg font-semibold text-purple-700">{items.time}</div>
           </div>
-          {/* 제목,주소,컨텐트 */}
+          {/* 제목, 주소, 컨텐트 */}
           <div className="ml-12 flex-1">
             <div className="flex justify-between items-center">
               <div>
