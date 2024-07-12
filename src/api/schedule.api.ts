@@ -14,12 +14,25 @@ class ScheduleAPI {
    *
    * @returns schedule 테이블 데이터 전부
    */
-  async selectSchedule() {
-    const { data } = await this.supabase.from('schedule').select().returns<Tables<'schedule'>>();
+  async selectSchedules() {
+    const { data } = await this.supabase.from('schedule').select().returns<Tables<'schedule'>[]>();
     console.log('data', data);
     return data;
   }
 
+  async selectUserSchedule(meetingId: number) {
+    const { data, error } = await this.supabase
+      .from('schedule')
+      .select()
+      .eq('meetingId', meetingId)
+      .returns<Tables<'schedule'>[]>();
+    if (error) {
+      console.error('Error fetching schedule:', error);
+      return null;
+    }
+    console.log('data', data);
+    return data;
+  }
   /**
    *
    * @param insertData  {
@@ -70,6 +83,15 @@ class ScheduleAPI {
       .eq('id', id)
       .select('*');
 
+    return data;
+  }
+
+  async selectScheduleOfMeeting(id: number) {
+    const { data } = await this.supabase
+      .from('schedule')
+      .select('*')
+      .eq('meetingId', id)
+      .returns<Tables<'schedule'>[]>();
     return data;
   }
 }

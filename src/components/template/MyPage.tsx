@@ -1,12 +1,45 @@
 'use client';
-import { useState } from 'react';
+import api from '@/api/api';
+import { MeetingType } from '@/api/meeting.api';
+import { useAuthStore } from '@/providers/js-auth.store.provider';
+import useMeetingStore from '@/stores/meeting.store';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
+
 export default function MyPageTemplate() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const { user, setUser } = useAuthStore((state) => state);
+  const [userMeetings, setUserMeetings] = useState<MeetingType[]>([]);
+  const { meetingId, setMeetingId } = useMeetingStore((state) => state);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      const fetchUserMeetings = async () => {
+        const meetings = await api.meeting.selectUserMeetings(user.id);
+        if (!meetings) {
+          return null;
+        }
+        setUserMeetings(meetings);
+      };
+
+      fetchUserMeetings();
+    }
+  }, [user]);
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
+
+  const handleMeetingClick = (id: number | undefined) => {
+    console.log('id', id);
+    setMeetingId(id!);
+    router.push(`/meeting/${id}`);
+  };
+
+  console.log('업데이트', userMeetings);
+  console.log('마이페이지 유저', user);
 
   return (
     <div className="flex flex-row items-center mt-24 m-20">
@@ -50,13 +83,24 @@ export default function MyPageTemplate() {
       </div>
 
       <div className="w-screen">
-        <h2 className="text-center font-bold">내 모임 목록</h2>
-        <div className="border-solid w-full bg-loginpage-color mb-2 p-4 rounded-md text-font-color">
-          <div className="flex justify-between items-center mb-2">
-            <span>첫 번째 모임</span>
-            <span className="bg-white px-14 py-1 rounded-md">2024-07-10</span>
-          </div>
-        </div>
+        <h2 className="text-center font-bold mb-4">내 모임 목록</h2>
+        {userMeetings ? (
+          userMeetings?.map((meeting) => (
+            <div
+              key={meeting.id}
+              className="border-solid w-full bg-loginpage-color mb-2 p-4 rounded-md text-font-color"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleMeetingClick(meeting.id)}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span>{meeting.title}</span>
+                <span className="bg-white px-14 py-1 rounded-md">{meeting.date}</span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">내 모임이 없습니다.</p>
+        )}
       </div>
     </div>
   );
