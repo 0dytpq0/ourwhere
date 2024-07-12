@@ -3,7 +3,7 @@
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import ScheduleForm from './ScheduleForm';
+import ScheduleModal from '../template/ScheduleModal';
 
 function Schedule() {
   const { id } = useParams();
@@ -42,7 +42,7 @@ function Schedule() {
       {showForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-10">
           <div className="bg-white p-4 rounded-lg shadow-lg">
-            <ScheduleForm schedule={editingSchedule} onClose={handleFormClose} />
+            <ScheduleModal schedule={editingSchedule} onClose={handleFormClose} />
           </div>
         </div>
       )}

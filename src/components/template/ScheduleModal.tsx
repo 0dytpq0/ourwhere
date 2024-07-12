@@ -2,7 +2,7 @@ import React from 'react';
 import ScheduleForm from '../molecules/ScheduleForm';
 import useModalStore from '@/stores/modal.store';
 
-const Modal = () => {
+const ScheduleModal = () => {
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
   const closeScheduleModal = () => {
@@ -31,4 +31,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default ScheduleModal;
