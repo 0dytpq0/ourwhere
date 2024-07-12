@@ -1,11 +1,11 @@
 'use client';
 
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
-import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
-import Modal from '../template/ScheduleModal';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import Modal from '../template/ScheduleModal';
 
 type ScheduleType = Tables<'schedule'>;
 
@@ -25,6 +25,7 @@ function Schedule() {
   if (isPending) {
     return <div>Loading...</div>;
   }
+
   if (!scheduleData) return <div>데이터를 받아올 수 없습니다.</div>;
 
   const handleEditClick = (schedule: ScheduleType) => {

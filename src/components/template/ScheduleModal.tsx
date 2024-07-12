@@ -1,12 +1,11 @@
-import React from 'react';
-import ScheduleForm from '../molecules/ScheduleForm';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
+import ScheduleForm from '../molecules/ScheduleForm';
 
 type ScheduleType = Tables<'schedule'>;
 interface scheduleModalProps {
-  schedule: ScheduleType | null;
-  onClose: () => void;
+  schedule?: ScheduleType | null;
+  onClose?: () => void;
 }
 
 const Modal = ({ schedule, onClose }: scheduleModalProps) => {
