@@ -6,7 +6,11 @@ import useModalStore from '@/stores/modal.store';
 import { useCreateSchedule, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 import { useParams } from 'next/navigation';
 
-const ScheduleForm = ({ onClose }) => {
+interface onCloseProps {
+  onClose: () => void;
+}
+
+const ScheduleForm = ({ onClose }: onCloseProps) => {
   const [placeSearch, setPlaceSearch] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
