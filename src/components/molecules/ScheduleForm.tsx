@@ -22,7 +22,7 @@ const ScheduleForm = () => {
   };
 
   const { mutate: createSchedule } = useCreateSchedule();
-  const toggleModal = useModalStore((state) => state.toggleModal);
+  const { toggleScheduleModal } = useModalStore();
 
   const params = useParams();
   console.log(params.id);
@@ -39,7 +39,7 @@ const ScheduleForm = () => {
 
     createSchedule(newSchedule, {
       onSuccess: () => {
-        toggleModal();
+        toggleScheduleModal();
       }
     });
   };

@@ -24,7 +24,7 @@ export default function Meeting() {
     const fetchMeetings = async () => {
       try {
         const data = await meetingAPI.selectMeeting(Number(params.id));
-        console.log(data);
+        // console.log(data);
         if (!data) return;
         setMeeting(data);
       } catch (error) {

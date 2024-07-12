@@ -21,8 +21,14 @@ class MeetingAPI {
     return data;
   }
 
-  async selectMeeting(id: number) {
-    const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>>().single();
+  // async selectMeeting(id: number)  {
+  //   const { data } = await this.supabase.from('meeting').select().eq('id', id).returns<Tables<'meeting'>>().single();
+
+  //   return data;
+  // }
+
+  async selectMeeting(id: number): Promise<Tables<'meeting'> | null> {
+    const { data } = await this.supabase.from('meeting').select('*').eq('id', id).single();
 
     return data;
   }

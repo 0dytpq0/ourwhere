@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import useModalStore from '@/stores/modal.store';
 import { useParams, useRouter } from 'next/navigation';
 import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
-import Meeting from '../template/Meeting';
+import { Tables } from '@/types/supabase';
+
+type MeetingType = Tables<'meeting'>;
 
 const MeetingForm = () => {
   const [meetingName, setMeetingName] = useState('');
@@ -26,38 +28,41 @@ const MeetingForm = () => {
   };
 
   const { id } = useParams();
-  const { data: meeting, isLoading } = useMeeting(id);
+  const meetingId = Number(id);
+  const { data: meeting, isLoading } = useMeeting(meetingId);
   const { mutate: createMeeting } = useCreateMeeting();
   const { mutate: updateMeeting } = useUpdateMeeting();
-  const toggleModal = useModalStore((state) => state.toggleModal);
+  const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
 
+  console.log(meeting);
+
   useEffect(() => {
-    if (id && meeting) {
+    if (meetingId && meeting) {
       setMeetingName(meeting.title);
-      setMeetingStartDate(meeting.startDate);
-      setMeetingEndDate(Meeting.endDate);
+      setMeetingStartDate(meeting.date.split('~')[0]);
+      setMeetingEndDate(meeting.date.split('~')[1]);
       setMeetingPassword(meeting.password);
     }
-  }, [id, meeting]);
+  }, [meeting, meetingId]);
 
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newMeeting = {
+    const newMeeting: Omit<MeetingType, 'id'> = {
       title: meetingName,
-      startDate: meetingStartDate,
-      endDate: meetingEndDate,
-      // date: `${meetingStartDate}~${meetingEndDate}`,
+      // startDate: meetingStartDate,
+      // endDate: meetingEndDate,
+      date: `${meetingStartDate}~${meetingEndDate}`,
       password: meetingPassword
     };
 
-    if (id) {
+    if (meetingId) {
       updateMeeting(
-        { id, updateData: newMeeting },
+        { id: meetingId, updateData: newMeeting },
         {
           onSuccess: () => {
-            router.push(`meeting/${id}`);
-            toggleModal();
+            router.push(`meeting/${meetingId}`);
+            toggleMeetingModal();
           }
         }
       );
@@ -68,7 +73,7 @@ const MeetingForm = () => {
             return;
           }
           router.push(`/meeting/${data[0].id}`);
-          toggleModal();
+          toggleMeetingModal();
         }
       });
     }

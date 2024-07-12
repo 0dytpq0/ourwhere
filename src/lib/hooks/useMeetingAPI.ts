@@ -17,7 +17,7 @@ export const useMeetings = () => {
 
 // Meeting 한개 불러오기
 export const useMeeting = (id: number) => {
-  return useQuery({
+  return useQuery<MeetingType | null>({
     queryKey: ['meeting', id],
     queryFn: () => meetingApi.selectMeeting(id)
   });
