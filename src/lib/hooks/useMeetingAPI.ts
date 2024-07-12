@@ -5,6 +5,12 @@ import { Tables } from '@/types/supabase';
 
 type MeetingType = Tables<'meeting'>;
 
+export type UpdateMeetingType = {
+  title: string;
+  date: string;
+  password: string;
+};
+
 const meetingApi = new MeetingAPI();
 
 // Meeting 여러개 불러오기
@@ -17,7 +23,7 @@ export const useMeetings = () => {
 
 // Meeting 한개 불러오기
 export const useMeeting = (id: number) => {
-  return useQuery({
+  return useQuery<MeetingType | null>({
     queryKey: ['meeting', id],
     queryFn: () => meetingApi.selectMeeting(id)
   });
@@ -27,7 +33,7 @@ export const useMeeting = (id: number) => {
 export const useCreateMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (newMeeting: MeetingType) => await meetingApi.insertMeeting(newMeeting),
+    mutationFn: async (newMeeting: UpdateMeetingType) => await meetingApi.insertMeeting(newMeeting),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['meetings']
@@ -37,7 +43,7 @@ export const useCreateMeeting = () => {
 };
 
 // Meeting 삭제하기
-export function useDeleteMeeting() {
+export const useDeleteMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => meetingApi.deleteMeeting(id),
@@ -47,13 +53,13 @@ export function useDeleteMeeting() {
       });
     }
   });
-}
+};
 
 // Meeting 수정하기
-export function useUpdateMeeting() {
+export const useUpdateMeeting = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updateData }: { id: number; updateData: MeetingType }) =>
+    mutationFn: ({ id, updateData }: { id: number; updateData: UpdateMeetingType }) =>
       meetingApi.updateMeeting(id, updateData),
     onSuccess: (data, variables) => {
       // 'variables'를 통해 mutationFn에 전달된 'id'에 접근
@@ -65,4 +71,4 @@ export function useUpdateMeeting() {
       });
     }
   });
-}
+};
