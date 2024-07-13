@@ -1,16 +1,5 @@
-import ScheduleAPI from '@/api/schedule.api';
-import { Tables } from '@/types/supabase';
+import ScheduleAPI, { UpdateScheduleType } from '@/api/schedule.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-type ScheduleType = Tables<'schedule'>;
-
-export type UpdateScheduleType = {
-  content: string;
-  place: string;
-  address: string;
-  time: string;
-  meetingId: number;
-};
 
 const scheduleApi = new ScheduleAPI();
 

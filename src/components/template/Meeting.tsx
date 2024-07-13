@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Schedule from '../molecules/Schedule';
-import ScheduleModal from './ScheduleModal';
 import KebabIcon from '../atoms/Kebab';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
@@ -11,11 +10,12 @@ import { useParams, useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
 import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
-import { PlaceSearch } from '../molecules/PlaceSearch';
+
+import CreateScheduleModal from './CreateScheduleModal';
 
 export default function Meeting() {
-  const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
-  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const { isCreateScheduleModalOpen, isMeetingModalOpen } = useModalStore();
+  const toggleCreateScheduleModal = useModalStore((state) => state.toggleCreateScheduleModal);
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
@@ -74,7 +74,7 @@ export default function Meeting() {
             <KebabIcon />
           </div>
           <h1 className="text-4xl mb-3 text-font-color">🎈{meeting.title}🎈</h1>
-          {/* 수적,삭제 버튼 */}
+          {/* 수정,삭제 버튼 */}
           {showMenu === meeting.id && (
             <div className="absolute right-12 top-4 bg-white rounded-md shadow-md p-2">
               <button
@@ -98,15 +98,14 @@ export default function Meeting() {
           </div>
           <Schedule />
           <button
-            onClick={toggleScheduleModal}
+            onClick={toggleCreateScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
           >
             +
           </button>
         </div>
       </section>
-
-      {isScheduleModalOpen && <ScheduleModal />}
+      {isCreateScheduleModalOpen && <CreateScheduleModal />}
       {isMeetingModalOpen && <MeetingModal />}
     </>
   );

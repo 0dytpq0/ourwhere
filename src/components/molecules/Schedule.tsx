@@ -6,22 +6,17 @@ import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
 // import { useState } from 'react';
 import useScheduleStore from '@/stores/schedule.store';
+import EditScheduleModal from '../template/EditScheduleModal';
 
 type ScheduleType = Tables<'schedule'>;
 
 function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
-  // const [editingSchedule, setEditingSchedule] = useState<ScheduleType | null>(null);
-  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
-  const isScheduleModalOpen = useModalStore((state) => state.isScheduleModalOpen);
+  const { isEditScheduleModalOpen, toggleEditScheduleModal } = useModalStore((state) => state);
 
   const setClickScheduleId = useScheduleStore((state) => state.setClickScheduleId);
   const { data: schedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
-
-  console.log('schedule페이지', schedules);
-
-  // const setScheduleData = useScheduleStore((state) => state.setScheduleData);
 
   if (error) {
     console.log('error', error);
@@ -34,17 +29,10 @@ function Schedule() {
   if (!schedules) return <div>데이터를 받아올 수 없습니다.</div>;
 
   const handleEditClick = (id: number) => {
-    console.log(Schedule);
-    // setEditingSchedule(schedule);
-    toggleScheduleModal();
+    console.log(id);
+    toggleEditScheduleModal();
     setClickScheduleId(id);
-    // setScheduleData(schedule);
   };
-
-  // const handleFormClose = () => {
-  //   setEditingSchedule(null);
-  //   toggleScheduleModal();
-  // };
 
   return (
     <div className="p-4">
@@ -68,7 +56,6 @@ function Schedule() {
                 {/* 수정 버튼 */}
                 <button
                   onClick={() => {
-                    console.log(schedule);
                     handleEditClick(schedule.id);
                   }}
                   className="text-purple-500 hover:text-purple-700"
@@ -99,6 +86,7 @@ function Schedule() {
           </div>
         </div>
       ))}
+      {isEditScheduleModalOpen && <EditScheduleModal />}
     </div>
   );
 }
