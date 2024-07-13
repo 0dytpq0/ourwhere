@@ -5,6 +5,7 @@ import useModalStore from '@/stores/modal.store';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import Input from '../atoms/js-Input/Input';
+
 interface onCloseProps {
   onClose?: () => void;
 }

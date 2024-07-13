@@ -1,13 +1,10 @@
 'use Client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useModalStore from '@/stores/modal.store';
 import { useParams, useRouter } from 'next/navigation';
 import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
-import { Tables } from '@/types/supabase';
 import Input from '../atoms/js-Input/Input';
-
-type MeetingType = Tables<'meeting'>;
 
 const MeetingForm = () => {
   const [meetingName, setMeetingName] = useState('');
@@ -36,8 +33,6 @@ const MeetingForm = () => {
   const { mutate: updateMeeting } = useUpdateMeeting();
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
-
-  console.log(meeting);
 
   if (isLoading) {
     return <div>로딩중...</div>;
