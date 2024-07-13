@@ -37,14 +37,11 @@ const MeetingForm = () => {
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
 
-  useEffect(() => {
-    if (meetingId && meeting) {
-      setMeetingName(meeting.title);
-      setMeetingStartDate(meeting.date.split('~')[0]);
-      setMeetingEndDate(meeting.date.split('~')[1]);
-      setMeetingPassword(meeting.password);
-    }
-  }, [meeting, meetingId]);
+  console.log(meeting);
+
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -81,10 +78,6 @@ const MeetingForm = () => {
     }
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
       <div className="flex flex-col gap-[2rem]">
@@ -94,7 +87,7 @@ const MeetingForm = () => {
             type="text"
             id="meetingName"
             onChange={handleMeetingName}
-            value={meetingName}
+            value={meeting?.title}
             className="border-2 rounded-md h-12 text-xl px-4"
           />
         </div>
@@ -107,7 +100,7 @@ const MeetingForm = () => {
               type="date"
               id="meetingStartDate"
               onChange={handleMeetingStartDate}
-              value={meetingStartDate}
+              value={meeting?.date.split('~')[0]}
               className=" border-2 rounded-md h-8 text-xs px-2"
             />
           </div>
@@ -120,7 +113,7 @@ const MeetingForm = () => {
               type="date"
               id="meetingEndDate"
               onChange={handleMeetingEndDate}
-              value={meetingEndDate}
+              value={meeting?.date.split('~')[1]}
               className="border-2 rounded-md h-8 text-xs px-2"
             />
           </div>
@@ -133,7 +126,7 @@ const MeetingForm = () => {
             type="password"
             placeholder="****"
             onChange={handleMeetingPassword}
-            value={meetingPassword}
+            value={meeting?.password}
             className="border-2 rounded-md h-8 text-xs px-2"
           />
         </div>
