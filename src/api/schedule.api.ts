@@ -95,11 +95,8 @@ class ScheduleAPI {
   }
 
   async selectScheduleOfMeeting(id: number) {
-    const { data } = await this.supabase
-      .from('schedule')
-      .select('*')
-      .eq('meetingId', id)
-      .returns<Tables<'schedule'>[]>();
+    const { data } = await this.supabase.from('schedule').select('*').eq('id', id).single();
+    // .returns<Tables<'schedule'>[]>();
     return data;
   }
 }

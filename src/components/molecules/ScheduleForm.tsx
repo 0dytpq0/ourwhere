@@ -1,21 +1,24 @@
 'use client';
 
-import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
+import { useCreateSchedule, useSchedule, useSchedulesToMeetingId, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 import useModalStore from '@/stores/modal.store';
-import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import Input from '../atoms/js-Input/Input';
+import useScheduleStore from '@/stores/schedule.store';
+import { useParams } from 'next/navigation';
 
 interface onCloseProps {
   onClose?: () => void;
 }
 const ScheduleForm = ({ onClose }: onCloseProps) => {
+  const { id } = useParams();
   const [placeSearch, setPlaceSearch] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
   const [time, setTime] = useState('');
   const [content, setContent] = useState('');
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const clickScheduleId = useScheduleStore((state) => state.clickScheduleId);
 
   const handlePlaceSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaceSearch(e.target.value);
@@ -29,54 +32,49 @@ const ScheduleForm = ({ onClose }: onCloseProps) => {
     setContent(e.target.value);
   };
 
-  const { id } = useParams();
+  const { data: schedule, isLoading } = useSchedule(clickScheduleId);
 
-  // const { data: schedule, isLoading } = useMeeting(meetingId);
-  const { mutate: createSchedule } = useCreateSchedule();
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
+  console.log('clickScheduleId', clickScheduleId);
+  console.log('schedule data', schedule);
+
+  // const { mutate: createSchedule } = useCreateSchedule();
   // const { mutate: updateSchedule } = useUpdateSchedule();
-  const { isScheduleModalOpen } = useModalStore();
-  // const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  // const { isScheduleModalOpen } = useModalStore();
 
-  // useEffect(() => {
-  //   if (meetingId && meeting) {
-  //     setPlace(meeting.title);
-  //     setMeetingStartDate(meeting.date.split('~')[0]);
-  //     setMeetingEndDate(meeting.date.split('~')[1]);
-  //     setMeetingPassword(meeting.password);
-  //   }
-  // }, [meeting, meetingId]);
+  // // const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
-  console.log(isScheduleModalOpen);
+  // const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const newSchedule = {
+  //     content: content,
+  //     place: place,
+  //     address: address,
+  //     time: `${time}`,
+  //     meetingId: Number(id)
+  //   };
 
-  const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newSchedule = {
-      content: content,
-      place: place,
-      address: address,
-      time: `${time}`,
-      meetingId: Number(id)
-    };
-
-    createSchedule(newSchedule, {
-      onSuccess: () => {
-        // console.log(data);
-        // if (!data) {
-        //   return;
-        // }
-        onClose;
-        toggleScheduleModal();
-      }
-    });
-  };
+  //   createSchedule(newSchedule, {
+  //     onSuccess: () => {
+  //       // console.log(data);
+  //       // if (!data) {
+  //       //   return;
+  //       // }
+  //       onClose;
+  //       toggleScheduleModal();
+  //     }
+  //   });
+  // };
 
   return (
     <div>
-      <form className="flex flex-col space-y-4 " onSubmit={onCreateSchedule}>
+      <form className="flex flex-col space-y-4 ">
         <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
         <div>
           <h4>장소</h4>
-          <div className="border w-full h-10 ">{place}</div>
+          <div className="border w-full h-10 ">{}</div>
         </div>
         <div>
           <h4>주소</h4>
