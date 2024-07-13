@@ -37,8 +37,6 @@ const ScheduleForm = ({ onClose }: onCloseProps) => {
   if (isLoading) {
     return <div>로딩중...</div>;
   }
-  console.log('clickScheduleId', clickScheduleId);
-  console.log('schedule data', schedule);
 
   // const { mutate: createSchedule } = useCreateSchedule();
   // const { mutate: updateSchedule } = useUpdateSchedule();
@@ -74,17 +72,17 @@ const ScheduleForm = ({ onClose }: onCloseProps) => {
         <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
         <div>
           <h4>장소</h4>
-          <div className="border w-full h-10 ">{}</div>
+          <div className="border w-full h-10 ">{schedule?.place}</div>
         </div>
         <div>
           <h4>주소</h4>
-          <div className="border w-full h-10 ">{address}</div>
+          <div className="border w-full h-10 ">{schedule?.address}</div>
         </div>
-        <Input type="time" value={time} label="시간" required onChange={handleTime} />
+        <Input type="time" value={schedule?.time} label="시간" required onChange={handleTime} />
         <input
           type="text"
           placeholder="✍🏻 작성"
-          value={content}
+          value={schedule?.content}
           onChange={handleContent}
           className=" p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg"
         />
