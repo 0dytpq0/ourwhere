@@ -14,6 +14,7 @@ const MeetingModal = () => {
       closeMeetingModal();
     }
   };
+
   return (
     <div
       onClick={handleOutsideClick}

@@ -1,15 +1,18 @@
 'use client';
 
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
-import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
-import Modal from '../template/ScheduleModal';
 import useModalStore from '@/stores/modal.store';
+import { Tables } from '@/types/supabase';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import Modal from '../template/ScheduleModal';
+
+type ScheduleType = Tables<'schedule'>;
 
 function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
-  const [editingSchedule, setEditingSchedule] = useState(null);
+  const [editingSchedule, setEditingSchedule] = useState<ScheduleType | null>(null);
   const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
   const isScheduleModalOpen = useModalStore((state) => state.isScheduleModalOpen);
 
@@ -22,9 +25,10 @@ function Schedule() {
   if (isPending) {
     return <div>Loading...</div>;
   }
+
   if (!scheduleData) return <div>데이터를 받아올 수 없습니다.</div>;
 
-  const handleEditClick = (schedule) => {
+  const handleEditClick = (schedule: ScheduleType) => {
     setEditingSchedule(schedule);
     toggleScheduleModal();
   };
@@ -37,7 +41,7 @@ function Schedule() {
   return (
     <div className="p-4">
       {isScheduleModalOpen && <Modal schedule={editingSchedule} onClose={handleFormClose} />}
-      {scheduleData.map((items, index) => (
+      {scheduleData.map((items: ScheduleType, index) => (
         <div key={items.id} className="mb-4 p-4 bg-white flex rounded-lg shadow-lg relative">
           {/* 시간이랑 인덱스 */}
           <div className="flex items-center mb-2">

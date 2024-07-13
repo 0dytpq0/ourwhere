@@ -104,7 +104,6 @@ export default function Meeting() {
             +
           </button>
         </div>
-        {/* <PlaceSearch /> */}
       </section>
 
       {isScheduleModalOpen && <ScheduleModal />}

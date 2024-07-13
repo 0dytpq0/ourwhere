@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Input from '../atoms/js-Input/Input';
+import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
 import useModalStore from '@/stores/modal.store';
-import { useCreateSchedule, useSchedule, useSchedulesToMeetingId, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 import { useParams } from 'next/navigation';
-import { PlaceSearch } from './PlaceSearch';
-
-const ScheduleForm = ({ onClose }) => {
+import React, { useState } from 'react';
+import Input from '../atoms/js-Input/Input';
+interface onCloseProps {
+  onClose?: () => void;
+}
+const ScheduleForm = ({ onClose }: onCloseProps) => {
   const [placeSearch, setPlaceSearch] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
@@ -28,24 +29,23 @@ const ScheduleForm = ({ onClose }) => {
   };
 
   const { id } = useParams();
-  const meetingId = Number(id);
 
-  const scheduleId = 118;
-
-  const { data: schedule, isLoading } = useSchedule(scheduleId);
+  // const { data: schedule, isLoading } = useMeeting(meetingId);
   const { mutate: createSchedule } = useCreateSchedule();
   // const { mutate: updateSchedule } = useUpdateSchedule();
   const { isScheduleModalOpen } = useModalStore();
   // const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
 
-  useEffect(() => {
-    if (schedule) {
-      setPlace(schedule.place);
-      setAddress(schedule.address);
-      setTime(schedule.time);
-      setContent(schedule.content);
-    }
-  }, [schedule]);
+  // useEffect(() => {
+  //   if (meetingId && meeting) {
+  //     setPlace(meeting.title);
+  //     setMeetingStartDate(meeting.date.split('~')[0]);
+  //     setMeetingEndDate(meeting.date.split('~')[1]);
+  //     setMeetingPassword(meeting.password);
+  //   }
+  // }, [meeting, meetingId]);
+
+  console.log(isScheduleModalOpen);
 
   const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,7 +54,7 @@ const ScheduleForm = ({ onClose }) => {
       place: place,
       address: address,
       time: `${time}`,
-      meetingId: meetingId
+      meetingId: Number(id)
     };
 
     createSchedule(newSchedule, {
@@ -69,14 +69,9 @@ const ScheduleForm = ({ onClose }) => {
     });
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <div>
       <form className="flex flex-col space-y-4 " onSubmit={onCreateSchedule}>
-        <PlaceSearch />
         <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} />
         <div>
           <h4>장소</h4>
@@ -103,3 +98,8 @@ const ScheduleForm = ({ onClose }) => {
 };
 
 export default ScheduleForm;
+
+//    <PlaceSearch label="검색" type="text" placeholder="장소 검색" />
+//     <InputField label="장소" type="text" placeholder="장소" />
+//     <InputField label="주소" type="text" placeholder="주소" />
+//     <InputField label="시간" type="time" />
