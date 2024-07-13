@@ -25,20 +25,20 @@ export const useSchedules = () => {
 
 // Schedule 같은 meetingId만 불러오기
 export const useSchedulesToMeetingId = (meetingId: number) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['schedule', meetingId],
     queryFn: () => scheduleApi.selectUserSchedule(meetingId)
   });
-  return { data, isLoading };
+  return { data, isLoading, error };
 };
 
 // Schedule 한개 불러오기
 export const useSchedule = (id: number) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['schedule', id],
     queryFn: () => scheduleApi.selectScheduleOfMeeting(id)
   });
-  return { data, isLoading };
+  return { data, isLoading, error };
 };
 
 // Schedule 생성하기

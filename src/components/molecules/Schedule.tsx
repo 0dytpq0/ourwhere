@@ -17,7 +17,7 @@ function Schedule() {
   const isScheduleModalOpen = useModalStore((state) => state.isScheduleModalOpen);
 
   const setClickScheduleId = useScheduleStore((state) => state.setClickScheduleId);
-  const { data: schedules, error, isPending } = useSchedulesToMeetingId(meetingId);
+  const { data: schedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
 
   console.log('schedule페이지', schedules);
 
@@ -27,7 +27,7 @@ function Schedule() {
     console.log('error', error);
     return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
   }
-  if (isPending) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
