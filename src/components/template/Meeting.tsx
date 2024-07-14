@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Schedule from '../molecules/Schedule';
 import KebabIcon from '../atoms/Kebab';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
@@ -13,9 +12,13 @@ import api from '@/api/api';
 import { PlaceSearch } from '../molecules/PlaceSearch';
 import CreateScheduleModal from './CreateScheduleModal';
 import { useMeeting } from '@/lib/hooks/useMeetingAPI';
+import CheckPasswordModal from '../molecules/CheckPasswordModal';
+import { Session } from '@supabase/supabase-js';
+import { useMutation } from '@tanstack/react-query';
 
 export default function Meeting() {
-  const { isCreateScheduleModalOpen, isMeetingModalOpen } = useModalStore();
+  const { isCreateScheduleModalOpen, isMeetingModalOpen, isCheckPasswordModalOpen, closeCheckPasswordModal } =
+    useModalStore();
   const toggleCreateScheduleModal = useModalStore((state) => state.toggleCreateScheduleModal);
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   // const [meeting, setMeeting] = useState<Tables<'meeting'>>();
@@ -26,9 +29,18 @@ export default function Meeting() {
   const { id } = useParams();
   const meetingId = Number(id);
   const router = useRouter();
+  const { mutate: checkLogIn } = useMutation({
+    mutationFn: async () => {
+      const userSession = await api.auth.getUserSession();
+      if (userSession) return closeCheckPasswordModal();
+    }
+  });
 
+  useEffect(() => {
+    checkLogIn();
+  }, []);
+  console.log(isCheckPasswordModalOpen);
   const { data: meeting, error, isLoading } = useMeeting(meetingId);
-
   if (error) {
     console.log('error', error);
     return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
@@ -114,7 +126,6 @@ export default function Meeting() {
           <div className="p-1 w-64 rounded-xl bg-white flex justify-center items-center drop-shadow-md mt-2">
             {meeting.date}
           </div>
-          <Schedule />
           <button
             onClick={toggleCreateScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
@@ -126,6 +137,7 @@ export default function Meeting() {
 
       {isCreateScheduleModalOpen && <CreateScheduleModal />}
       {isMeetingModalOpen && <MeetingModal />}
+      {isCheckPasswordModalOpen && <CheckPasswordModal password={meeting?.password} />}
     </>
   );
 }

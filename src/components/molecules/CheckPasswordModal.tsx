@@ -1,14 +1,12 @@
 import useModalStore from '@/stores/modal.store';
 import Input from '../atoms/js-Input/Input';
-
 const CheckPasswordModal = ({ password }: { password: string }) => {
-  const { toggleCheckPasswordModal } = useModalStore((state) => state);
-
+  const { closeCheckPasswordModal } = useModalStore((state) => state);
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (password) toggleCheckPasswordModal();
+        if (password) closeCheckPasswordModal();
       }}
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10"
     >
@@ -26,5 +24,4 @@ const CheckPasswordModal = ({ password }: { password: string }) => {
     </form>
   );
 };
-
 export default CheckPasswordModal;
