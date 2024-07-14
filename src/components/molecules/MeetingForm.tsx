@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import useModalStore from '@/stores/modal.store';
 import { useParams, useRouter } from 'next/navigation';
 import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
-import { Tables } from '@/types/supabase';
-
-type MeetingType = Tables<'meeting'>;
+import Input from '../atoms/js-Input/Input';
 
 const MeetingForm = () => {
   const [meetingName, setMeetingName] = useState('');
@@ -30,23 +28,38 @@ const MeetingForm = () => {
   const { id } = useParams();
   const meetingId = Number(id);
 
-  const { data: meeting, isLoading } = useMeeting(meetingId);
+  const { data: meeting } = useMeeting(meetingId);
   const { mutate: createMeeting } = useCreateMeeting();
   const { mutate: updateMeeting } = useUpdateMeeting();
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
 
+  // 수정 모드 일때만 초기값 설정
   useEffect(() => {
-    if (meetingId && meeting) {
-      setMeetingName(meeting.title);
-      setMeetingStartDate(meeting.date.split('~')[0]);
-      setMeetingEndDate(meeting.date.split('~')[1]);
-      setMeetingPassword(meeting.password);
+    if (meeting && meetingId) {
+      setMeetingName(meeting?.title || '');
+      setMeetingStartDate(meeting?.date.split('~')[0] || '');
+      setMeetingEndDate(meeting?.date.split('~')[1] || '');
+      setMeetingPassword(meeting?.password || '');
     }
   }, [meeting, meetingId]);
 
-  const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onCreateMeeting = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (meetingName.trim().length === 0) {
+      alert('모임 이름을 작성해주세요.');
+      return;
+    }
+    if (meetingStartDate.trim().length === 0 || meetingEndDate.trim().length === 0) {
+      alert('시작날짜와 종료날짜를 지정해주세요');
+      return;
+    }
+    if (meetingPassword.trim().length === 0) {
+      alert('비밀번호를 설정해주세요.');
+      return;
+    }
+
     const newMeeting = {
       title: meetingName,
       date: `${meetingStartDate}~${meetingEndDate}`,
@@ -55,15 +68,9 @@ const MeetingForm = () => {
 
     if (meetingId) {
       if (confirm('이대로 수정하시겠습니까?')) {
-        updateMeeting(
-          { id: meetingId, updateData: newMeeting },
-          {
-            onSuccess: () => {
-              router.push(`${meetingId}`);
-              toggleMeetingModal();
-            }
-          }
-        );
+        updateMeeting({ id: meetingId, updateData: newMeeting });
+        router.push(`${meetingId}`);
+        toggleMeetingModal();
       }
     } else {
       createMeeting(newMeeting, {
@@ -80,69 +87,62 @@ const MeetingForm = () => {
     }
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
   return (
-    <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
-      <div className="flex flex-col gap-[2rem]">
-        <div className="flex flex-col">
-          <label htmlFor="meetingName" className="text-sm">
-            모임 이름
+    <div className="flex flex-col justify-center w-full h-[20rem]">
+      <div className="flex flex-col">
+        <Input
+          identity="meeting"
+          label="모임 이름"
+          type="text"
+          id="meetingName"
+          required
+          onChange={handleMeetingName}
+          value={meetingName}
+          // className="border-2 rounded-md h-12 text-xl px-4"
+        />
+      </div>
+      <div className="flex flex-row items-center justify-center mb-4">
+        <div className="flex flex-col w-full">
+          <label htmlFor="meetingStartDate" className="text-sm flex flex-col text-gray-500">
+            시작 날짜
           </label>
           <input
-            type="text"
-            id="meetingName"
-            onChange={handleMeetingName}
-            value={meetingName}
-            className="border-2 rounded-md h-12 text-xl px-4"
+            type="date"
+            id="meetingStartDate"
+            onChange={handleMeetingStartDate}
+            value={meetingStartDate}
+            className=" border-2 rounded-md h-8 text-xs px-2 "
           />
         </div>
-        <div className="flex flex-row items-center justify-center ">
-          <div className="flex flex-col">
-            <label htmlFor="meetingStartDate" className="text-sm flex flex-col w-fit">
-              시작 날짜
-            </label>
-            <input
-              type="date"
-              id="meetingStartDate"
-              onChange={handleMeetingStartDate}
-              value={meetingStartDate}
-              className=" border-2 rounded-md h-8 text-xs px-2"
-            />
-          </div>
-          <div className="text-center m-3"> ~ </div>
-          <div className="flex flex-col">
-            <label htmlFor="meetingEndDate" className="text-sm flex flex-col">
-              종료 날짜
-            </label>
-            <input
-              type="date"
-              id="meetingEndDate"
-              onChange={handleMeetingEndDate}
-              value={meetingEndDate}
-              className="border-2 rounded-md h-8 text-xs px-2"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="meetingPassword" className="text-sm">
-            비밀번호
+        <div className="text-center m-3"> ~ </div>
+        <div className="flex flex-col w-full">
+          <label htmlFor="meetingEndDate" className="text-sm flex flex-col text-gray-500">
+            종료 날짜
           </label>
           <input
-            type="password"
-            placeholder="****"
-            onChange={handleMeetingPassword}
-            value={meetingPassword}
+            type="date"
+            id="meetingEndDate"
+            onChange={handleMeetingEndDate}
+            value={meetingEndDate}
             className="border-2 rounded-md h-8 text-xs px-2"
           />
         </div>
       </div>
-      <button type="submit" className="bg-button-color text-loginpage-color p-1 rounded-xl">
+      <div className="flex flex-col">
+        <Input
+          identity="meeting"
+          label="비밀번호"
+          type="password"
+          placeholder="****"
+          onChange={handleMeetingPassword}
+          value={meetingPassword}
+        />
+      </div>
+
+      <button onClick={onCreateMeeting} className="bg-button-color text-loginpage-color p-3 mt-3 rounded-xl">
         {meetingId ? '수정하기' : '생성하기'}
       </button>
-    </form>
+    </div>
   );
 };
 

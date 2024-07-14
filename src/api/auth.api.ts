@@ -1,5 +1,6 @@
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
+import { Session } from '@supabase/supabase-js';
 import { AxiosInstance } from 'axios';
 import { nanoid } from 'nanoid';
 
@@ -42,7 +43,13 @@ class AuthAPI {
 
     return response.data;
   }
+  async getUserSession() {
+    const path = 'api/auth/user-session';
 
+    const response = await this.axios.get<Session | null>(path);
+    console.log('', response.data);
+    return response.data;
+  }
   async updateUser(id: string, updates: { images?: string; nickname?: string }) {
     const path = 'api/auth/user-update';
 

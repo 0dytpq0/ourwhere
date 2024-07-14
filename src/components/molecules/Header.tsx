@@ -1,12 +1,14 @@
 'use client';
 import api from '@/api/api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
+import { Session } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
   const { user, setUser } = useAuthStore((state) => state);
+  const [userSession, setUserSession] = useState<Session | null>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const router = useRouter();
 
@@ -18,6 +20,10 @@ export default function Header() {
 
   useEffect(() => {
     setIsMounted(true);
+    (async () => {
+      const innerUserSession = await api.auth.getUserSession();
+      setUserSession(innerUserSession);
+    })();
   }, []);
 
   return (
@@ -32,9 +38,9 @@ export default function Header() {
             <>
               {isMounted ? (
                 <>
-                  {user ? (
+                  {userSession ? (
                     <>
-                      <span className="text-lg font-bold"> {user.nickname} 님 안녕하세요! </span>
+                      <span className="text-lg font-bold"> {user?.nickname} 님 안녕하세요! </span>
                       <button
                         onClick={handleClickLogOut}
                         className="border-solid bg-loginpage-color text-font-color px-3.5 py-1 rounded-lg font-bold"

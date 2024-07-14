@@ -53,7 +53,9 @@ export const PlaceSearch = ({ label, type, placeholder }: PlaceSearchProps) => {
       <div className="w-full ">
         <div className="flex relative w-full items-center">
           <Input
+            label="검색"
             type="text"
+            identity="schedule"
             onChange={(e) => {
               placeRef.current = e.target.value;
             }}
@@ -64,7 +66,7 @@ export const PlaceSearch = ({ label, type, placeholder }: PlaceSearchProps) => {
               alt="Search Icon"
               width={20}
               height={20}
-              className="object-cover mt-2"
+              className="object-cover mt-6"
             />
           </div>
         </div>
