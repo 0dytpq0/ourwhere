@@ -15,7 +15,7 @@ const useModalStore = create<ModalStore>((set) => ({
   isCreateScheduleModalOpen: false,
   isEditScheduleModalOpen: false,
   isMeetingModalOpen: false,
-  isCheckPasswordModalOpen: false,
+  isCheckPasswordModalOpen: true,
   toggleMeetingModal: () => set((state) => ({ isMeetingModalOpen: !state.isMeetingModalOpen })),
   toggleCheckPasswordModal: () => set((state) => ({ isCheckPasswordModalOpen: !state.isCheckPasswordModalOpen })),
   toggleCreateScheduleModal: () => set((state) => ({ isCreateScheduleModalOpen: !state.isCreateScheduleModalOpen })),
