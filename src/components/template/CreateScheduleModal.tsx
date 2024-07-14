@@ -21,8 +21,8 @@ const CreateScheduleModal = () => {
       <div className="bg-white p-10 rounded-lg shadow-lg relative">
         <h2>1</h2>
         <CreateScheduleForm />
-        <button onClick={toggleCreateScheduleModal} className=" text-gray-500 p-1 ">
-          x
+        <button onClick={toggleCreateScheduleModal} className="absolute top-3 right-4 text-gray-500 p-1 text-2xl">
+          ✕
         </button>
       </div>
     </div>

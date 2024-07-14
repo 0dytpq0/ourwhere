@@ -8,8 +8,8 @@ type InputProps = {
 } & ComponentProps<'input'>;
 
 const loginStyle = 'border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-gray-950 transition';
-const modalStyle = 'border-2 rounded-md h-8 text-xs px-2';
-const scheduleStyle = '';
+const meetingStyle = 'border-2 rounded-md h-14 text-xs px-2';
+const scheduleModalStyle = '';
 
 function Input({ label, required, id, identity, warnning, ...props }: InputProps) {
   const inputUid = useId();
@@ -18,16 +18,16 @@ function Input({ label, required, id, identity, warnning, ...props }: InputProps
   let inputStyle = '';
   if (identity === 'login') {
     inputStyle = loginStyle;
-  } else if (identity === 'modal') {
-    inputStyle = modalStyle;
+  } else if (identity === 'meeting') {
+    inputStyle = meetingStyle;
   } else if (identity === 'schedule') {
-    inputStyle = scheduleStyle;
+    inputStyle = scheduleModalStyle;
   }
 
   return (
     <div className="flex flex-col gap-y-1.5 [&+&]:mt-8 w-full">
       {label && identity !== 'login' && (
-        <label htmlFor={inputId} className={`text-sm font-semibold ${label && 'h-4'}`}>
+        <label htmlFor={inputId} className={`text-sm font-semibold text-gray-500 ${label && 'h-4'}`}>
           {label}
         </label>
       )}

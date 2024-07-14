@@ -24,7 +24,7 @@ const MeetingModal = () => {
       onClick={handleOutsideClick}
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10"
     >
-      <div className="relative bg-white p-20 rounded-[2.5rem] shadow-lg w-[28rem] ">
+      <div className="relative bg-white px-20 pt-[4rem] rounded-[2.5rem] w-[30rem] h-[35rem]">
         <h2 className="mx-auto mb-[3rem] w-fit text-3xl font-bold text-font-color">
           {meetingId ? '모임 수정하기' : '새 모임 만들기'}
         </h2>
@@ -34,7 +34,7 @@ const MeetingModal = () => {
           onClick={closeMeetingModal}
           className="absolute top-3 right-4 text-gray-500 p-1 text-2xl "
         >
-          x
+          ✕
         </button>
       </div>
     </div>
