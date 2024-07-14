@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
-import { IoMdReturnLeft } from 'react-icons/io';
 
 export default function MyPageTemplate() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -74,7 +73,7 @@ export default function MyPageTemplate() {
       <div className="flex flex-col mb-4 m-8 border-solid border-loginpage-color-2 h-72 w-80 items-center bg-loginpage-color text-font-color relative">
         <div className="w-44 h-44 mt-4 flex flex-row items-center justify-center border-solid border-2 rounded-full shadow-md">
           <Image
-            src={user?.images || '/'}
+            src={user?.images || '/defaultimage.jpeg'}
             alt="Profile"
             width={176}
             height={176}
