@@ -21,7 +21,7 @@ const EditScheduleModal = () => {
       onClick={handleOutsideClick}
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10"
     >
-      <div className="relative bg-white rounded-[2.5rem] w-[30rem] h-[38rem] ">
+      <div className="relative bg-white rounded-[2.5rem] w-[30rem] h-[40rem] ">
         <div className="w-64 mx-auto my-12 ">
           <div className=" w-fit mx-auto mb-2">
             <MarkerWithOrder order={scheduleIndex} />
