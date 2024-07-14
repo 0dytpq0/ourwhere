@@ -5,13 +5,14 @@ type InputProps = {
   required?: boolean;
   identity?: string;
   warnning?: string;
+  innerClassName?: string;
 } & ComponentProps<'input'>;
 
 const loginStyle = 'border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-gray-950 transition';
 const meetingStyle = 'border-2 rounded-md h-14 text-lg px-2';
 const schedulStyle = 'w-full h-10 border-2 rounded-md  text-xs px-2';
 
-function Input({ label, required, id, identity, warnning, ...props }: InputProps) {
+function Input({ label, required, id, identity, warnning, innerClassName, ...props }: InputProps) {
   const inputUid = useId();
   const inputId = id || inputUid;
 
@@ -31,7 +32,7 @@ function Input({ label, required, id, identity, warnning, ...props }: InputProps
           {label}
         </label>
       )}
-      <input id={inputId} {...props} className={inputStyle} />
+      <input id={inputId} {...props} className={inputStyle + innerClassName} />
       <label htmlFor={inputId} className={`text-sm font-semibold ${label && 'h-4'}`}>
         {warnning && required && (
           <span className="text-xs font-semibold text-gray-400 p-1">
