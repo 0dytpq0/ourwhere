@@ -1,41 +1,33 @@
-import ScheduleAPI from '@/api/schedule.api';
-import { Tables } from '@/types/supabase';
+import ScheduleAPI, { UpdateScheduleType } from '@/api/schedule.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-type ScheduleType = Tables<'schedule'>;
-
-export type UpdateScheduleType = {
-  content: string;
-  place: string;
-  address: string;
-  time: string;
-  meetingId: number;
-};
 
 const scheduleApi = new ScheduleAPI();
 
 // Schedule 여러개 불러오기
 export const useSchedules = () => {
-  return useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['schedule'],
     queryFn: () => scheduleApi.selectSchedules()
   });
+  return { data, isLoading };
 };
 
 // Schedule 같은 meetingId만 불러오기
 export const useSchedulesToMeetingId = (meetingId: number) => {
-  return useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['schedule', meetingId],
     queryFn: () => scheduleApi.selectUserSchedule(meetingId)
   });
+  return { data, isLoading, error };
 };
 
 // Schedule 한개 불러오기
 export const useSchedule = (id: number) => {
-  return useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['schedule', id],
     queryFn: () => scheduleApi.selectScheduleOfMeeting(id)
   });
+  return { data, isLoading, error };
 };
 
 // Schedule 생성하기

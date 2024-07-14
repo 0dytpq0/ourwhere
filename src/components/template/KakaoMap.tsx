@@ -18,7 +18,7 @@ const KakaoMap = () => {
     []
   );
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
-  const { data: scheduleData, error, isPending } = useSchedulesToMeetingId(meetingId);
+  const { data: scheduleData, error } = useSchedulesToMeetingId(meetingId);
 
   useEffect(() => {
     const script = document.createElement('script');
