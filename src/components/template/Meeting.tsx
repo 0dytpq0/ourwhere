@@ -8,7 +8,7 @@ import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
-import MeetingAPI from '@/api/meeting.api';
+// import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
 import { PlaceSearch } from '../molecules/PlaceSearch';
 import CreateScheduleModal from './CreateScheduleModal';
@@ -28,8 +28,6 @@ export default function Meeting() {
   const router = useRouter();
 
   const { data: meeting, error, isLoading } = useMeeting(meetingId);
-
-  console.log(meetingId);
 
   if (error) {
     console.log('error', error);

@@ -16,14 +16,13 @@ const EditScheduleForm = () => {
 
   const toggleEditScheduleModal = useModalStore((state) => state.toggleEditScheduleModal);
   const clickScheduleId = useScheduleStore((state) => state.clickScheduleId);
-  const { place } = useKakaoStore((state) => state);
-
-  console.log('clickScheduleId', clickScheduleId);
+  const { place, setPlace } = useKakaoStore((state) => state);
 
   const { data: schedule, isLoading } = useSchedule(clickScheduleId);
   const { mutate: updateSchedule } = useUpdateSchedule();
 
   useEffect(() => {
+    setPlace(null);
     setContent(schedule?.content || '');
     setTime(schedule?.time || '');
   }, []);
@@ -36,7 +35,7 @@ const EditScheduleForm = () => {
     setContent(e.target.value);
   };
 
-  const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onCreateSchedule = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newSchedule = {
       content: content,
@@ -56,9 +55,8 @@ const EditScheduleForm = () => {
   }
   return (
     <div>
-      <PlaceSearch />
-      <form onSubmit={onCreateSchedule} className="flex flex-col space-y-4 ">
-        {/* <Input placeholder="장소 검색" value={placeSearch} label="검색" required onChange={handlePlaceSearch} /> */}
+      <div className="flex flex-col space-y-4 ">
+        <PlaceSearch />
         <div>
           <h4>장소</h4>
           <div className="border w-full h-10 ">{place?.place_name}</div>
@@ -75,10 +73,10 @@ const EditScheduleForm = () => {
           onChange={handleContent}
           className=" p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg"
         />
-        <button type="submit" className="bg-button-color text-loginpage-color p-1 rounded-xl">
+        <button onClick={onCreateSchedule} className="bg-button-color text-loginpage-color p-1 rounded-xl">
           수정하기
         </button>
-      </form>
+      </div>
     </div>
   );
 };

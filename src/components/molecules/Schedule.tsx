@@ -28,7 +28,6 @@ function Schedule() {
   if (!schedules) return <div>데이터를 받아올 수 없습니다.</div>;
 
   const handleEditClick = (id: number) => {
-    console.log(id);
     toggleEditScheduleModal();
     setClickScheduleId(id);
   };

@@ -7,9 +7,6 @@ const EditScheduleModal = () => {
     (state) => state
   );
 
-  console.log('create', isCreateScheduleModalOpen);
-  console.log('edit', isEditScheduleModalOpen);
-
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       toggleEditScheduleModal();
