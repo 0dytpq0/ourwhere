@@ -2,8 +2,8 @@
 import api from '@/api/api';
 import { MeetingType } from '@/api/meeting.api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
-import Image from 'next/image';
 import useMeetingStore from '@/stores/meeting.store';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
@@ -63,7 +63,7 @@ export default function MyPageTemplate() {
       <div className="flex flex-col mb-4 m-8 border-solid border-loginpage-color-2 h-72 w-80 items-center bg-loginpage-color text-font-color relative">
         <div className="w-44 h-44 mt-4 flex flex-row items-center justify-center border-solid border-2 rounded-full shadow-md">
           <Image
-            src={user?.images || '사진없음'}
+            src={user?.images || '/'}
             alt="Profile"
             width={176}
             height={176}

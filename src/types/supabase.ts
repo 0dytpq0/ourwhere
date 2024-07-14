@@ -6,13 +6,10 @@ export type Database = {
       meeting: {
         Row: {
           createdAt: string | null;
-          createdAt: string | null;
           date: string;
-          id: number;
           id: number;
           password: string;
           title: string;
-          userId: string;
           userId: string;
         };
         Insert: {
@@ -53,11 +50,9 @@ export type Database = {
           address: string | null;
           content: string | null;
           id: number;
-          id: number;
           meetingId: number | null;
           place: string;
           time: string;
-          userId: string | null;
           userId: string | null;
         };
         Insert: {
@@ -80,6 +75,13 @@ export type Database = {
         };
         Relationships: [
           {
+            foreignKeyName: 'schedule_meetingId_fkey';
+            columns: ['meetingId'];
+            isOneToOne: false;
+            referencedRelation: 'meeting';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'schedule_userId_fkey';
             columns: ['userId'];
             isOneToOne: false;
@@ -101,7 +103,6 @@ export type Database = {
           email: string;
           id: string;
           images: string | null;
-          images: string | null;
           nickname: string;
         };
         Insert: {
@@ -109,14 +110,12 @@ export type Database = {
           email: string;
           id: string;
           images?: string | null;
-          images?: string | null;
           nickname: string;
         };
         Update: {
           createdAt?: string;
           email?: string;
           id?: string;
-          images?: string | null;
           images?: string | null;
           nickname?: string;
         };
