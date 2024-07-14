@@ -7,6 +7,7 @@ import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
 import useScheduleStore from '@/stores/schedule.store';
 import EditScheduleModal from '../template/EditScheduleModal';
+import MarkerWithOrder from '../atoms/MarkerWithOrder';
 
 type ScheduleType = Tables<'schedule'>;
 
@@ -15,7 +16,7 @@ function Schedule() {
   const meetingId = Number(id);
   const { isEditScheduleModalOpen, toggleEditScheduleModal } = useModalStore((state) => state);
 
-  const setClickScheduleId = useScheduleStore((state) => state.setClickScheduleId);
+  const { setScheduleIndex, setClickScheduleId } = useScheduleStore((state) => state);
   const { data: initialSchedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
 
   const [schedules, setSchedules] = useState<ScheduleType[]>(initialSchedules || []);
@@ -60,8 +61,8 @@ function Schedule() {
         <div key={schedule.id} className="mb-4 p-4 bg-white flex rounded-lg shadow-lg relative">
           {/* 시간이랑 인덱스 */}
           <div className="flex items-center mb-2">
-            <div className="bg-purple-100 text-purple-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">
-              {index + 1}
+            <div className="rounded-full flex items-center justify-center font-bold">
+              <MarkerWithOrder order={index + 1} />
             </div>
             <div className="ml-4 text-lg font-semibold text-purple-700">{schedule.time}</div>
           </div>
@@ -77,6 +78,7 @@ function Schedule() {
                 <button
                   onClick={() => {
                     handleEditClick(schedule);
+                    setScheduleIndex(index + 1);
                   }}
                   className="text-purple-500 hover:text-purple-700"
                 >

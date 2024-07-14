@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation';
 import useModalStore from '@/stores/modal.store';
 import useKakaoStore from '@/stores/kakao.store';
 import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
-import Input from '../atoms/js-Input/Input';
 
 const CreateScheduleForm = () => {
   const { id } = useParams();
