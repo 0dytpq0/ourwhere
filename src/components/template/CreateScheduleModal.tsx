@@ -11,8 +11,6 @@ const CreateScheduleModal = () => {
     }
   };
 
-  console.log('!');
-
   return (
     <div
       onClick={handleOutsideClick}

@@ -27,9 +27,9 @@ function Schedule() {
 
   if (!schedules) return <div>데이터를 받아올 수 없습니다.</div>;
 
-  const handleEditClick = (id: number) => {
+  const handleEditClick = (schedule: ScheduleType) => {
     toggleEditScheduleModal();
-    setClickScheduleId(id);
+    setClickScheduleId(schedule.id);
   };
 
   return (
@@ -54,7 +54,7 @@ function Schedule() {
                 {/* 수정 버튼 */}
                 <button
                   onClick={() => {
-                    handleEditClick(schedule.id);
+                    handleEditClick(schedule);
                   }}
                   className="text-purple-500 hover:text-purple-700"
                 >
@@ -67,7 +67,7 @@ function Schedule() {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path
                       fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H3.5A1.5 1.5 0 002 5.5V6h16v-.5A1.5 1.5 0 0016.5 3H15V2a1 1 0 00-1-1H6zM2 7v8.5A1.5 1.5 0 003.5 17h13a1.5 1.5 0 001.5-1.5V7H2zm5 3a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm5 0a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1z"
+                      d="M6 2a1 1 0 00-1 1v1H3.5A1.5 1.5 0 002 5.5V 6h16v-.5A1.5 1.5 0 0016.5 3H15V2a1 1 0 00-1-1H6zM2 7v8.5A1.5 1.5 0 003.5 17h13a1.5 1.5 0 001.5-1.5V7H2zm5 3a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm5 0a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1z"
                       clipRule="evenodd"
                     />
                   </svg>

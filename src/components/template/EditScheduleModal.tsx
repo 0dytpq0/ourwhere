@@ -1,6 +1,7 @@
 import useModalStore from '@/stores/modal.store';
 import React from 'react';
 import EditScheduleForm from '../molecules/EditScheduleForm';
+import MarkerWithOrder from '../atoms/MarkerWithOrder';
 
 const EditScheduleModal = () => {
   const { toggleEditScheduleModal, isEditScheduleModalOpen, isCreateScheduleModalOpen } = useModalStore(
@@ -20,7 +21,7 @@ const EditScheduleModal = () => {
     >
       <div className="relative bg-white rounded-[2.5rem] w-[30rem] h-[37rem] ">
         <div className="w-64 mx-auto my-12">
-          <h2>1</h2>
+          <MarkerWithOrder order={1} />
           <EditScheduleForm />
           <button onClick={toggleEditScheduleModal} className="absolute top-3 right-4 text-gray-500 p-1 text-2xl">
             ✕
