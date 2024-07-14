@@ -31,7 +31,7 @@ const EditScheduleForm = () => {
     setTime(e.target.value);
   };
 
-  const handleContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
 
@@ -55,26 +55,36 @@ const EditScheduleForm = () => {
   }
   return (
     <div>
-      <div className="flex flex-col space-y-4 ">
-        <PlaceSearch />
-        <div>
-          <h4>장소</h4>
-          <div className="border w-full h-10 ">{place?.place_name}</div>
+      <div className="flex flex-col justify-center ">
+        <div className="border p-3 rounded-lg">
+          <PlaceSearch />
+        </div>
+
+        <div className="mt-2">
+          <h4 className="text-sm flex flex-col text-gray-500 h-4  font-semibold ">장소</h4>
+          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place?.place_name}</div>
         </div>
         <div>
-          <h4>주소</h4>
-          <div className="border w-full h-10 ">{place?.address_name}</div>
+          <h4 className="text-sm flex flex-col text-gray-500 font-semibold">주소</h4>
+          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place?.address_name}</div>
         </div>
-        <input type="time" value={time} onChange={handleTime} />
-        <input
-          type="text"
+        <div>
+          <label className="text-sm flex flex-col font-semibold text-gray-500">시간</label>
+          <input
+            type="time"
+            value={time}
+            onChange={handleTime}
+            className="w-full h-8 border-2 rounded-md  text-xs px-2"
+          />
+        </div>
+        <textarea
           placeholder="✍🏻 작성"
           value={content}
           onChange={handleContent}
-          className=" p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg"
+          className=" p-3 h-24 placeholder-black text-sm  bg-postpage-listcolor rounded-tr-2xl rounded-bl-lg my-2"
         />
-        <button onClick={onEditSchedule} className="bg-button-color text-loginpage-color p-1 rounded-xl">
-          수정하기
+        <button onClick={onEditSchedule} className="bg-button-color text-loginpage-color p-3 mt-3 rounded-xl">
+          생성하기
         </button>
       </div>
     </div>
