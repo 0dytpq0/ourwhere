@@ -84,7 +84,7 @@ const EditScheduleForm = () => {
           className=" p-3 h-24 placeholder-black text-sm  bg-postpage-listcolor rounded-tr-2xl rounded-bl-lg my-2"
         />
         <button onClick={onEditSchedule} className="bg-button-color text-loginpage-color p-3 mt-3 rounded-xl">
-          생성하기
+          수정하기
         </button>
       </div>
     </div>
