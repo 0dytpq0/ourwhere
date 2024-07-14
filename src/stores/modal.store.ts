@@ -1,16 +1,20 @@
 import create from 'zustand';
 
 interface ModalStore {
-  isScheduleModalOpen: boolean;
+  isCreateScheduleModalOpen: boolean;
+  isEditScheduleModalOpen: boolean;
   isMeetingModalOpen: boolean;
-  toggleScheduleModal: () => void;
+  toggleCreateScheduleModal: () => void;
+  toggleEditScheduleModal: () => void;
   toggleMeetingModal: () => void;
 }
 
 const useModalStore = create<ModalStore>((set) => ({
-  isScheduleModalOpen: false,
+  isCreateScheduleModalOpen: false,
+  isEditScheduleModalOpen: false,
   isMeetingModalOpen: false,
-  toggleScheduleModal: () => set((state) => ({ isScheduleModalOpen: !state.isScheduleModalOpen })),
+  toggleCreateScheduleModal: () => set((state) => ({ isCreateScheduleModalOpen: !state.isCreateScheduleModalOpen })),
+  toggleEditScheduleModal: () => set((state) => ({ isEditScheduleModalOpen: !state.isEditScheduleModalOpen })),
   toggleMeetingModal: () => set((state) => ({ isMeetingModalOpen: !state.isMeetingModalOpen }))
 }));
 

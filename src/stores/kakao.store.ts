@@ -19,14 +19,14 @@ interface KakaoStore {
   places: PlaceInfo[] | null;
   place: PlaceInfo | null;
   setPlaces: (places: PlaceInfo[]) => void;
-  setPlace: (place: PlaceInfo) => void;
+  setPlace: (place: PlaceInfo | null) => void;
 }
 
 const useKakaoStore = create<KakaoStore>((set) => ({
   places: null,
   place: null,
   setPlaces: (places: PlaceInfo[]) => set((state) => ({ places })),
-  setPlace: (place: PlaceInfo) => set((state) => ({ place }))
+  setPlace: (place: PlaceInfo | null) => set((state) => ({ place }))
 }));
 
 export default useKakaoStore;

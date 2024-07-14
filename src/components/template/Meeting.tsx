@@ -2,50 +2,64 @@
 
 import { useEffect, useState } from 'react';
 import Schedule from '../molecules/Schedule';
-import ScheduleModal from './ScheduleModal';
 import KebabIcon from '../atoms/Kebab';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
-import MeetingAPI from '@/api/meeting.api';
+// import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
 import { PlaceSearch } from '../molecules/PlaceSearch';
+import CreateScheduleModal from './CreateScheduleModal';
+import { useMeeting } from '@/lib/hooks/useMeetingAPI';
 
 export default function Meeting() {
-  const { isScheduleModalOpen, isMeetingModalOpen } = useModalStore();
-  const toggleScheduleModal = useModalStore((state) => state.toggleScheduleModal);
+  const { isCreateScheduleModalOpen, isMeetingModalOpen } = useModalStore();
+  const toggleCreateScheduleModal = useModalStore((state) => state.toggleCreateScheduleModal);
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
-  const [meeting, setMeeting] = useState<Tables<'meeting'>>();
+  // const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
-  const meetingAPI = new MeetingAPI();
-  const params = useParams();
+  // const meetingAPI = new MeetingAPI();
+  const { id } = useParams();
+  const meetingId = Number(id);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        const data = await meetingAPI.selectMeeting(Number(params.id));
-        // console.log(data);
-        if (!data) return;
-        setMeeting(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const { data: meeting, error, isLoading } = useMeeting(meetingId);
 
-    fetchMeetings();
-  }, []);
+  if (error) {
+    console.log('error', error);
+    return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
+  }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!meeting) return <div>데이터를 받아올 수 없습니다.</div>;
+
+  // useEffect(() => {
+  //   const fetchMeetings = async () => {
+  //     try {
+  //       const data = await meetingAPI.selectMeeting(Number(params.id));
+  //       // console.log(data);
+  //       if (!data) return;
+  //       setMeeting(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchMeetings();
+  // }, []);
 
   // const handleToggleModal = () => {
   //   toggleModal();
   // };
 
-  const handleToggleMenu = (id: number) => {
-    setShowMenu(showMenu === id ? null : id);
+  const handleToggleMenu = (meetingId: number) => {
+    setShowMenu(showMenu === meetingId ? null : meetingId);
   };
 
   const handleEditMeeting = (meeting: Tables<'meeting'>) => {
@@ -53,11 +67,11 @@ export default function Meeting() {
     toggleMeetingModal();
   };
 
-  const handleDeleteMeeting = async (id: number) => {
+  const handleDeleteMeeting = async (meetingId: number) => {
     try {
-      await api.meeting.deleteMeeting(id);
-      // null! 수정
-      setMeeting(null!);
+      await api.meeting.deleteMeeting(meetingId);
+      // // null! 수정
+      // setMeeting(null!);
       alert('삭제가 완료 되었습니다.');
       router.push('/');
     } catch (error) {
@@ -102,16 +116,15 @@ export default function Meeting() {
           </div>
           <Schedule />
           <button
-            onClick={toggleScheduleModal}
+            onClick={toggleCreateScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
           >
             +
           </button>
         </div>
-        <PlaceSearch />
       </section>
 
-      {isScheduleModalOpen && <ScheduleModal />}
+      {isCreateScheduleModalOpen && <CreateScheduleModal />}
       {isMeetingModalOpen && <MeetingModal />}
     </>
   );

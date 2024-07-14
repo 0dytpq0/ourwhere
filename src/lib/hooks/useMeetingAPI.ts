@@ -15,18 +15,20 @@ const meetingApi = new MeetingAPI();
 
 // Meeting 여러개 불러오기
 export const useMeetings = () => {
-  return useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['meetings'],
     queryFn: () => meetingApi.selectMeetings()
   });
+  return { data, isLoading };
 };
 
 // Meeting 한개 불러오기
 export const useMeeting = (id: number) => {
-  return useQuery<MeetingType | null>({
+  const { data, error, isLoading } = useQuery<MeetingType | null>({
     queryKey: ['meeting', id],
     queryFn: () => meetingApi.selectMeeting(id)
   });
+  return { data, error, isLoading };
 };
 
 // Meeting 생성하기
