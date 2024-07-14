@@ -35,7 +35,7 @@ const EditScheduleForm = () => {
     setContent(e.target.value);
   };
 
-  const onCreateSchedule = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onEditSchedule = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newSchedule = {
       content: content,
@@ -73,7 +73,7 @@ const EditScheduleForm = () => {
           onChange={handleContent}
           className=" p-3 h-[100px] bg-postpage-listcolor rounded-tr-lg rounded-bl-lg"
         />
-        <button onClick={onCreateSchedule} className="bg-button-color text-loginpage-color p-1 rounded-xl">
+        <button onClick={onEditSchedule} className="bg-button-color text-loginpage-color p-1 rounded-xl">
           수정하기
         </button>
       </div>

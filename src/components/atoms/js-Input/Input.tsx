@@ -8,8 +8,8 @@ type InputProps = {
 } & ComponentProps<'input'>;
 
 const loginStyle = 'border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-gray-950 transition';
-const meetingStyle = 'border-2 rounded-md h-14 text-xs px-2';
-const scheduleModalStyle = '';
+const meetingStyle = 'border-2 rounded-md h-14 text-lg px-2';
+const schedulStyle = 'w-full h-10 border-2 rounded-md  text-xs px-2';
 
 function Input({ label, required, id, identity, warnning, ...props }: InputProps) {
   const inputUid = useId();
@@ -21,7 +21,7 @@ function Input({ label, required, id, identity, warnning, ...props }: InputProps
   } else if (identity === 'meeting') {
     inputStyle = meetingStyle;
   } else if (identity === 'schedule') {
-    inputStyle = scheduleModalStyle;
+    inputStyle = schedulStyle;
   }
 
   return (
