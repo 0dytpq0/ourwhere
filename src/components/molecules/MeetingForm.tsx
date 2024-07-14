@@ -1,6 +1,6 @@
 'use Client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useModalStore from '@/stores/modal.store';
 import { useParams, useRouter } from 'next/navigation';
 import { useCreateMeeting, useMeeting, useUpdateMeeting } from '@/lib/hooks/useMeetingAPI';
@@ -28,17 +28,23 @@ const MeetingForm = () => {
   const { id } = useParams();
   const meetingId = Number(id);
 
-  const { data: meeting, isLoading } = useMeeting(meetingId);
+  const { data: meeting } = useMeeting(meetingId);
   const { mutate: createMeeting } = useCreateMeeting();
   const { mutate: updateMeeting } = useUpdateMeeting();
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
   const router = useRouter();
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
+  // 수정 모드 일때만 초기값 설정
+  useEffect(() => {
+    if (meeting && meetingId) {
+      setMeetingName(meeting?.title || '');
+      setMeetingStartDate(meeting?.date.split('~')[0] || '');
+      setMeetingEndDate(meeting?.date.split('~')[1] || '');
+      setMeetingPassword(meeting?.password || '');
+    }
+  }, [meeting, meetingId]);
 
-  const onCreateMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onCreateMeeting = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newMeeting = {
       title: meetingName,
@@ -48,15 +54,9 @@ const MeetingForm = () => {
 
     if (meetingId) {
       if (confirm('이대로 수정하시겠습니까?')) {
-        updateMeeting(
-          { id: meetingId, updateData: newMeeting },
-          {
-            onSuccess: () => {
-              router.push(`${meetingId}`);
-              toggleMeetingModal();
-            }
-          }
-        );
+        updateMeeting({ id: meetingId, updateData: newMeeting });
+        router.push(`${meetingId}`);
+        toggleMeetingModal();
       }
     } else {
       createMeeting(newMeeting, {
@@ -74,7 +74,7 @@ const MeetingForm = () => {
   };
 
   return (
-    <form onSubmit={onCreateMeeting} className="flex flex-col gap-[2rem] justify-center">
+    <div className="flex flex-col gap-[2rem] justify-center">
       <div className="flex flex-col gap-[2rem]">
         <div className="flex flex-col">
           <Input
@@ -82,8 +82,8 @@ const MeetingForm = () => {
             type="text"
             id="meetingName"
             onChange={handleMeetingName}
-            value={meeting?.title}
-            className="border-2 rounded-md h-12 text-xl px-4"
+            value={meetingName}
+            // className="border-2 rounded-md h-12 text-xl px-4"
           />
         </div>
         <div className="flex flex-row items-center justify-center ">
@@ -95,7 +95,7 @@ const MeetingForm = () => {
               type="date"
               id="meetingStartDate"
               onChange={handleMeetingStartDate}
-              value={meeting?.date.split('~')[0]}
+              value={meetingStartDate}
               className=" border-2 rounded-md h-8 text-xs px-2"
             />
           </div>
@@ -108,7 +108,7 @@ const MeetingForm = () => {
               type="date"
               id="meetingEndDate"
               onChange={handleMeetingEndDate}
-              value={meeting?.date.split('~')[1]}
+              value={meetingEndDate}
               className="border-2 rounded-md h-8 text-xs px-2"
             />
           </div>
@@ -121,15 +121,15 @@ const MeetingForm = () => {
             type="password"
             placeholder="****"
             onChange={handleMeetingPassword}
-            value={meeting?.password}
+            value={meetingPassword}
             className="border-2 rounded-md h-8 text-xs px-2"
           />
         </div>
       </div>
-      <button type="submit" className="bg-button-color text-loginpage-color p-1 rounded-xl">
+      <button onClick={onCreateMeeting} className="bg-button-color text-loginpage-color p-1 rounded-xl">
         {meetingId ? '수정하기' : '생성하기'}
       </button>
-    </form>
+    </div>
   );
 };
 

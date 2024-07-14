@@ -24,11 +24,11 @@ export const useMeetings = () => {
 
 // Meeting 한개 불러오기
 export const useMeeting = (id: number) => {
-  const { data, isLoading } = useQuery<MeetingType | null>({
+  const { data, error, isLoading } = useQuery<MeetingType | null>({
     queryKey: ['meeting', id],
     queryFn: () => meetingApi.selectMeeting(id)
   });
-  return { data, isLoading };
+  return { data, error, isLoading };
 };
 
 // Meeting 생성하기

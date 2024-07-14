@@ -10,38 +10,58 @@ import { useParams, useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
 import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
-
+import { PlaceSearch } from '../molecules/PlaceSearch';
 import CreateScheduleModal from './CreateScheduleModal';
+import { useMeeting } from '@/lib/hooks/useMeetingAPI';
 
 export default function Meeting() {
   const { isCreateScheduleModalOpen, isMeetingModalOpen } = useModalStore();
   const toggleCreateScheduleModal = useModalStore((state) => state.toggleCreateScheduleModal);
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
-  const [meeting, setMeeting] = useState<Tables<'meeting'>>();
+  // const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
-  const meetingAPI = new MeetingAPI();
-  const params = useParams();
+  // const meetingAPI = new MeetingAPI();
+  const { id } = useParams();
+  const meetingId = Number(id);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        const data = await meetingAPI.selectMeeting(Number(params.id));
-        // console.log(data);
-        if (!data) return;
-        setMeeting(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const { data: meeting, error, isLoading } = useMeeting(meetingId);
 
-    fetchMeetings();
-  }, []);
+  console.log(meetingId);
 
-  const handleToggleMenu = (id: number) => {
-    setShowMenu(showMenu === id ? null : id);
+  if (error) {
+    console.log('error', error);
+    return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
+  }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!meeting) return <div>데이터를 받아올 수 없습니다.</div>;
+
+  // useEffect(() => {
+  //   const fetchMeetings = async () => {
+  //     try {
+  //       const data = await meetingAPI.selectMeeting(Number(params.id));
+  //       // console.log(data);
+  //       if (!data) return;
+  //       setMeeting(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchMeetings();
+  // }, []);
+
+  // const handleToggleModal = () => {
+  //   toggleModal();
+  // };
+
+  const handleToggleMenu = (meetingId: number) => {
+    setShowMenu(showMenu === meetingId ? null : meetingId);
   };
 
   const handleEditMeeting = (meeting: Tables<'meeting'>) => {
@@ -49,11 +69,11 @@ export default function Meeting() {
     toggleMeetingModal();
   };
 
-  const handleDeleteMeeting = async (id: number) => {
+  const handleDeleteMeeting = async (meetingId: number) => {
     try {
-      await api.meeting.deleteMeeting(id);
-      // null! 수정
-      setMeeting(null!);
+      await api.meeting.deleteMeeting(meetingId);
+      // // null! 수정
+      // setMeeting(null!);
       alert('삭제가 완료 되었습니다.');
       router.push('/');
     } catch (error) {
@@ -74,7 +94,7 @@ export default function Meeting() {
             <KebabIcon />
           </div>
           <h1 className="text-4xl mb-3 text-font-color">🎈{meeting.title}🎈</h1>
-          {/* 수정,삭제 버튼 */}
+          {/* 수적,삭제 버튼 */}
           {showMenu === meeting.id && (
             <div className="absolute right-12 top-4 bg-white rounded-md shadow-md p-2">
               <button
@@ -105,6 +125,7 @@ export default function Meeting() {
           </button>
         </div>
       </section>
+
       {isCreateScheduleModalOpen && <CreateScheduleModal />}
       {isMeetingModalOpen && <MeetingModal />}
     </>

@@ -4,7 +4,6 @@ import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
-// import { useState } from 'react';
 import useScheduleStore from '@/stores/schedule.store';
 import EditScheduleModal from '../template/EditScheduleModal';
 

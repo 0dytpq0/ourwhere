@@ -29,6 +29,7 @@ const CreateScheduleForm = () => {
 
   const onCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const newSchedule = {
       content: content,
       place: place?.place_name || '',
