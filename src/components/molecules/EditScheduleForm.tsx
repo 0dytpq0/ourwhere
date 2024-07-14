@@ -16,8 +16,7 @@ const EditScheduleForm = () => {
 
   const toggleEditScheduleModal = useModalStore((state) => state.toggleEditScheduleModal);
   const clickScheduleId = useScheduleStore((state) => state.clickScheduleId);
-  //   const setPlace = useKakaoStore((state) => state.setPlace);
-  const { place, setPlace } = useKakaoStore((state) => state);
+  const { place } = useKakaoStore((state) => state);
 
   console.log('clickScheduleId', clickScheduleId);
 

@@ -46,6 +46,20 @@ const MeetingForm = () => {
 
   const onCreateMeeting = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (meetingName.trim().length === 0) {
+      alert('모임 이름을 작성해주세요.');
+      return;
+    }
+    if (meetingStartDate.trim().length === 0 || meetingEndDate.trim().length === 0) {
+      alert('시작날짜와 종료날짜를 지정해주세요');
+      return;
+    }
+    if (meetingPassword.trim().length === 0) {
+      alert('비밀번호를 설정해주세요.');
+      return;
+    }
+
     const newMeeting = {
       title: meetingName,
       date: `${meetingStartDate}~${meetingEndDate}`,
