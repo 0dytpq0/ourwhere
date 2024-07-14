@@ -63,6 +63,7 @@ function Schedule() {
                     <path d="M17.414 2.586a2 2 0 00-2.828 0L7.5 9.672l-1.086 4.243 4.243-1.086 7.086-7.086a2 2 0 000-2.828zM5 16.414a1 1 0 11-2 0 1 1 0 012 0z" />
                   </svg>
                 </button>
+                {/* 삭제 버튼 */}
                 <button className="text-purple-500 hover:text-purple-700">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path

@@ -7,16 +7,21 @@ const CreateScheduleModal = () => {
 
   console.log(isCreateScheduleModalOpen);
 
-  const closeCreateModal = () => {
-    toggleCreateScheduleModal();
+  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      toggleCreateScheduleModal();
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+    <div
+      onClick={handleOutsideClick}
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10"
+    >
       <div className="bg-white p-10 rounded-lg shadow-lg relative">
         <h2>1</h2>
         <CreateScheduleForm />
-        <button onClick={closeCreateModal} className=" text-gray-500 p-1 ">
+        <button onClick={toggleCreateScheduleModal} className=" text-gray-500 p-1 ">
           x
         </button>
       </div>
