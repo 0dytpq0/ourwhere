@@ -15,6 +15,7 @@ import { useMeeting } from '@/lib/hooks/useMeetingAPI';
 import CheckPasswordModal from '../molecules/CheckPasswordModal';
 import { Session } from '@supabase/supabase-js';
 import { useMutation } from '@tanstack/react-query';
+import Schedule from '../molecules/Schedule';
 
 export default function Meeting() {
   const { isCreateScheduleModalOpen, isMeetingModalOpen, isCheckPasswordModalOpen, closeCheckPasswordModal } =
@@ -126,6 +127,7 @@ export default function Meeting() {
           <div className="p-1 w-64 rounded-xl bg-white flex justify-center items-center drop-shadow-md mt-2">
             {meeting.date}
           </div>
+          <Schedule />
           <button
             onClick={toggleCreateScheduleModal}
             className="w-16 h-16 rounded-full bg-header-color text-loginpage-color text-4xl mt-5"
