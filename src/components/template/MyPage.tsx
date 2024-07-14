@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
+import { IoMdReturnLeft } from 'react-icons/io';
 
 export default function MyPageTemplate() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -46,10 +47,20 @@ export default function MyPageTemplate() {
     setIsMounted(true);
   }, []);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setEditImage(file);
+  };
+
   const handleSaveClick = async () => {
     try {
-      const updates = { nickname: editnickname || user?.nickname };
+      if (!editimage) return;
+      const imgurl = await api.auth.uploadImage(editimage);
+
+      const updates = { nickname: editnickname || user?.nickname, imageUrl: imgurl };
       if (!user?.id) return;
+
       const updatedUser = await api.auth.updateUser(user?.id, updates);
       setUser(updatedUser);
       setIsEditing(false);
@@ -85,6 +96,7 @@ export default function MyPageTemplate() {
                 type="file"
                 src="profile-image"
                 className="bg-gray-200 px-2 py-1 rounded-md focus:outline-none mb-4"
+                onChange={handleImageChange}
               />
 
               <div className="mb-4">
