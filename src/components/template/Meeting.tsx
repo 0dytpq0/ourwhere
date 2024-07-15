@@ -1,19 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import KebabIcon from '../atoms/Kebab';
+import api from '@/api/api';
+import { useMeeting } from '@/lib/hooks/useMeetingAPI';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import MeetingModal from './MeetingModal';
-import api from '@/api/api';
-import { PlaceSearch } from '../molecules/PlaceSearch';
-import CreateScheduleModal from './CreateScheduleModal';
-import { useMeeting } from '@/lib/hooks/useMeetingAPI';
+import { useState } from 'react';
+import KebabIcon from '../atoms/Kebab';
 import CheckPasswordModal from '../molecules/CheckPasswordModal';
-import { useMutation } from '@tanstack/react-query';
 import Schedule from '../molecules/Schedule';
+import CreateScheduleModal from './CreateScheduleModal';
+import MeetingModal from './MeetingModal';
 
 export default function Meeting() {
   const { isCreateScheduleModalOpen, isMeetingModalOpen, isCheckPasswordModalOpen, closeCheckPasswordModal } =
@@ -26,16 +24,6 @@ export default function Meeting() {
   const { id } = useParams();
   const meetingId = Number(id);
   const router = useRouter();
-  const { mutate: checkLogIn } = useMutation({
-    mutationFn: async () => {
-      const userSession = await api.auth.getUserSession();
-      if (userSession) return closeCheckPasswordModal();
-    }
-  });
-
-  useEffect(() => {
-    checkLogIn();
-  }, []);
 
   console.log(isCheckPasswordModalOpen);
 
