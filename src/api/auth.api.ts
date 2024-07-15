@@ -24,7 +24,7 @@ class AuthAPI {
   async logOut() {
     const path = '/api/auth/log-out';
 
-    const response = await this.axios.post<UserType>(path);
+    const response = await this.axios.delete<UserType>(path);
     return response.data;
   }
 
