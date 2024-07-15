@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSchedulesToMeetingId, useDeleteSchedule } from '@/lib/hooks/useScheduleAPI';
+import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
@@ -14,19 +13,10 @@ function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
   const { isEditScheduleModalOpen, toggleEditScheduleModal } = useModalStore((state) => state);
+  const { setScheduleIndex } = useScheduleStore((state) => state);
 
   const setClickScheduleId = useScheduleStore((state) => state.setClickScheduleId);
-  const { data: initialSchedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
-
-  const [schedules, setSchedules] = useState<ScheduleType[]>(initialSchedules || []);
-
-  useEffect(() => {
-    if (initialSchedules) {
-      setSchedules(initialSchedules);
-    }
-  }, [initialSchedules]);
-
-  const deleteScheduleMutation = useDeleteSchedule();
+  const { data: schedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
 
   if (error) {
     console.log('error', error);
@@ -41,17 +31,6 @@ function Schedule() {
   const handleEditClick = (id: number) => {
     toggleEditScheduleModal();
     setClickScheduleId(id);
-  };
-
-  const handleDeleteClick = async (scheduleId: number) => {
-    try {
-      await deleteScheduleMutation.mutateAsync(scheduleId);
-      setSchedules((prevSchedules) => prevSchedules.filter((schedule) => schedule.id !== scheduleId));
-      alert('삭제가 완료 되었습니다.');
-    } catch (error) {
-      console.log(error);
-      alert('삭제 중 오류가 발생했습니다.');
-    }
   };
 
   return (
@@ -76,6 +55,7 @@ function Schedule() {
                 {/* 수정 버튼 */}
                 <button
                   onClick={() => {
+                    setScheduleIndex(index + 1);
                     handleEditClick(schedule.id);
                   }}
                   className="text-purple-500 hover:text-purple-700"
@@ -85,12 +65,7 @@ function Schedule() {
                   </svg>
                 </button>
                 {/* 삭제 버튼 */}
-                <button
-                  onClick={() => {
-                    handleDeleteClick(schedule.id);
-                  }}
-                  className="text-purple-500 hover:text-purple-700"
-                >
+                <button className="text-purple-500 hover:text-purple-700">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path
                       fillRule="evenodd"
