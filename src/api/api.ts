@@ -11,7 +11,7 @@ class API {
   schedule;
 
   constructor() {
-    this.axios = axios.create({ baseURL: 'http://localhost:3000' });
+    this.axios = axios.create({ baseURL: 'https://ourwhere.vercel.app' });
 
     this.auth = new AuthAPI(this.axios);
     this.meeting = new MeetingAPI();
