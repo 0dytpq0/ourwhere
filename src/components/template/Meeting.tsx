@@ -7,13 +7,11 @@ import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
-// import MeetingAPI from '@/api/meeting.api';
 import api from '@/api/api';
 import { PlaceSearch } from '../molecules/PlaceSearch';
 import CreateScheduleModal from './CreateScheduleModal';
 import { useMeeting } from '@/lib/hooks/useMeetingAPI';
 import CheckPasswordModal from '../molecules/CheckPasswordModal';
-import { Session } from '@supabase/supabase-js';
 import { useMutation } from '@tanstack/react-query';
 import Schedule from '../molecules/Schedule';
 
@@ -22,11 +20,9 @@ export default function Meeting() {
     useModalStore();
   const toggleCreateScheduleModal = useModalStore((state) => state.toggleCreateScheduleModal);
   const toggleMeetingModal = useModalStore((state) => state.toggleMeetingModal);
-  // const [meeting, setMeeting] = useState<Tables<'meeting'>>();
   const [showMenu, setShowMenu] = useState<number | null>(null);
   const [currentMeeting, setCurrentMeeting] = useState<Tables<'meeting'> | null>(null);
 
-  // const meetingAPI = new MeetingAPI();
   const { id } = useParams();
   const meetingId = Number(id);
   const router = useRouter();
@@ -40,7 +36,9 @@ export default function Meeting() {
   useEffect(() => {
     checkLogIn();
   }, []);
+
   console.log(isCheckPasswordModalOpen);
+
   const { data: meeting, error, isLoading } = useMeeting(meetingId);
   if (error) {
     console.log('error', error);
