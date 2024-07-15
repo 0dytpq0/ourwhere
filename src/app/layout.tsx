@@ -9,7 +9,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'ourwhere',
-  description: '친구들과 모임 일정 등을 공유하는 웹 플렛폼입니다!!!!'
+  description: '친구들과 모임 일정 등을 공유하는 웹 플렛폼입니다!!!!',
+  icons: {
+    icon: '/favicon.png'
+  }
 };
 
 export default function RootLayout({
