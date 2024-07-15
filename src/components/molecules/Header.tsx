@@ -15,6 +15,7 @@ export default function Header() {
   const handleClickLogOut = async () => {
     await api.auth.logOut();
     setUser(null);
+    setUserSession(null);
     router.push('/log-in');
   };
 
