@@ -25,11 +25,8 @@ export default function Meeting() {
   const meetingId = Number(id);
   const router = useRouter();
 
-  console.log(isCheckPasswordModalOpen);
-
   const { data: meeting, error, isLoading } = useMeeting(meetingId);
   if (error) {
-    console.log('error', error);
     return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
   }
   if (isLoading) {
@@ -37,25 +34,6 @@ export default function Meeting() {
   }
 
   if (!meeting) return <div>데이터를 받아올 수 없습니다.</div>;
-
-  // useEffect(() => {
-  //   const fetchMeetings = async () => {
-  //     try {
-  //       const data = await meetingAPI.selectMeeting(Number(params.id));
-  //       // console.log(data);
-  //       if (!data) return;
-  //       setMeeting(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchMeetings();
-  // }, []);
-
-  // const handleToggleModal = () => {
-  //   toggleModal();
-  // };
 
   const handleToggleMenu = (meetingId: number) => {
     setShowMenu(showMenu === meetingId ? null : meetingId);
@@ -69,17 +47,14 @@ export default function Meeting() {
   const handleDeleteMeeting = async (meetingId: number) => {
     try {
       await api.meeting.deleteMeeting(meetingId);
-      // // null! 수정
-      // setMeeting(null!);
       alert('삭제가 완료 되었습니다.');
       router.push('/');
     } catch (error) {
-      console.log(error);
+      throw new Error();
     }
   };
 
-  if (!meeting) return null; // meeting이 없는 경우 아무것도 랜더링 하지 않게
-
+  if (!meeting) return null;
   return (
     <>
       <section className="bg-loginpage-color pt-16 pb-16 h-dvh overflow-auto">
