@@ -1,14 +1,12 @@
 'use client';
 import api from '@/api/api';
 import { useAuthStore } from '@/providers/js-auth.store.provider';
-import { Session } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
-  const { user, setUser } = useAuthStore((state) => state);
-  const [userSession, setUserSession] = useState<Session | null>(null);
+  const { user, setUser, userSession, setUserSession } = useAuthStore((state) => state);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const router = useRouter();
 
@@ -20,11 +18,14 @@ export default function Header() {
   };
 
   useEffect(() => {
-    setIsMounted(true);
     (async () => {
       const innerUserSession = await api.auth.getUserSession();
       setUserSession(innerUserSession);
+      setIsMounted(true);
     })();
+    return () => {
+      setIsMounted(false);
+    };
   }, []);
 
   return (
