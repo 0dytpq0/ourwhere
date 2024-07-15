@@ -11,21 +11,33 @@ import { useSchedule, useUpdateSchedule } from '@/lib/hooks/useScheduleAPI';
 const EditScheduleForm = () => {
   const { id } = useParams();
   const meetingId = Number(id);
+  const [place, setPlace] = useState('');
+  const [address, setAddres] = useState('');
   const [time, setTime] = useState('');
   const [content, setContent] = useState('');
 
   const toggleEditScheduleModal = useModalStore((state) => state.toggleEditScheduleModal);
   const clickScheduleId = useScheduleStore((state) => state.clickScheduleId);
-  const { place, setPlace } = useKakaoStore((state) => state);
-
+  const { place: location, setPlace: setLocation } = useKakaoStore((state) => state);
   const { data: schedule, isLoading } = useSchedule(clickScheduleId);
   const { mutate: updateSchedule } = useUpdateSchedule();
 
   useEffect(() => {
-    setPlace(null);
-    setContent(schedule?.content || '');
-    setTime(schedule?.time || '');
-  }, []);
+    if (schedule && clickScheduleId) {
+      setLocation(null);
+      setPlace(schedule.place || '');
+      setAddres(schedule.address || '');
+      setContent(schedule?.content || '');
+      setTime(schedule?.time || '');
+    }
+  }, [schedule, clickScheduleId]);
+
+  useEffect(() => {
+    if (location) {
+      setPlace(location.place_name || '');
+      setAddres(location.address_name || '');
+    }
+  }, [location]);
 
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
@@ -39,8 +51,8 @@ const EditScheduleForm = () => {
     e.preventDefault();
     const newSchedule = {
       content: content,
-      place: place?.place_name || '',
-      address: place?.address_name || '',
+      place: place,
+      address: address,
       time: `${time}`,
       meetingId: meetingId
     };
@@ -48,6 +60,11 @@ const EditScheduleForm = () => {
     if (confirm('이대로 수정하시겠습니까?')) {
       updateSchedule({ id: clickScheduleId, updateData: newSchedule });
       toggleEditScheduleModal();
+      setTime('');
+      setContent('');
+      setAddres('');
+      setPlace('');
+      setLocation(null);
     }
   };
   if (isLoading) {
@@ -62,11 +79,11 @@ const EditScheduleForm = () => {
 
         <div className="mt-2">
           <h4 className="text-sm flex flex-col text-gray-500 h-4  font-semibold ">장소</h4>
-          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place?.place_name}</div>
+          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place}</div>
         </div>
         <div>
           <h4 className="text-sm flex flex-col text-gray-500 font-semibold">주소</h4>
-          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place?.address_name}</div>
+          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{address}</div>
         </div>
         <div>
           <label className="text-sm flex flex-col font-semibold text-gray-500">시간</label>
