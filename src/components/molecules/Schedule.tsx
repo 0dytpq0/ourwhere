@@ -1,13 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSchedulesToMeetingId, useDeleteSchedule } from '@/lib/hooks/useScheduleAPI';
+import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
 import useModalStore from '@/stores/modal.store';
 import { Tables } from '@/types/supabase';
 import { useParams } from 'next/navigation';
 import useScheduleStore from '@/stores/schedule.store';
 import EditScheduleModal from '../template/EditScheduleModal';
-import MarkerWithOrder from '../atoms/MarkerWithOrder';
 
 type ScheduleType = Tables<'schedule'>;
 
@@ -15,19 +13,10 @@ function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
   const { isEditScheduleModalOpen, toggleEditScheduleModal } = useModalStore((state) => state);
+  const { setScheduleIndex } = useScheduleStore((state) => state);
 
-  const { setScheduleIndex, setClickScheduleId } = useScheduleStore((state) => state);
-  const { data: initialSchedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
-
-  const [schedules, setSchedules] = useState<ScheduleType[]>(initialSchedules || []);
-
-  useEffect(() => {
-    if (initialSchedules) {
-      setSchedules(initialSchedules);
-    }
-  }, [initialSchedules]);
-
-  const deleteScheduleMutation = useDeleteSchedule();
+  const setClickScheduleId = useScheduleStore((state) => state.setClickScheduleId);
+  const { data: schedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
 
   if (error) {
     console.log('error', error);
@@ -39,20 +28,9 @@ function Schedule() {
 
   if (!schedules) return <div>데이터를 받아올 수 없습니다.</div>;
 
-  const handleEditClick = (schedule: ScheduleType) => {
+  const handleEditClick = (id: number) => {
     toggleEditScheduleModal();
-    setClickScheduleId(schedule.id);
-  };
-
-  const handleDeleteClick = async (scheduleId: number) => {
-    try {
-      await deleteScheduleMutation.mutateAsync(scheduleId);
-      setSchedules((prevSchedules) => prevSchedules.filter((schedule) => schedule.id !== scheduleId));
-      alert('삭제가 완료 되었습니다.');
-    } catch (error) {
-      console.log(error);
-      alert('삭제 중 오류가 발생했습니다.');
-    }
+    setClickScheduleId(id);
   };
 
   return (
@@ -61,8 +39,8 @@ function Schedule() {
         <div key={schedule.id} className="mb-4 p-4 bg-white flex rounded-lg shadow-lg relative">
           {/* 시간이랑 인덱스 */}
           <div className="flex items-center mb-2">
-            <div className="rounded-full flex items-center justify-center font-bold">
-              <MarkerWithOrder order={index + 1} />
+            <div className="bg-purple-100 text-purple-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">
+              {index + 1}
             </div>
             <div className="ml-4 text-lg font-semibold text-purple-700">{schedule.time}</div>
           </div>
@@ -77,8 +55,8 @@ function Schedule() {
                 {/* 수정 버튼 */}
                 <button
                   onClick={() => {
-                    handleEditClick(schedule);
                     setScheduleIndex(index + 1);
+                    handleEditClick(schedule.id);
                   }}
                   className="text-purple-500 hover:text-purple-700"
                 >
@@ -87,16 +65,11 @@ function Schedule() {
                   </svg>
                 </button>
                 {/* 삭제 버튼 */}
-                <button
-                  onClick={() => {
-                    handleDeleteClick(schedule.id);
-                  }}
-                  className="text-purple-500 hover:text-purple-700"
-                >
+                <button className="text-purple-500 hover:text-purple-700">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path
                       fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H3.5A1.5 1.5 0 002 5.5V 6h16v-.5A1.5 1.5 0 0016.5 3H15V2a1 1 0 00-1-1H6zM2 7v8.5A1.5 1.5 0 003.5 17h13a1.5 1.5 0 001.5-1.5V7H2zm5 3a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm5 0a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1z"
+                      d="M6 2a1 1 0 00-1 1v1H3.5A1.5 1.5 0 002 5.5V6h16v-.5A1.5 1.5 0 0016.5 3H15V2a1 1 0 00-1-1H6zM2 7v8.5A1.5 1.5 0 003.5 17h13a1.5 1.5 0 001.5-1.5V7H2zm5 3a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm5 0a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1z"
                       clipRule="evenodd"
                     />
                   </svg>

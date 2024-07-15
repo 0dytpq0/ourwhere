@@ -3,7 +3,7 @@ import React from 'react';
 import CreateScheduleForm from '../molecules/CreateScheduleForm';
 
 const CreateScheduleModal = () => {
-  const { toggleCreateScheduleModal, isCreateScheduleModalOpen } = useModalStore((state) => state);
+  const { toggleCreateScheduleModal } = useModalStore((state) => state);
 
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {

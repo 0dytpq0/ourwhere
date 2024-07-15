@@ -5,9 +5,7 @@ import MarkerWithOrder from '../atoms/MarkerWithOrder';
 import useScheduleStore from '@/stores/schedule.store';
 
 const EditScheduleModal = () => {
-  const { toggleEditScheduleModal, isEditScheduleModalOpen, isCreateScheduleModalOpen } = useModalStore(
-    (state) => state
-  );
+  const { toggleEditScheduleModal } = useModalStore((state) => state);
   const { scheduleIndex } = useScheduleStore((state) => state);
 
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
