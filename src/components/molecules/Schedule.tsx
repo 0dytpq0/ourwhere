@@ -15,6 +15,7 @@ function Schedule() {
   const { id } = useParams();
   const meetingId = Number(id);
   const { isEditScheduleModalOpen, toggleEditScheduleModal } = useModalStore((state) => state);
+  const { setScheduleIndex } = useScheduleStore((state) => state);
 
   const setClickScheduleId = useScheduleStore((state) => state.setClickScheduleId);
   const { data: initialSchedules, error, isLoading } = useSchedulesToMeetingId(meetingId);
@@ -75,6 +76,7 @@ function Schedule() {
                 {/* 수정 버튼 */}
                 <button
                   onClick={() => {
+                    setScheduleIndex(index + 1);
                     handleEditClick(schedule.id);
                   }}
                   className="text-purple-500 hover:text-purple-700"
