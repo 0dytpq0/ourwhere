@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlaceSearch } from './PlaceSearch';
 import { useParams } from 'next/navigation';
 import useModalStore from '@/stores/modal.store';
@@ -10,12 +10,13 @@ import { useCreateSchedule } from '@/lib/hooks/useScheduleAPI';
 const CreateScheduleForm = () => {
   const { id } = useParams();
   const meetingId = Number(id);
-
+  const [place, setPlace] = useState('');
+  const [address, setAddres] = useState('');
   const [time, setTime] = useState('');
   const [content, setContent] = useState('');
 
   const toggleCreateScheduleModal = useModalStore((state) => state.toggleCreateScheduleModal);
-  const { place, setPlace } = useKakaoStore((state) => state);
+  const { place: location, setPlace: setLocation } = useKakaoStore((state) => state);
 
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
@@ -25,6 +26,11 @@ const CreateScheduleForm = () => {
     setContent(e.target.value);
   };
 
+  useEffect(() => {
+    setPlace(location?.place_name || '');
+    setAddres(location?.address_name || '');
+  }, [location?.place_name]);
+
   const { mutate: createSchedule } = useCreateSchedule();
 
   const onCreateSchedule = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,17 +38,28 @@ const CreateScheduleForm = () => {
 
     const newSchedule = {
       content: content,
-      place: place?.place_name || '',
-      address: place?.address_name || '',
+      place: place,
+      address: address,
       time: `${time}`,
       meetingId: meetingId
     };
+
+    if (place.trim().length === 0) {
+      alert('장소를 입력해주세요.');
+      return;
+    }
+    if (time.trim().length === 0) {
+      alert('시간을 입력해주세요.');
+      return;
+    }
 
     createSchedule(newSchedule);
     toggleCreateScheduleModal();
     setTime('');
     setContent('');
-    setPlace(null);
+    setAddres('');
+    setPlace('');
+    setLocation(null);
   };
 
   return (
@@ -51,14 +68,13 @@ const CreateScheduleForm = () => {
         <div className="border p-3 rounded-lg">
           <PlaceSearch />
         </div>
-
         <div className="mt-2">
           <h4 className="text-sm flex flex-col text-gray-500 h-4  font-semibold ">장소</h4>
-          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place?.place_name}</div>
+          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place}</div>
         </div>
         <div>
           <h4 className="text-sm flex flex-col text-gray-500 font-semibold">주소</h4>
-          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{place?.address_name}</div>
+          <div className="w-full h-8 flex items-center border-2 rounded-md  text-xs px-2">{address}</div>
         </div>
         <div>
           <label className="text-sm flex flex-col font-semibold text-gray-500">시간</label>
