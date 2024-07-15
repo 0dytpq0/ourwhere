@@ -47,7 +47,6 @@ class AuthAPI {
     const path = 'api/auth/user-session';
 
     const response = await this.axios.get<Session | null>(path);
-    console.log('', response.data);
     return response.data;
   }
   async updateUser(id: string, updates: { images?: string; nickname?: string }) {
@@ -70,8 +69,7 @@ class AuthAPI {
     const { data: imgUrl } = supabase.storage.from('images').getPublicUrl(uniquepath);
 
     if (error) {
-      console.error('파일 업로드 에러:', error);
-      return null;
+      throw new Error(error.message);
     }
     return imgUrl.publicUrl as string;
   }

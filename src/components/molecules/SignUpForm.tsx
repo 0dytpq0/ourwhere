@@ -1,5 +1,6 @@
 import api from '@/api/api';
 import { validateEmail, validatePassword } from '@/lib/utils/validate';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Button from '../atoms/js-Button/Button';
@@ -10,6 +11,8 @@ function SignUpForm() {
   const [password, setPassword] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [isError, setIsError] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleClickSignUp = async () => {
     if (!validateEmail(email)) {
@@ -29,6 +32,11 @@ function SignUpForm() {
       }).then(() => setIsError(true));
     }
     await api.auth.signUp(email, password, nickname);
+    Swal.fire({
+      title: '회원가입이 완료되었습니다.',
+      icon: 'success',
+      confirmButtonText: 'Cool'
+    }).then(() => router.push('/'));
   };
 
   return (
@@ -43,6 +51,7 @@ function SignUpForm() {
         />
         <Input
           identity="login"
+          type="password"
           placeholder="비밀번호를 입력해주세요"
           warnning="소문자, 숫자, 특수문자 조합으로 만들어주세요"
           required={isError}

@@ -24,7 +24,6 @@ class ScheduleAPI {
    */
   async selectSchedules() {
     const { data } = await this.supabase.from('schedule').select().returns<Tables<'schedule'>[]>();
-    console.log('data', data);
     return data;
   }
 
@@ -35,10 +34,8 @@ class ScheduleAPI {
       .eq('meetingId', meetingId)
       .returns<Tables<'schedule'>[]>();
     if (error) {
-      console.error('Error fetching schedule:', error);
-      return null;
+      throw new Error();
     }
-    // console.log('data', data);
     return data;
   }
   /**
@@ -64,9 +61,7 @@ class ScheduleAPI {
    * @returns 삭제된 data
    */
   async deleteSchedule(id: number) {
-    console.log('id', id);
     const { data } = await this.supabase.from('schedule').delete().eq('id', id).select();
-    console.log('data', data);
     return data;
   }
 
@@ -84,7 +79,6 @@ class ScheduleAPI {
    */
   async updateSchedule(id: number, updateData: UpdateScheduleType) {
     const { meetingId, content, place, address, time } = updateData;
-    console.log('id, updateData', id, updateData);
     const { data, error } = await this.supabase
       .from('schedule')
       .update({ meetingId, content, place, address, time })

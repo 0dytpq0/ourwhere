@@ -1,6 +1,5 @@
 import { createClient } from '@/supabase/server';
 import { Tables } from '@/types/supabase';
-import { nanoid } from 'nanoid';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(request: NextRequest) {
@@ -19,7 +18,6 @@ export async function PATCH(request: NextRequest) {
   }
 
   if (user.id !== id) {
-    console.error('잘못된 사용자 ID');
     return NextResponse.json({ error: '잘못된 사용자 ID' }, { status: 403 });
   }
 

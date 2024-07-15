@@ -17,7 +17,6 @@ function LogInForm() {
   const handleClickLogIn = async () => {
     try {
       const user = await api.auth.logIn(email, password);
-      console.log(user);
       const response = await api.auth.getUser(user.id);
       setUser(response[0]);
       if (user.email) router.push('/');
