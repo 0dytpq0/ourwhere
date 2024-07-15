@@ -30,7 +30,6 @@ function Schedule() {
   const deleteScheduleMutation = useDeleteSchedule();
 
   if (error) {
-    console.log('error', error);
     return <div>오류가 발생했습니다. 다시 시도해 주세요.</div>;
   }
   if (isLoading) {
@@ -50,7 +49,6 @@ function Schedule() {
       setSchedules((prevSchedules) => prevSchedules.filter((schedule) => schedule.id !== scheduleId));
       alert('삭제가 완료 되었습니다.');
     } catch (error) {
-      console.log(error);
       alert('삭제 중 오류가 발생했습니다.');
     }
   };

@@ -38,7 +38,7 @@ export const PlaceSearch = ({ label, type, placeholder }: PlaceSearchProps) => {
       setPlaces(data);
       return data;
     } else {
-      console.log('status error');
+      return null;
     }
   }
 

@@ -6,13 +6,10 @@ export async function POST(request: NextRequest) {
   const supabase = createClient();
 
   const { id } = await request.json();
-  console.log('id', id, typeof id);
   if (!id) {
     return NextResponse.json({ error: 'id가 없습니다.' }, { status: 400 });
   }
   const { data, error } = await supabase.from('users').select().eq('id', id).returns<Tables<'users'>>();
-
-  console.log('data', data);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

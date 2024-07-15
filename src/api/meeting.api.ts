@@ -59,9 +59,7 @@ class MeetingAPI {
    * @returns 삭제된 data
    */
   async deleteMeeting(id: number) {
-    console.log('id', id);
     const { data } = await this.supabase.from('meeting').delete().eq('id', id).select();
-    console.log('data', data);
     return data;
   }
 
@@ -73,7 +71,6 @@ class MeetingAPI {
    */
   async updateMeeting(id: number, updateData: UpdateMeetingType) {
     const { date, password, title } = updateData;
-    console.log('id, updateData', id, updateData);
     const { data, error } = await this.supabase
       .from('meeting')
       .update({ date: updateData.date, password: updateData.password, title: updateData.title })
@@ -101,8 +98,7 @@ class MeetingAPI {
 
       return data as MeetingType[];
     } catch (error) {
-      console.error('Error fetching user meetings:', error);
-      return null;
+      throw new Error();
     }
   }
 }

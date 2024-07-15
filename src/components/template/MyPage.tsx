@@ -37,7 +37,6 @@ export default function MyPageTemplate() {
   };
 
   const handleMeetingClick = (id: number | undefined) => {
-    console.log('id', id);
     setMeetingId(id!);
     router.push(`/meeting/${id}`);
   };
@@ -64,7 +63,7 @@ export default function MyPageTemplate() {
       setUser(updatedUser);
       setIsEditing(false);
     } catch (error) {
-      console.error('닉네임 업데이트 에러:', error);
+      throw new Error();
     }
   };
 
