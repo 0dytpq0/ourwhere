@@ -7,6 +7,7 @@ import useGeoLocation from '@/lib/hooks/useGeolocation';
 import { IMGURLS } from '@/constants/images.constant';
 import MarkerWithOrder from '../atoms/MarkerWithOrder';
 import { useSchedulesToMeetingId } from '@/lib/hooks/useScheduleAPI';
+import ButtonsOnMap from '../molecules/ButtonsOnMap';
 
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 const KakaoMap = () => {
@@ -81,7 +82,7 @@ const KakaoMap = () => {
   }, [isLoaded, scheduleData]);
 
   return (
-    <section className="h-lvh mr-1">
+    <section className="h-lvh mr-1 relative">
       {isLoaded && (
         <Map center={mapCenter || { lat: 37.5665, lng: 126.978 }} style={{ width: '800px', height: '100%' }} level={5}>
           {markerPositions.map((position, index) => (
@@ -98,6 +99,7 @@ const KakaoMap = () => {
           )}
         </Map>
       )}
+      <ButtonsOnMap />
     </section>
   );
 };
